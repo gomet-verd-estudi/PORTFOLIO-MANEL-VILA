@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scroll Infinito Bidireccional</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: end;
+        }
+
+        #gran-contenedor {
+            display: flex;
+            flex-direction: row;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-snap-type: x mandatory;
+            background-color: blue;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .prj-unidad {
+            min-width: 100vw;
+            height: 100vh;
+            background-color: red;
+            border: 1px solid black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            scroll-snap-align: center;
+            position: relative;
+        }
+
+        .prj-unidad a {
+            display: flex;
+            
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            color: white;
+        }
+
+        .prj-unidad img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .prj-unidad video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+.descripcion{
+    display: flex;
+    flex-direction: column;
+    color: blue;
+    position: absolute;
+    z-index: 5;
+    margin: 0.5rem;
+    line-height: 12pt;
+    font-size: 11pt;
+    font-family: Arial, Helvetica, sans-serif;
+font-weight: 500;}
+.tags{
+    display: flex;
+    flex-direction: row;
+    
+}
+
+#gran-contenedor::-webkit-scrollbar {
+   display: none;
+
+  }
+.franja{
+    width: 50%;
+    display: flex;
+    position: absolute;
+    color: blue;
+    line-height: 11pt;
+    font-size: 11pt;
+    z-index: 10;
+    background-color: rgba(255, 255, 255, 0.495); /* Fondo blanco */
+    backdrop-filter: blur(5px);
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 500;
+    border-radius: 20px;
+    opacity: 100%;
+    transition: all 0.5s ease;
+    margin-bottom: 0.5rem;
+
+}
+
+
+
+.nombre-jo{
+    padding-left: 0.5rem;
+    display: flex;
+    width: 100%;
+    height: auto;
+padding-top: 0.3rem;
+padding-bottom: 0.3rem;
+
+}
+.projectes{
+    padding-top: 0.3rem;
+padding-bottom: 0.3rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    display: flex;
+    width: auto;
+    align-items: center;
+}
+
+.contact{
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    display: flex;
+    width: auto;
+    align-items: center;
+}
+
+.about{
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+
+    display: flex;
+    width: auto;
+    align-items: center;
+}
+
+
+@media (max-width: 767px) {
+    .franja{
+    width: calc(100% - 1rem);
+    display: flex;
+    position: absolute;
+    color: blue;
+    line-height: 11pt;
+    font-size: 11pt;
+    z-index: 10;
+    background-color: rgba(255, 255, 255, 0.495); /* Fondo blanco */
+    backdrop-filter: blur(5px);
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 500;
+    border-radius: 20px;
+    opacity: 100%;
+    transition: all 0.5s ease;
+margin-bottom: 0.5rem;
+}
+
+}
+    </style>
+</head>
+<body>
+
+    <div class="franja">
+    <div class="nombre-jo">Manel Vila</div>
+    <div class="projectes">Projects</div>
+    <div class="about">About</div>
+    <div class="contact">Contact</div>
+
+
+
+    </div>
+
+    <div id="gran-contenedor">
+        <div class="prj-unidad">
+            <a href="#">
+               
+                <div class="descripcion">
+                
+                    <div class="nom-prj">CLAUR TILES</div>
+                <div class="tags">
+                    <div class="tag-prj">Branding</div>
+                </div>
+
+                </div>
+                <video loop autoplay muted>
+                    <source src="content/uploads/2024/claur/ct-video-inicial.mp4" type="video/mp4">
+                    Tu navegador no soporta la etiqueta de video.
+                </video>
+            </a>
+            </div>
+
+
+                <div class="prj-unidad">
+                    <a href="#">
+                       
+                        <div class="descripcion">
+                        
+                            <div class="nom-prj">COLAPSO</div>
+                        <div class="tags">
+                            <div class="tag-prj">Artwork</div> 
+                        </div>
+        
+                        </div>
+                        <img src="content/uploads/2024/colapso/colapso-foto-1.jpg"> 
+                    </a>
+                    </div>  
+                    
+                    
+                    
+                    
+                    <div class="prj-unidad"><a href="#"><img src="https://via.placeholder.com/800x600" alt="Imagen 3"></a></div>
+        <div class="prj-unidad"><a href="#"><img src="https://via.placeholder.com/800x600" alt="Imagen 4"></a></div>
+        <div class="prj-unidad"><a href="#"><img src="https://via.placeholder.com/800x600" alt="Imagen 5"></a></div>
+        <div class="prj-unidad"><a href="#"><img src="https://via.placeholder.com/800x600" alt="Imagen 6"></a></div>
+        <div class="prj-unidad"><a href="#"><img src="https://via.placeholder.com/800x600" alt="Imagen 7"></a></div>
+        <div class="prj-unidad"><a href="#"><img src="https://via.placeholder.com/800x600" alt="Imagen 8"></a></div>
+        <div class="prj-unidad"><a href="#"><img src="https://via.placeholder.com/800x600" alt="Imagen 9"></a></div>
+        <div class="prj-unidad"><a href="#"><img src="https://via.placeholder.com/800x600" alt="Imagen 10"></a></div>
+    </div>
+
+    <script>
+        const granContenedor = document.getElementById('gran-contenedor');
+        let isCloning = false;
+
+        // Función para clonar los elementos al final
+        function cloneCycleEnd() {
+            if (isCloning) return;
+            isCloning = true;
+
+            const originals = Array.from(granContenedor.children).filter(child => !child.classList.contains('clone'));
+            originals.forEach(original => {
+                const clone = original.cloneNode(true);
+                clone.classList.add('clone');
+                granContenedor.appendChild(clone);
+            });
+
+            isCloning = false;
+        }
+
+        // Función para clonar los elementos al inicio (en orden inverso)
+        function cloneCycleStart() {
+            if (isCloning) return;
+            isCloning = true;
+
+            const originals = Array.from(granContenedor.children).filter(child => !child.classList.contains('clone'));
+            for (let i = originals.length - 1; i >= 0; i--) {
+                const clone = originals[i].cloneNode(true);
+                clone.classList.add('clone');
+                granContenedor.insertBefore(clone, granContenedor.firstChild);
+            }
+
+            // Ajustar el scroll para mantener la posición visual
+            granContenedor.scrollLeft += originals.length * originals[0].offsetWidth;
+
+            isCloning = false;
+        }
+
+        // Verificar la posición de scroll y clonar dinámicamente
+        function checkScrollPosition() {
+            const originals = Array.from(granContenedor.children).filter(child => !child.classList.contains('clone'));
+            const originalWidth = originals[0].offsetWidth;
+            const totalWidth = originals.length * originalWidth;
+
+            if (granContenedor.scrollLeft <= originalWidth) {
+                // Si estamos al inicio, clonar al principio
+                cloneCycleStart();
+            } else if (granContenedor.scrollLeft >= granContenedor.scrollWidth - granContenedor.clientWidth - originalWidth) {
+                // Si estamos al final, clonar al final
+                cloneCycleEnd();
+            }
+        }
+
+        // Asignar eventos
+        granContenedor.addEventListener('scroll', checkScrollPosition);
+        window.addEventListener('wheel', (event) => {
+            if (window.innerWidth >= 1024 && event.deltaY !== 0) {
+                event.preventDefault();
+                granContenedor.scrollLeft += event.deltaY;
+            }
+        }, { passive: false });
+    </script>
+</body>
+</html>
