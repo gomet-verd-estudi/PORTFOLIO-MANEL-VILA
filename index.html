@@ -104,7 +104,7 @@
             height: 55px;
             padding-left: 0.5rem;
             padding-right: 0.5rem;
-            padding-top:0.12rem;
+            padding-top:0.15rem;
 
             align-items: center;
 
@@ -117,6 +117,16 @@
             overflow-y: none;
             transition: width 0.5s ease, opacity 0.5s ease;
             align-items: center;
+        }
+        .espacio{
+background-color: greenyellow;
+        }
+.ila{
+    background-color: blueviolet;
+}
+        .anel{
+                background-color: red;
+
         }
 .m{
     width: auto;
@@ -189,68 +199,90 @@
     <script>
 
         
-       $(document).ready(function() {
-            $(".nombre-jo").click(function() {
-                const elements = [".anel", ".ila", ".projectes", ".about", ".contact", ".espacio"];
-                elements.forEach(selector => {
-                    const element = $(selector);
-                    if (element.width() > 0) {
-                        // Si el elemento está visible, lo ocultamos
-                        slideOutToRight(element);
-                        $(".franja").css({ width: "55px", fontSize: "20pt", height: "55px", left: "0.5rem", justifyContent: "center" });
-                        $(".about, .contact, .projectes").css({ padding: "0rem" });
-                        $(".nombre-jo").css("width", "55px");
-                    } else {
-                        // Si el elemento está oculto, calculamos su ancho natural
-                        const targetWidth = getNaturalWidth(element);
-                        // Mostramos el elemento con su ancho natural
-                        slideInFromLeft(element, targetWidth);
+$(document).ready(function() {
+    // Calcular el ancho natural del elemento .anel sin modificar su apariencia inicial
+    const anelNaturalWidth = getNaturalWidth($(".anel"));
 
-                        if (window.innerWidth < 767) {
-                            $(".franja").css({ width: "calc(100% - 1rem)", left: "0.5rem", fontSize: "13pt" });
-                        } else {
-                            $(".franja").css({ width: "50%", left: "25%", fontSize: "18pt" });
-                        }
-                        $(".franja").css({ height: "30px", justifyContent: "start" });
-                        $(".about, .contact, .projectes").css({ padding: "0 1rem" });
-                        $(".nombre-jo").css("width", "100%");
-                    }
-                });
-            });
+    $(".nombre-jo").click(function() {
+        const elements = [".anel", ".ila", ".projectes", ".about", ".contact", ".espacio"];
+        elements.forEach(selector => {
+            const element = $(selector);
+            if (element.width() > 0) {
+                // Si el elemento está visible, lo ocultamos
+                slideOutToRight(element);
+                $(".franja").css({ width: "55px", fontSize: "20pt", height: "55px", left: "0.5rem", justifyContent: "center" });
+                $(".about, .contact, .projectes").css({ padding: "0rem" });
+                $(".nombre-jo").css("width", "55px");
+            } else {
+                // Si el elemento está oculto, usamos el ancho calculado de .anel si es este div
+                const targetWidth = selector === ".anel" ? anelNaturalWidth : getNaturalWidth(element);
+                
+                // Mostramos el elemento con su ancho natural
+                slideInFromLeft(element, targetWidth);
 
-            // Función para calcular el ancho natural
-            function getNaturalWidth(element) {
-                element.css({ width: 'auto', opacity: 1, display: 'inline-flex' });
-                const naturalWidth = element.width();
-                element.css({ width: 0, opacity: 0 });
-                return naturalWidth;
-            }
-
-            // Animación de entrada
-            function slideInFromLeft(element, targetWidth, duration = 300) {
-                element.css({ display: 'inline-flex' }).animate({
-                    width: targetWidth,
-                    opacity: 1
-                }, duration, "swing");
-            }
-
-            // Animación de salida
-            function slideOutToRight(element, duration = 300) {
-                element.animate({
-                    width: 0,
-                    opacity: 0
-                }, duration, "swing");
-            }
-
-            // Evento para ajustar el diseño cuando se cambia el tamaño de la ventana
-            $(window).on('resize', function() {
                 if (window.innerWidth < 767) {
-                    $(".franja").css({ width: "calc(100% - 1rem)", left: "0.5rem" });
+                    $(".franja").css({ width: "calc(100% - 1rem)", left: "0.5rem", fontSize: "13pt" });
                 } else {
-                    $(".franja").css({ width: "50%", left: "25%" });
+                    $(".franja").css({ width: "50%", left: "25%", fontSize: "18pt" });
                 }
-            });
+                $(".franja").css({ height: "30px", justifyContent: "start" });
+                $(".about, .contact, .projectes").css({ padding: "0 1rem" });
+                $(".nombre-jo").css("width", "100%");
+            }
         });
+    });
+
+    // Función para calcular el ancho natural
+    function getNaturalWidth(element) {
+        // Guardar el estado original del elemento
+        const originalCss = {
+            position: element.css("position"),
+            visibility: element.css("visibility"),
+            display: element.css("display"),
+            width: element.css("width")
+        };
+
+        // Aplicar estilos temporales para medir el ancho
+        element.css({
+            position: "absolute",
+            visibility: "hidden",
+            display: "inline-block",
+            width: "auto"
+        });
+        
+        const naturalWidth = element.width();
+
+        // Restaurar el estado original del elemento
+        element.css(originalCss);
+        return naturalWidth;
+    }
+
+    // Animación de entrada
+    function slideInFromLeft(element, targetWidth, duration = 300) {
+        element.css({ display: 'inline-flex' }).animate({
+            width: targetWidth,
+            opacity: 1
+        }, duration, "swing");
+    }
+
+    // Animación de salida
+    function slideOutToRight(element, duration = 300) {
+        element.animate({
+            width: 0,
+            opacity: 0
+        }, duration, "swing");
+    }
+
+    // Evento para ajustar el diseño cuando se cambia el tamaño de la ventana
+    $(window).on('resize', function() {
+        if (window.innerWidth < 767) {
+            $(".franja").css({ width: "calc(100% - 1rem)", left: "0.5rem" });
+        } else {
+            $(".franja").css({ width: "50%", left: "25%" });
+        }
+    });
+});
+
 
 
 
