@@ -15,6 +15,7 @@
             display: flex;
             justify-content: start;
             align-items: start;
+            flex-direction: column;
         }
 
         /* Estilos de contenedor principal */
@@ -60,7 +61,7 @@
         }
 
         .descripcion {
-            display: flex;
+            display: none;
             flex-direction: column;
             color: blue;
             position: absolute;
@@ -118,16 +119,9 @@
             transition: width 0.5s ease, opacity 0.5s ease;
             align-items: center;
         }
-        .espacio{
-background-color: greenyellow;
-        }
-.ila{
-    background-color: blueviolet;
-}
-        .anel{
-                background-color: red;
-
-        }
+     .espacio{
+        transition: all 0.5s ease;
+     }
 .m{
     width: auto;
     height: 100%;
@@ -138,12 +132,137 @@ background-color: greenyellow;
     line-height: 55px;  /* Asegúrate de que coincida con la altura del contenedor */
     margin: 0;
 }
+
+.franja-info{
+    max-width: 100%;
+    min-width: 100%;
+
+    height: auto;
+    background-color: blue;
+    display: flex;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+    line-height: 12pt;
+            font-size: 11pt;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: 500;
+            color: white;
+            margin: 0;
+}
+
+.caja-info{
+    display: flex;
+    width: 50%;
+    flex-direction: row;
+}
+
+.peque-desc{
+    display: flex;
+    width: 50%;
+    flex-direction: column;
+
+}
+
+.parte-desc{
+    flex-direction: row;
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.texto-info-corta{
+    display: flex;
+    width: 100%;
+  
+}
+.bot-mas-info{
+display: flex;
+width: 7%;
+height: auto;
+justify-content: end;
+}
+.caja-inferior {
+    position: fixed;       /* Posición fija para que se mantenga en la parte inferior de la pantalla */
+    bottom: 0;             /* Alineación en la parte inferior */
+    left: 0;               /* Alineación al borde izquierdo */
+    right: 0;              /* Alineación al borde derecho */
+    width: 100%;           /* Ocupa todo el ancho de la pantalla */
+    height: auto;          /* Mantiene la altura en función de su contenido */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;   /* Centra el contenido horizontalmente */
+    padding: 0rem; 
+    padding-bottom: 0;
+    padding-left: 1rem;      /* Espaciado alrededor del contenido */
+    gap: 0.5rem;
+    box-sizing: border-box; /* Incluye el padding en el ancho total */
+    z-index: 100;          /* Asegura que esté por encima de otros elementos */
+}
+.desc-larga{
+    width: 50%;
+
+    display: flex;
+    z-index: 4;
+    background-color: blue;
+    font-size: 11pt;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: 500;
+            color: white;
+            padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+}
+
+.caja-nombre-prj{
+    width: 50%;
+    display: flex;
+    align-items: center;
+}
+
+.caja-tag-prj{
+    width: 50%;
+    display: flex;
+    align-items: center;
+}
         @media (max-width: 767px) {
             .franja {
                 font-size: 18pt;
                 justify-content: center;
                 align-items: center;
             }
+            .caja-tag-prj{
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+            .caja-info{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+}
+.texto-info-corta{
+    display: flex;
+    width: 100%;
+    padding-left: 0rem;
+}
+.peque-desc{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
+
+            .franja-info{
+   flex-direction: column;
+}
+
+
+.desc-larga{
+   width: 100%;
+}
         }
     </style>
 </head>
@@ -170,6 +289,9 @@ background-color: greenyellow;
                     <div class="tags">
                         <div class="tag-prj">Branding</div>
                     </div>
+                    <div class="descripcion-corta">estp es un pequeño projecto de diseño gráfico</div>
+                    <div class="descripcion-larga">esto tendria que ser mas largo</div>
+
                 </div>
                 <video loop autoplay muted>
                     <source src="content/uploads/2024/claur/ct-video-inicial.mp4" type="video/mp4">
@@ -181,10 +303,13 @@ background-color: greenyellow;
         <div class="prj-unidad">
             <a>
                 <div class="descripcion">
-                    <div class="nom-prj">CLAUR TILES</div>
+                    <div class="nom-prj">COLAPSO</div>
                     <div class="tags">
-                        <div class="tag-prj">Branding</div>
+                        <div class="tag-prj">Artwork</div>
                     </div>
+                    <div class="descripcion-corta">estp es un pequeño projecto de diseño gráfico</div>
+                    <div class="descripcion-larga">esto tendria que ser mas largo</div>
+
                 </div>
                 <img src="content/uploads/2024/colapso/colapso-foto-1.jpg">
             </a>
@@ -194,11 +319,66 @@ background-color: greenyellow;
         <div class="prj-unidad"><a href="javascript:void(0);"><img src="https://via.placeholder.com/800x600" alt="Imagen 3"></a></div>
         <!-- Más contenido según sea necesario -->
     </div>
+<div class="caja-inferior">
+    <div class="desc-larga">esto que es</div>
 
+    <div class="franja-info">
+        <div class="caja-info">
+            <div class="caja-nombre-prj">Cliente</div>  <div class="caja-tag-prj">Tag</div>
+        </div>
+        <div class="peque-desc">
+            <div class="parte-desc">
+                <div class="texto-info-corta">desc</div>
+                <div class="bot-mas-info">+info</div>
+            </div>
+          
+
+        </div>
+    </div>
+</div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
 
-        
+$(document).ready(function() {
+    // Seleccionar el contenedor de scroll
+    const granContenedor = $("#gran-contenedor");
+
+    // Ocultar el .desc-larga inicialmente
+    $(".desc-larga").hide();
+
+    // Alternar visibilidad de .desc-larga al hacer clic en .bot-mas-info
+    $(".bot-mas-info").click(function() {
+        const descLarga = $(".desc-larga");
+        const botMasInfo = $(this);
+
+        // Alternar con animaciones de slide
+        if (descLarga.is(":visible")) {
+            descLarga.slideUp("slow");   // Ocultar con slide up
+            botMasInfo.text("+info");         // Cambiar texto a "+"
+        } else {
+            descLarga.slideDown("slow"); // Mostrar con slide down
+            botMasInfo.text("-info");     // Cambiar texto a "-info"
+        }
+    });
+
+    // Listener para el evento de scroll en #gran-contenedor
+    granContenedor.on("scroll", function() {
+        const descLarga = $(".desc-larga");
+        const botMasInfo = $(".bot-mas-info");
+
+        // Si el .desc-larga está visible o el texto es "-info", ocultarlo con slideUp
+        if (descLarga.is(":visible") || botMasInfo.text() === "-info") {
+            descLarga.slideUp("slow"); // Ocultar con slideUp
+            botMasInfo.text("+info");      // Cambiar el texto de vuelta a "+"
+        }
+    });
+});
+
+
+
+
+
+
 $(document).ready(function() {
     // Calcular el ancho natural del elemento .anel sin modificar su apariencia inicial
     const anelNaturalWidth = getNaturalWidth($(".anel"));
@@ -282,10 +462,6 @@ $(document).ready(function() {
         }
     });
 });
-
-
-
-
         const granContenedor = document.getElementById('gran-contenedor');
         let isCloning = false;
 
@@ -345,6 +521,53 @@ $(document).ready(function() {
                 granContenedor.scrollLeft += event.deltaY;
             }
         }, { passive: false });
+
+
+
+        $(document).ready(function() {
+        const granContenedor = document.getElementById('gran-contenedor');
+        
+        // Función para actualizar el contenido cuando una unidad está centrada
+        function updateCenteredContent() {
+            // Obtener el centro de la ventana
+            const centerX = window.innerWidth / 2;
+
+            let centeredUnit = null;
+            let minDistance = Infinity;
+
+            // Iterar sobre cada prj-unidad
+            $('.prj-unidad').each(function() {
+                const rect = this.getBoundingClientRect();
+                const unitCenterX = rect.left + rect.width / 2;
+                const distance = Math.abs(centerX - unitCenterX);
+
+                // Verificar cuál está más cerca del centro
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    centeredUnit = this;
+                }
+            });
+
+            // Si encontramos una unidad centrada, actualizar el contenido
+            if (centeredUnit) {
+                const nomPrj = $(centeredUnit).find('.nom-prj').text();
+                const tagPrj = $(centeredUnit).find('.tag-prj').text();
+                const descripcionCorta = $(centeredUnit).find('.descripcion-corta').text();
+                const descripcionLarga = $(centeredUnit).find('.descripcion-larga').text();
+
+                $('.caja-nombre-prj').text(nomPrj);
+                $('.caja-tag-prj').text(tagPrj);
+                $('.texto-info-corta').text(descripcionCorta);
+                $('.desc-larga').text(descripcionLarga);
+            }
+        }
+
+        // Escuchar el evento de scroll y actualizar el contenido dinámicamente
+        granContenedor.addEventListener('scroll', updateCenteredContent);
+
+        // Llamar a la función una vez al cargar para inicializar el contenido con la primera unidad centrada
+        updateCenteredContent();
+    });
     </script>
 </body>
 </html>
