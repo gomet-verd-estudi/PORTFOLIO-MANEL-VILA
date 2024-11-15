@@ -94,6 +94,7 @@
             justify-content: center;
             overflow: hidden;
             left: 0.5rem;
+            padding: 0;
         }
 
         /* Estilos para los divs dinámicos */
@@ -101,8 +102,12 @@
             display: flex;
             width: auto;
             height: 55px;
-            padding: 0.3rem 0.5rem;
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+            padding-top:0.12rem;
+
             align-items: center;
+
         }
 
         /* Ajustes para otros elementos dentro de .franja */
@@ -113,11 +118,21 @@
             transition: width 0.5s ease, opacity 0.5s ease;
             align-items: center;
         }
-
+.m{
+    width: auto;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 55px;  /* Asegúrate de que coincida con la altura del contenedor */
+    margin: 0;
+}
         @media (max-width: 767px) {
             .franja {
                 font-size: 18pt;
                 justify-content: center;
+                align-items: center;
             }
         }
     </style>
@@ -154,7 +169,7 @@
         </div>
 
         <div class="prj-unidad">
-            <a href="javascript:void(0);">
+            <a>
                 <div class="descripcion">
                     <div class="nom-prj">CLAUR TILES</div>
                     <div class="tags">
@@ -301,4 +316,3 @@
     </script>
 </body>
 </html>
-
