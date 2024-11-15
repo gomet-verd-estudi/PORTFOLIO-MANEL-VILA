@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scroll Infinito Bidireccional</title>
     <style>
+        /* Estilos generales */
         body, html {
             margin: 0;
             padding: 0;
@@ -12,10 +13,11 @@
             height: 100%;
             width: 100%;
             display: flex;
-            justify-content: center;
-            align-items: end;
+            justify-content: start;
+            align-items: start;
         }
 
+        /* Estilos de contenedor principal */
         #gran-contenedor {
             display: flex;
             flex-direction: row;
@@ -26,7 +28,11 @@
             height: 100%;
             width: 100%;
         }
+        #gran-contenedor::-webkit-scrollbar {
+            display: none;
+        }
 
+        /* Estilos de cada unidad de proyecto */
         .prj-unidad {
             min-width: 100%;
             height: 100%;
@@ -41,187 +47,198 @@
 
         .prj-unidad a {
             display: flex;
-            
             width: 100%;
             height: 100%;
             text-decoration: none;
             color: white;
         }
 
-        .prj-unidad img {
+        .prj-unidad img, .prj-unidad video {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-        .prj-unidad video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+
+        .descripcion {
+            display: flex;
+            flex-direction: column;
+            color: blue;
+            position: absolute;
+            z-index: 5;
+            margin: 0.5rem;
+            line-height: 12pt;
+            font-size: 11pt;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: 500;
+            bottom: 0.5rem;
         }
-.descripcion{
-    display: flex;
-    flex-direction: column;
-    color: blue;
-    position: absolute;
-    z-index: 5;
-    margin: 0.5rem;
-    line-height: 12pt;
-    font-size: 11pt;
-    font-family: Arial, Helvetica, sans-serif;
-font-weight: 500;}
-.tags{
-    display: flex;
-    flex-direction: row;
-    
-}
 
-#gran-contenedor::-webkit-scrollbar {
-   display: none;
+        /* Estilos de la franja superior */
+        .franja {
+            width: 55px;
+            height: 55px;
+            display: flex;
+            position: absolute;
+            color: blue;
+            line-height: 11pt;
+            font-size: 20pt;
+            z-index: 10;
+            background-color: rgba(255, 255, 255, 0.495);
+            backdrop-filter: blur(5px);
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: 500;
+            border-radius: 50px;
+            transition: all 0.5s ease;
+            margin-top: 0.5rem;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            left: 0.5rem;
+        }
 
-  }
-.franja{
-    width: 50%;
-    display: flex;
-    position: absolute;
-    color: blue;
-    line-height: 11pt;
-    font-size: 11pt;
-    z-index: 10;
-    background-color: rgba(255, 255, 255, 0.495); /* Fondo blanco */
-    backdrop-filter: blur(5px);
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: 500;
-    border-radius: 20px;
-    opacity: 100%;
-    transition: all 0.5s ease;
-    margin-bottom: 0.5rem;
+        /* Estilos para los divs dinámicos */
+        .nombre-jo {
+            display: flex;
+            width: auto;
+            height: 55px;
+            padding: 0.3rem 0.5rem;
+            align-items: center;
+        }
 
-}
+        /* Ajustes para otros elementos dentro de .franja */
+        .projectes, .about, .contact, .anel, .ila, .espacio {
+            width: 0;
+            opacity: 0;
+            overflow-y: none;
+            transition: width 0.5s ease, opacity 0.5s ease;
+            align-items: center;
+        }
 
-
-
-.nombre-jo{
-    padding-left: 0.5rem;
-    display: flex;
-    width: 100%;
-    height: auto;
-padding-top: 0.3rem;
-padding-bottom: 0.3rem;
-
-}
-.projectes{
-    padding-top: 0.3rem;
-padding-bottom: 0.3rem;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    display: flex;
-    width: auto;
-    align-items: center;
-}
-
-.contact{
-    padding-top: 0.3rem;
-    padding-bottom: 0.3rem;    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    display: flex;
-    width: auto;
-    align-items: center;
-}
-
-.about{
-    padding-top: 0.3rem;
-    padding-bottom: 0.3rem;    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-
-    display: flex;
-    width: auto;
-    align-items: center;
-}
-
-
-@media (max-width: 767px) {
-    .franja{
-    width: calc(100% - 1rem);
-    display: flex;
-    position: absolute;
-    color: blue;
-    line-height: 11pt;
-    font-size: 11pt;
-    z-index: 10;
-    background-color: rgba(255, 255, 255, 0.495); /* Fondo blanco */
-    backdrop-filter: blur(5px);
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: 500;
-    border-radius: 20px;
-    opacity: 100%;
-    transition: all 0.5s ease;
-margin-bottom: 0.5rem;
-}
-
-}
+        @media (max-width: 767px) {
+            .franja {
+                font-size: 18pt;
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 <body>
 
     <div class="franja">
-    <div class="nombre-jo">Manel Vila</div>
-    <div class="projectes">Projects</div>
-    <div class="about">About</div>
-    <div class="contact">Contact</div>
-
-
-
+        <div class="nombre-jo">
+            <div class="m">M</div> 
+            <div class="anel">anel</div>
+            <div class="espacio">&nbsp;</div> 
+            <div class="v">V</div> 
+            <div class="ila">ila</div>
+        </div>
+        <div class="projectes">Projects</div>
+        <div class="about">About</div>
+        <div class="contact">Contact</div>
     </div>
 
     <div id="gran-contenedor">
         <div class="prj-unidad">
-            <a href="#">
-               
+            <a href="javascript:void(0);">
                 <div class="descripcion">
-                
                     <div class="nom-prj">CLAUR TILES</div>
-                <div class="tags">
-                    <div class="tag-prj">Branding</div>
-                </div>
-
+                    <div class="tags">
+                        <div class="tag-prj">Branding</div>
+                    </div>
                 </div>
                 <video loop autoplay muted>
                     <source src="content/uploads/2024/claur/ct-video-inicial.mp4" type="video/mp4">
                     Tu navegador no soporta la etiqueta de video.
                 </video>
             </a>
-            </div>
+        </div>
 
-
-                <div class="prj-unidad">
-                    <a href="#">
-                       
-                        <div class="descripcion">
-                        
-                            <div class="nom-prj">COLAPSO</div>
-                        <div class="tags">
-                            <div class="tag-prj">Artwork</div> 
-                        </div>
+        <div class="prj-unidad">
+            <a href="javascript:void(0);">
+                <div class="descripcion">
+                    <div class="nom-prj">CLAUR TILES</div>
+                    <div class="tags">
+                        <div class="tag-prj">Branding</div>
+                    </div>
+                </div>
+                <img src="content/uploads/2024/colapso/colapso-foto-1.jpg">
+            </a>
+        </div>
         
-                        </div>
-                        <img src="content/uploads/2024/colapso/colapso-foto-1.jpg"> 
-                    </a>
-                    </div>  
-                    
-                    
-                    
-                    
-                    <div class="prj-unidad"><a href="#"><img src="https://via.placeholder.com/800x600" alt="Imagen 3"></a></div>
-        <div class="prj-unidad"><a href="#"><img src="https://via.placeholder.com/800x600" alt="Imagen 4"></a></div>
-        <div class="prj-unidad"><a href="#"><img src="https://via.placeholder.com/800x600" alt="Imagen 5"></a></div>
-        <div class="prj-unidad"><a href="#"><img src="https://via.placeholder.com/800x600" alt="Imagen 6"></a></div>
-        <div class="prj-unidad"><a href="#"><img src="https://via.placeholder.com/800x600" alt="Imagen 7"></a></div>
-        <div class="prj-unidad"><a href="#"><img src="https://via.placeholder.com/800x600" alt="Imagen 8"></a></div>
-        <div class="prj-unidad"><a href="#"><img src="https://via.placeholder.com/800x600" alt="Imagen 9"></a></div>
-        <div class="prj-unidad"><a href="#"><img src="https://via.placeholder.com/800x600" alt="Imagen 10"></a></div>
+        <!-- Otras unidades de proyecto con enlaces modificados -->
+        <div class="prj-unidad"><a href="javascript:void(0);"><img src="https://via.placeholder.com/800x600" alt="Imagen 3"></a></div>
+        <!-- Más contenido según sea necesario -->
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+
+        
+       $(document).ready(function() {
+            $(".nombre-jo").click(function() {
+                const elements = [".anel", ".ila", ".projectes", ".about", ".contact", ".espacio"];
+                elements.forEach(selector => {
+                    const element = $(selector);
+                    if (element.width() > 0) {
+                        // Si el elemento está visible, lo ocultamos
+                        slideOutToRight(element);
+                        $(".franja").css({ width: "55px", fontSize: "20pt", height: "55px", left: "0.5rem", justifyContent: "center" });
+                        $(".about, .contact, .projectes").css({ padding: "0rem" });
+                        $(".nombre-jo").css("width", "55px");
+                    } else {
+                        // Si el elemento está oculto, calculamos su ancho natural
+                        const targetWidth = getNaturalWidth(element);
+                        // Mostramos el elemento con su ancho natural
+                        slideInFromLeft(element, targetWidth);
+
+                        if (window.innerWidth < 767) {
+                            $(".franja").css({ width: "calc(100% - 1rem)", left: "0.5rem", fontSize: "13pt" });
+                        } else {
+                            $(".franja").css({ width: "50%", left: "25%", fontSize: "18pt" });
+                        }
+                        $(".franja").css({ height: "30px", justifyContent: "start" });
+                        $(".about, .contact, .projectes").css({ padding: "0 1rem" });
+                        $(".nombre-jo").css("width", "100%");
+                    }
+                });
+            });
+
+            // Función para calcular el ancho natural
+            function getNaturalWidth(element) {
+                element.css({ width: 'auto', opacity: 1, display: 'inline-flex' });
+                const naturalWidth = element.width();
+                element.css({ width: 0, opacity: 0 });
+                return naturalWidth;
+            }
+
+            // Animación de entrada
+            function slideInFromLeft(element, targetWidth, duration = 300) {
+                element.css({ display: 'inline-flex' }).animate({
+                    width: targetWidth,
+                    opacity: 1
+                }, duration, "swing");
+            }
+
+            // Animación de salida
+            function slideOutToRight(element, duration = 300) {
+                element.animate({
+                    width: 0,
+                    opacity: 0
+                }, duration, "swing");
+            }
+
+            // Evento para ajustar el diseño cuando se cambia el tamaño de la ventana
+            $(window).on('resize', function() {
+                if (window.innerWidth < 767) {
+                    $(".franja").css({ width: "calc(100% - 1rem)", left: "0.5rem" });
+                } else {
+                    $(".franja").css({ width: "50%", left: "25%" });
+                }
+            });
+        });
+
+
+
         const granContenedor = document.getElementById('gran-contenedor');
         let isCloning = false;
 
@@ -284,3 +301,4 @@ margin-bottom: 0.5rem;
     </script>
 </body>
 </html>
+
