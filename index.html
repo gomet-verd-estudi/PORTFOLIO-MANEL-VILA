@@ -6,6 +6,19 @@
     <title>Scroll Infinito Bidireccional</title>
     <style>
         /* Estilos generales */
+
+        @font-face {
+            font-family: 'KMR-Waldenburg';
+            src: url('content/src/font/KMR-Waldenburg-Buch.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        /* Aplicar la fuente personalizada globalmente */
+        body {
+            font-family: 'KMR-Waldenburg', Arial, Helvetica, sans-serif;
+        }
+
         body, html {
             margin: 0;
             padding: 0;
@@ -14,7 +27,7 @@
             width: 100%;
             display: flex;
             justify-content: start;
-            align-items: start;
+            align-items: center;
             flex-direction: column;
         }
 
@@ -37,7 +50,6 @@
         .prj-unidad {
             min-width: 100%;
             height: 100%;
-            background-color: red;
             border: 1px solid black;
             display: flex;
             align-items: center;
@@ -79,15 +91,14 @@
             width: 55px;
             height: 55px;
             display: flex;
-            position: absolute;
-            color: blue;
+                        color: blue;
             line-height: 11pt;
             font-size: 20pt;
             z-index: 10;
             background-color: rgba(255, 255, 255, 0.495);
             backdrop-filter: blur(5px);
-            font-family: Arial, Helvetica, sans-serif;
-            font-weight: 500;
+            font-family: 'KMR-Waldenburg', Arial, Helvetica, sans-serif;
+        position: absolute;
             border-radius: 50px;
             transition: all 0.5s ease;
             margin-top: 0.5rem;
@@ -95,7 +106,6 @@
             justify-content: center;
             overflow: hidden;
             left: 0.5rem;
-            padding: 0;
         }
 
         /* Estilos para los divs dinámicos */
@@ -103,34 +113,30 @@
             display: flex;
             width: auto;
             height: 55px;
-            padding-left: 0.5rem;
-            padding-right: 0.5rem;
-            padding-top:0.15rem;
+            overflow: visible;
 
             align-items: center;
-
         }
 
         /* Ajustes para otros elementos dentro de .franja */
-        .projectes, .about, .contact, .anel, .ila, .espacio {
+        .projectes, .about, .contact{
             width: 0;
             opacity: 0;
             overflow-y: none;
             transition: width 0.5s ease, opacity 0.5s ease;
             align-items: center;
         }
-     .espacio{
-        transition: all 0.5s ease;
-     }
+    
 .m{
-    width: auto;
-    height: 100%;
+    width: calc(55px - 1rem);
+    height: auto;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    line-height: 55px;  /* Asegúrate de que coincida con la altura del contenedor */
-    margin: 0;
+    margin: 0.5rem;
+overflow: visible;
+padding-bottom: 0.2rem;
 }
 
 .franja-info{
@@ -146,8 +152,7 @@
     padding-bottom: 0.3rem;
     line-height: 12pt;
             font-size: 11pt;
-            font-family: Arial, Helvetica, sans-serif;
-            font-weight: 500;
+            font-family: 'KMR-Waldenburg', Arial, Helvetica, sans-serif;
             color: white;
             margin: 0;
 }
@@ -215,7 +220,12 @@ justify-content: end;
     padding-top: 0.3rem;
     padding-bottom: 0.3rem;
 }
-
+.anel{
+    display: inline-block; /* Asegura que se ajuste al contenido */
+    white-space: nowrap;   /* Evita el salto de línea */
+    overflow: visible;     /* Asegura que el texto no se corte */
+    width: 0;
+}
 .caja-nombre-prj{
     width: 50%;
     display: flex;
@@ -227,9 +237,85 @@ justify-content: end;
     display: flex;
     align-items: center;
 }
+
+
+svg {
+      width: 100%;
+      height: 100%;
+      margin: 0 auto;
+      display: flex;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+    }
+
+    rect {
+      transition: all 0.5s ease; /* Suaviza los cambios de todas las propiedades */
+    }
+
+   
+
+    .caja-about {
+    width: 50%;
+    height: auto; /* Inicialmente auto para que pueda expandirse dinámicamente */
+    display: none; /* Oculto inicialmente para que funcione con slideDown */
+    font-size: 18pt;
+    z-index: 10;
+    background-color: rgba(255, 255, 255, 0.495);
+    backdrop-filter: blur(5px);
+    font-family: 'KMR-Waldenburg', Arial, Helvetica, sans-serif;
+    color: blue;
+    border-radius: 15px;
+    top: calc(30px + 1rem);
+    position: absolute;
+    left: 25%;
+    padding: 0.5rem; /* Padding funcional */
+    box-sizing: border-box; /* Incluye padding en el cálculo del tamaño */
+    overflow: hidden; /* Asegurar que el contenido no desborde cuando colapsa */
+    transition: none; /* Transiciones desactivadas para evitar conflictos con jQuery */
+}
+.cerrar-about{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    height: auto;
+    justify-content: end;
+}
+.bot-cerrar-about{
+    width: auto;
+    height: auto;
+    display: flex;
+}
+
+    
         @media (max-width: 767px) {
+
+
+            .caja-about{
+    width: calc(100% - 1rem);
+    height: auto; /* Inicialmente auto para que pueda expandirse dinámicamente */
+    display: none; /* Oculto inicialmente para que funcione con slideDown */
+    font-size: 13pt;
+    z-index: 10;
+    background-color: rgba(255, 255, 255, 0.495);
+    backdrop-filter: blur(5px);
+    font-family: 'KMR-Waldenburg', Arial, Helvetica, sans-serif;
+    color: blue;
+    border-radius: 15px;
+    top: calc(30px + 1rem);
+    position: absolute;
+    left: 0.5rem;
+    padding: 0.5rem; /* Padding funcional */
+    box-sizing: border-box; /* Incluye padding en el cálculo del tamaño */
+    overflow: hidden; /* Asegurar que el contenido no desborde cuando colapsa */
+    transition: none; /* Transiciones desactivadas para evitar conflictos con jQuery */
+
+
+    }
+
+
             .franja {
-                font-size: 18pt;
+                font-size: 13pt;
                 justify-content: center;
                 align-items: center;
             }
@@ -267,30 +353,51 @@ justify-content: end;
     </style>
 </head>
 <body>
-
     <div class="franja">
         <div class="nombre-jo">
-            <div class="m">M</div> 
-            <div class="anel">anel</div>
-            <div class="espacio">&nbsp;</div> 
-            <div class="v">V</div> 
-            <div class="ila">ila</div>
+            <div class="m">
+                <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                viewBox="0 0 802.74 673.67" style="enable-background:new 0 0 802.74 673.67;" xml:space="preserve">
+                <style type="text/css">
+                  .st0 { fill: #0600FF; }
+                </style>
+                <rect x="266.01" y="0.29" width="81.25" height="673.08" transform="matrix(-0.973 0.2307 -0.2307 -0.973 682.7006 593.8474)" class="st0" />
+                <rect x="478.13" y="2.94" width="81.25" height="476.69" transform="matrix(0.973 0.2307 -0.2307 0.973 69.6535 -113.1617)" class="st0" />
+                <rect x="667.45" y="192.78" width="81.25" height="477.96" transform="matrix(0.973 -0.2307 0.2307 0.973 -80.5041 174.9896)" class="st0" />
+                <rect x="54.03" y="192.78" width="81.25" height="477.96" transform="matrix(-0.973 -0.2307 0.2307 -0.973 87.1645 873.7182)" class="st0" />
+              </svg> 
+        </div> 
+            <div class="anel">Manel Vila</div>
+            
         </div>
         <div class="projectes">Projects</div>
         <div class="about">About</div>
         <div class="contact">Contact</div>
     </div>
 
+    <div class="caja-about">
+        Soy Manel Vila, diseñador gráfico y director de arte, graduado por la EASD (Escuela de Arte Superior de
+Diseño) de Valencia. Durante los últimos años, he trabajado como freelance en proyectos como los que veréis
+a continuación. Además, he colaborado con estudios como Jotateam Studio, Socis Club o T.OT. Studio.
+<br>
+<br>
+
+ Trabajo con soltura en cualquier rama del diseño gráfico, aunque me he especializado principalmente
+en branding y lettering.
+ Me considero una persona comprometida, con capacidad para trabajar en equipo y bajo presión
+ <div class="cerrar-about"><div class="bot-cerrar-about">(X)</div></div>
+    </div>
     <div id="gran-contenedor">
         <div class="prj-unidad">
-            <a href="javascript:void(0);">
+            <a href="">
                 <div class="descripcion">
                     <div class="nom-prj">CLAUR TILES</div>
                     <div class="tags">
                         <div class="tag-prj">Branding</div>
                     </div>
-                    <div class="descripcion-corta">estp es un pequeño projecto de diseño gráfico</div>
-                    <div class="descripcion-larga">esto tendria que ser mas largo</div>
+                    <div class="descripcion-corta">Diseño de la nueva identidad de Claur Tiles.</div>
+                    <div class="descripcion-larga">Claur Tiles es un taller de fabricación de azulejos realizados a mano para
+                        cada cliente, especializado en proyectos de interiorismo y arquitectura.</div>
 
                 </div>
                 <video loop autoplay muted>
@@ -338,6 +445,85 @@ justify-content: end;
 </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+$(document).ready(function () {
+    // Configurar inicialmente como oculto con jQuery
+    $(".caja-about").hide();
+
+    // Manejar el clic en el botón .about
+    $(".about").click(function () {
+        const cajaAbout = $(".caja-about");
+
+        if (cajaAbout.is(":visible")) {
+            // Ocultar el contenido con slideUp
+            cajaAbout.stop(true, true).slideUp("slow");
+        } else {
+            // Mostrar el contenido con slideDown
+            cajaAbout.stop(true, true).slideDown("slow");
+        }
+    });
+
+
+    $(".bot-cerrar-about").click(function () {
+        const cajaAbout = $(".caja-about");
+
+        if (cajaAbout.is(":visible")) {
+            // Ocultar el contenido con slideUp
+            cajaAbout.stop(true, true).slideUp("slow");
+        } 
+    });
+
+
+});
+
+// Función para ajustar el font-size de la franja en función del ancho de la pantalla
+function ajustarFontSize() {
+        const franja = document.querySelector('.franja');
+        if (window.innerWidth < 767) {
+            franja.style.fontSize = '13pt';
+        } else {
+            franja.style.fontSize = '18pt';
+        }
+    }
+
+    // Llamar a la función inicialmente para establecer el tamaño correcto
+    ajustarFontSize();
+
+    // Escuchar el evento resize para cambiar el tamaño dinámicamente
+    window.addEventListener('resize', ajustarFontSize);
+
+ const rects = document.querySelectorAll('rect');
+
+// Propiedades iniciales (de mv_monograma.svg)
+const initialProps = [
+  { x: '266.01', y: '0.29', width: '81.25', height: '673.08', transform: 'matrix(-0.973 0.2307 -0.2307 -0.973 682.7006 593.8474)' },
+  { x: '478.13', y: '2.94', width: '81.25', height: '476.69', transform: 'matrix(0.973 0.2307 -0.2307 0.973 69.6535 -113.1617)' },
+  { x: '667.45', y: '192.78', width: '81.25', height: '477.96', transform: 'matrix(0.973 -0.2307 0.2307 0.973 -80.5041 174.9896)' },
+  { x: '54.03', y: '192.78', width: '81.25', height: '477.96', transform: 'matrix(-0.973 -0.2307 0.2307 -0.973 87.1645 873.7182)' }
+];
+
+// Propiedades finales (de mv_x.svg)
+const finalProps = [
+  { x: '121.84', y: '-26.52', width: '81.25', height: '378.27', transform: 'matrix(0.7071 -0.7071 0.7071 0.7071 -67.4031 162.5112)' },
+  { x: '470.4', y: '-26.62', width: '81.25', height: '378.4', transform: 'matrix(-0.7071 -0.7071 0.7071 -0.7071 757.4236 638.8838)' },
+  { x: '-26.67', y: '470.51', width: '378.27', height: '81.25', transform: 'matrix(0.7071 -0.7071 0.7071 0.7071 -313.8434 264.5908)' },
+  { x: '470.36', y: '322', width: '81.25', height: '378.27', transform: 'matrix(0.7071 -0.7071 0.7071 0.7071 -211.7646 511.0289)' }
+];
+
+// Estado inicial de las formas
+let isTransformed = false;
+
+document.querySelector('.nombre-jo').addEventListener('click', () => {
+  const props = isTransformed ? initialProps : finalProps;
+  rects.forEach((rect, index) => {
+    rect.setAttribute('x', props[index].x);
+    rect.setAttribute('y', props[index].y);
+    rect.setAttribute('width', props[index].width);
+    rect.setAttribute('height', props[index].height);
+    rect.setAttribute('transform', props[index].transform);
+  });
+  isTransformed = !isTransformed; // Cambiar estado
+});
+
 
 $(document).ready(function() {
     // Seleccionar el contenedor de scroll
@@ -374,47 +560,85 @@ $(document).ready(function() {
     });
 });
 
+function syncCajaAbout() {
+        const franja = document.querySelector('.franja');
+        const cajaAbout = document.querySelector('.caja-about');
+
+        // Obtener ancho y alto de la franja
+        const franjaWidth = franja.offsetWidth;
+
+        // Asignar dimensiones a caja-about
+        cajaAbout.style.width = `${franjaWidth}px`;
+    }
+
+    // Llamar a la función inicialmente
+    syncCajaAbout();
+
+    // Actualizar al cambiar el tamaño de la ventana
+    window.addEventListener('resize', syncCajaAbout);
+
+    // Si hay animaciones que modifican la franja, agregar observador para reaccionar a cambios
+    const observer = new ResizeObserver(syncCajaAbout);
+    observer.observe(document.querySelector('.franja'));
 
 
 
 
-
-$(document).ready(function() {
+    $(document).ready(function() {
     // Calcular el ancho natural del elemento .anel sin modificar su apariencia inicial
     const anelNaturalWidth = getNaturalWidth($(".anel"));
 
     $(".nombre-jo").click(function() {
-        const elements = [".anel", ".ila", ".projectes", ".about", ".contact", ".espacio"];
-        elements.forEach(selector => {
-            const element = $(selector);
-            if (element.width() > 0) {
-                // Si el elemento está visible, lo ocultamos
-                slideOutToRight(element);
-                $(".franja").css({ width: "55px", fontSize: "20pt", height: "55px", left: "0.5rem", justifyContent: "center" });
-                $(".about, .contact, .projectes").css({ padding: "0rem" });
-                $(".nombre-jo").css("width", "55px");
-            } else {
-                // Si el elemento está oculto, usamos el ancho calculado de .anel si es este div
-                const targetWidth = selector === ".anel" ? anelNaturalWidth : getNaturalWidth(element);
-                
-                // Mostramos el elemento con su ancho natural
-                slideInFromLeft(element, targetWidth);
+        const cajaAbout = $(".caja-about");
 
-                if (window.innerWidth < 767) {
-                    $(".franja").css({ width: "calc(100% - 1rem)", left: "0.5rem", fontSize: "13pt" });
+        // Función para ejecutar las acciones principales
+        function ejecutarAcciones() {
+            const elements = [".anel", ".projectes", ".about", ".contact"];
+            const franja = $(".franja");
+
+            elements.forEach(selector => {
+                const element = $(selector);
+                if (element.width() > 0) {
+                    // Si el elemento está visible, lo ocultamos
+                    slideOutToRight(element);
+                    $(".franja").css({ width: "55px", left: "0.5rem", fontSize: "20pt", height: "55px" });
+                    $(".about, .contact, .projectes").css({ padding: "0rem" });
+                    $(".nombre-jo").css("width", "55px");
+                    $(".m").css({ width: "calc(55px - 1rem)" });
+                    $(".m").css("padding-bottom", "0.2rem");
+                    $(".menu").css("align-item", "start");
                 } else {
-                    $(".franja").css({ width: "50%", left: "25%", fontSize: "18pt" });
+                    // Si el elemento está oculto, mostramos con el ancho calculado
+                    const targetWidth = selector === ".anel" ? anelNaturalWidth : getNaturalWidth(element);
+                    slideInFromLeft(element, targetWidth);
+
+                    if (window.innerWidth < 767) {
+                        $(".franja").css({ width: "calc(100% - 1rem)", left: "0.5rem", fontSize: "13pt" });
+                        $(".m").css({ width: "15px" });
+                    } else {
+                        $(".franja").css({ width: "50%", left: "25%", fontSize: "18pt" });
+                        $(".m").css({ width: "21px" });
+                    }
+                    $(".m").css({ width: "21px" });
+                    $(".franja").css({ height: "30px", justifyContent: "start" });
+                    $(".about, .contact, .projectes").css({ padding: "0.5rem" });
+                    $(".nombre-jo").css("width", "100%");
+                    $(".m").css("padding-bottom", "0rem");
                 }
-                $(".franja").css({ height: "30px", justifyContent: "start" });
-                $(".about, .contact, .projectes").css({ padding: "0 1rem" });
-                $(".nombre-jo").css("width", "100%");
-            }
-        });
+            });
+        }
+
+        // Si caja-about está visible, ocúltalo primero
+        if (cajaAbout.is(":visible")) {
+            cajaAbout.slideUp(300, ejecutarAcciones);
+        } else {
+            // Si no está visible, ejecuta directamente las acciones
+            ejecutarAcciones();
+        }
     });
 
     // Función para calcular el ancho natural
     function getNaturalWidth(element) {
-        // Guardar el estado original del elemento
         const originalCss = {
             position: element.css("position"),
             visibility: element.css("visibility"),
@@ -422,17 +646,14 @@ $(document).ready(function() {
             width: element.css("width")
         };
 
-        // Aplicar estilos temporales para medir el ancho
         element.css({
             position: "absolute",
             visibility: "hidden",
             display: "inline-block",
             width: "auto"
         });
-        
-        const naturalWidth = element.width();
 
-        // Restaurar el estado original del elemento
+        const naturalWidth = element.width();
         element.css(originalCss);
         return naturalWidth;
     }
@@ -455,13 +676,20 @@ $(document).ready(function() {
 
     // Evento para ajustar el diseño cuando se cambia el tamaño de la ventana
     $(window).on('resize', function() {
-        if (window.innerWidth < 767) {
-            $(".franja").css({ width: "calc(100% - 1rem)", left: "0.5rem" });
-        } else {
-            $(".franja").css({ width: "50%", left: "25%" });
-        }
+        $(".franja").each(function() {
+            if ($(this).width() > 55) {
+                if (window.innerWidth < 767) {
+                    $(this).css({ width: "calc(100% - 1rem)", left: "0.5rem" });
+                } else {
+                    $(this).css({ width: "50%", left: "25%" });
+                }
+            }
+        });
     });
 });
+
+
+
         const granContenedor = document.getElementById('gran-contenedor');
         let isCloning = false;
 
