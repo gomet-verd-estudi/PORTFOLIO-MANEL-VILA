@@ -287,11 +287,69 @@ svg {
     display: flex;
 }
 
+
+
+.caja-projectes {
+    width: 50%;
+    height: auto; /* Inicialmente auto para que pueda expandirse dinámicamente */
+    display: none; /* Oculto inicialmente para que funcione con slideDown */
+    font-size: 18pt;
+    z-index: 10;
+    background-color: rgba(255, 255, 255, 0.495);
+    backdrop-filter: blur(5px);
+    font-family: 'KMR-Waldenburg', Arial, Helvetica, sans-serif;
+    color: blue;
+    border-radius: 15px;
+    top: calc(30px + 1rem);
+    position: absolute;
+    left: 25%;
+    padding: 0.5rem; /* Padding funcional */
+    box-sizing: border-box; /* Incluye padding en el cálculo del tamaño */
+    overflow: hidden; /* Asegurar que el contenido no desborde cuando colapsa */
+    transition: none; /* Transiciones desactivadas para evitar conflictos con jQuery */
+    flex-direction: column;
+}
+
+
+.cerrar-projectes{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    height: auto;
+    justify-content: end;
+}
+.bot-cerrar-projectes{
+    width: auto;
+    height: auto;
+    display: flex;
+}
     
-        @media (max-width: 767px) {
+        @media (max-width: 923px) {
 
 
             .caja-about{
+    width: calc(100% - 1rem);
+    height: auto; /* Inicialmente auto para que pueda expandirse dinámicamente */
+    display: none; /* Oculto inicialmente para que funcione con slideDown */
+    font-size: 13pt;
+    z-index: 10;
+    background-color: rgba(255, 255, 255, 0.495);
+    backdrop-filter: blur(5px);
+    font-family: 'KMR-Waldenburg', Arial, Helvetica, sans-serif;
+    color: blue;
+    border-radius: 15px;
+    top: calc(30px + 1rem);
+    position: absolute;
+    left: 0.5rem;
+    padding: 0.5rem; /* Padding funcional */
+    box-sizing: border-box; /* Incluye padding en el cálculo del tamaño */
+    overflow: hidden; /* Asegurar que el contenido no desborde cuando colapsa */
+    transition: none; /* Transiciones desactivadas para evitar conflictos con jQuery */
+
+
+    }
+
+    .caja-projectes{
     width: calc(100% - 1rem);
     height: auto; /* Inicialmente auto para que pueda expandirse dinámicamente */
     display: none; /* Oculto inicialmente para que funcione con slideDown */
@@ -387,6 +445,11 @@ en branding y lettering.
  Me considero una persona comprometida, con capacidad para trabajar en equipo y bajo presión
  <div class="cerrar-about"><div class="bot-cerrar-about">(X)</div></div>
     </div>
+
+    <div class="caja-projectes">
+       
+ <div class="cerrar-projectes"><div class="bot-cerrar-projectes">(X)</div></div>
+    </div>
     <div id="gran-contenedor">
         <div class="prj-unidad">
             <a href="">
@@ -445,6 +508,106 @@ en branding y lettering.
 </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+
+
+
+
+
+$(document).ready(function () {
+    // Generar `projectes-list` sin incluir clones
+    function generarProjectesList() {
+        const cajaProjectes = $('.caja-projectes');
+        cajaProjectes.empty(); // Limpiar contenido previo
+        $('.prj-unidad:not(.clone)').each(function () {
+            const nomPrj = $(this).find('.nom-prj').clone(); // Copiar contenido
+            const tagPrj = $(this).find('.tag-prj').clone(); // Copiar contenido
+
+            // Crear divs internos para nom-prj y tag-prj
+            const nomPrjList = $('<div class="nom-prj-list"></div>').append(nomPrj).css({
+                display: 'flex',
+                width: 'auto',
+                height: 'auto',
+            });
+            const tagPrjList = $('<div class="tag-prj-list"></div>').append(tagPrj).css({
+                display: 'flex',
+                width: 'auto',
+                height: 'auto',
+            });
+
+            // Crear projectes-list con los nuevos divs
+            const projectesList = $('<div class="projectes-list"></div>').append(nomPrjList, tagPrjList).css({
+                paddingBottom: '0.2rem',
+                paddingLeft: '0.5rem',
+                paddingRight: '0.5rem',
+                paddingTop: '0',
+
+
+                display: 'flex',
+                flexDirection: 'row',
+                width: 'calc(100% - 1rem)',
+                height: 'auto',
+                borderBottom: '1pt solid blue',
+                gap: '1rem',
+                marginBottom: '0.2rem',
+            });
+
+            cajaProjectes.append(projectesList);
+        });
+    }
+
+    // Mostrar u ocultar `caja-projectes`
+    function toggleCajaProjectes() {
+        const cajaProjectes = $('.caja-projectes');
+        if (cajaProjectes.is(':visible')) {
+            cajaProjectes.stop(true, true).slideUp('slow');
+        } else {
+            generarProjectesList(); // Generar contenido dinámico
+            cajaProjectes.stop(true, true).slideDown('slow');
+        }
+    }
+
+    // Manejar el clic en `.projectes`
+    $('.projectes').click(function () {
+        const cajaAbout = $('.caja-about');
+        if (cajaAbout.is(':visible')) {
+            cajaAbout.stop(true, true).slideUp('slow', toggleCajaProjectes); // Ocultar y luego mostrar `caja-projectes`
+        } else {
+            toggleCajaProjectes(); // Mostrar directamente si `.caja-about` no está visible
+        }
+    });
+
+    // Cerrar `caja-projectes` al hacer clic en `.bot-cerrar-projectes`
+    $('.bot-cerrar-projectes').click(function () {
+        $('.caja-projectes').stop(true, true).slideUp('slow');
+    });
+
+    // Manejar clics en `.about`, `.contact`, `.nombre-jo`
+    $('.about, .contact, .nombre-jo').click(function (event) {
+        const target = $(this); // Elemento que dispara el evento
+        if ($('.caja-projectes').is(':visible')) {
+            $('.caja-projectes').stop(true, true).slideUp('slow', function () {
+                // Ejecutar acción relacionada con el botón después de ocultar
+                target.trigger('click');
+            });
+            event.stopImmediatePropagation();
+        }
+    });
+
+    // Actualizar contenido dinámicamente al añadir o cambiar `.prj-unidad`
+    const observer = new MutationObserver(() => {
+        generarProjectesList(); // Actualizar contenido dinámico
+    });
+    observer.observe(document.getElementById('gran-contenedor'), { childList: true, subtree: true });
+
+    // Generar contenido inicial
+    generarProjectesList();
+});
+
+
+
+
+
+
 $(document).ready(function () {
     // Configurar inicialmente como oculto con jQuery
     $(".caja-about").hide();
@@ -478,7 +641,7 @@ $(document).ready(function () {
 // Función para ajustar el font-size de la franja en función del ancho de la pantalla
 function ajustarFontSize() {
         const franja = document.querySelector('.franja');
-        if (window.innerWidth < 767) {
+        if (window.innerWidth < 923) {
             franja.style.fontSize = '13pt';
         } else {
             franja.style.fontSize = '18pt';
@@ -491,37 +654,52 @@ function ajustarFontSize() {
     // Escuchar el evento resize para cambiar el tamaño dinámicamente
     window.addEventListener('resize', ajustarFontSize);
 
- const rects = document.querySelectorAll('rect');
 
-// Propiedades iniciales (de mv_monograma.svg)
-const initialProps = [
-  { x: '266.01', y: '0.29', width: '81.25', height: '673.08', transform: 'matrix(-0.973 0.2307 -0.2307 -0.973 682.7006 593.8474)' },
-  { x: '478.13', y: '2.94', width: '81.25', height: '476.69', transform: 'matrix(0.973 0.2307 -0.2307 0.973 69.6535 -113.1617)' },
-  { x: '667.45', y: '192.78', width: '81.25', height: '477.96', transform: 'matrix(0.973 -0.2307 0.2307 0.973 -80.5041 174.9896)' },
-  { x: '54.03', y: '192.78', width: '81.25', height: '477.96', transform: 'matrix(-0.973 -0.2307 0.2307 -0.973 87.1645 873.7182)' }
-];
 
-// Propiedades finales (de mv_x.svg)
-const finalProps = [
-  { x: '121.84', y: '-26.52', width: '81.25', height: '378.27', transform: 'matrix(0.7071 -0.7071 0.7071 0.7071 -67.4031 162.5112)' },
-  { x: '470.4', y: '-26.62', width: '81.25', height: '378.4', transform: 'matrix(-0.7071 -0.7071 0.7071 -0.7071 757.4236 638.8838)' },
-  { x: '-26.67', y: '470.51', width: '378.27', height: '81.25', transform: 'matrix(0.7071 -0.7071 0.7071 0.7071 -313.8434 264.5908)' },
-  { x: '470.36', y: '322', width: '81.25', height: '378.27', transform: 'matrix(0.7071 -0.7071 0.7071 0.7071 -211.7646 511.0289)' }
-];
 
-// Estado inicial de las formas
-let isTransformed = false;
 
-document.querySelector('.nombre-jo').addEventListener('click', () => {
-  const props = isTransformed ? initialProps : finalProps;
-  rects.forEach((rect, index) => {
-    rect.setAttribute('x', props[index].x);
-    rect.setAttribute('y', props[index].y);
-    rect.setAttribute('width', props[index].width);
-    rect.setAttribute('height', props[index].height);
-    rect.setAttribute('transform', props[index].transform);
-  });
-  isTransformed = !isTransformed; // Cambiar estado
+
+$(document).ready(function () {
+    const rects = document.querySelectorAll('rect');
+    const initialProps = [
+        { x: '266.01', y: '0.29', width: '81.25', height: '673.08', transform: 'matrix(-0.973 0.2307 -0.2307 -0.973 682.7006 593.8474)' },
+        { x: '478.13', y: '2.94', width: '81.25', height: '476.69', transform: 'matrix(0.973 0.2307 -0.2307 0.973 69.6535 -113.1617)' },
+        { x: '667.45', y: '192.78', width: '81.25', height: '477.96', transform: 'matrix(0.973 -0.2307 0.2307 0.973 -80.5041 174.9896)' },
+        { x: '54.03', y: '192.78', width: '81.25', height: '477.96', transform: 'matrix(-0.973 -0.2307 0.2307 -0.973 87.1645 873.7182)' }
+    ];
+    const finalProps = [
+        { x: '121.84', y: '-26.52', width: '81.25', height: '378.27', transform: 'matrix(0.7071 -0.7071 0.7071 0.7071 -67.4031 162.5112)' },
+        { x: '470.4', y: '-26.62', width: '81.25', height: '378.4', transform: 'matrix(-0.7071 -0.7071 0.7071 -0.7071 757.4236 638.8838)' },
+        { x: '-26.67', y: '470.51', width: '378.27', height: '81.25', transform: 'matrix(0.7071 -0.7071 0.7071 0.7071 -313.8434 264.5908)' },
+        { x: '470.36', y: '322', width: '81.25', height: '378.27', transform: 'matrix(0.7071 -0.7071 0.7071 0.7071 -211.7646 511.0289)' }
+    ];
+    let isTransformed = false;
+
+    $('.nombre-jo').click(function () {
+        const cajaProjectes = $('.caja-projectes');
+
+        // Si .caja-projectes está visible, primero lo ocultamos
+        if (cajaProjectes.is(':visible')) {
+            cajaProjectes.stop(true, true).slideUp('slow', function () {
+                animateSvg();
+            });
+        } else {
+            animateSvg();
+        }
+
+        // Función para manejar la animación del SVG
+        function animateSvg() {
+            const props = isTransformed ? initialProps : finalProps;
+            rects.forEach((rect, index) => {
+                rect.setAttribute('x', props[index].x);
+                rect.setAttribute('y', props[index].y);
+                rect.setAttribute('width', props[index].width);
+                rect.setAttribute('height', props[index].height);
+                rect.setAttribute('transform', props[index].transform);
+            });
+            isTransformed = !isTransformed;
+        }
+    });
 });
 
 
@@ -584,6 +762,30 @@ function syncCajaAbout() {
 
 
 
+
+    function syncCajaProjectes() {
+        const franja = document.querySelector('.franja');
+        const cajaProjectes = document.querySelector('.caja-projectes');
+
+        // Obtener ancho y alto de la franja
+        const franjaWidth = franja.offsetWidth;
+
+        // Asignar dimensiones a caja-projectes
+        cajaProjectes.style.width = `${franjaWidth}px`;
+    }
+
+    // Llamar a la función inicialmente
+    syncCajaProjectes();
+
+    // Actualizar al cambiar el tamaño de la ventana
+    window.addEventListener('resize', syncCajaProjectes);
+
+    // Si hay animaciones que modifican la franja, agregar observador para reaccionar a cambios
+    const observer2 = new ResizeObserver(syncCajaProjectes);
+    observer2.observe(document.querySelector('.franja'));
+
+
+
     $(document).ready(function() {
     // Calcular el ancho natural del elemento .anel sin modificar su apariencia inicial
     const anelNaturalWidth = getNaturalWidth($(".anel"));
@@ -612,7 +814,7 @@ function syncCajaAbout() {
                     const targetWidth = selector === ".anel" ? anelNaturalWidth : getNaturalWidth(element);
                     slideInFromLeft(element, targetWidth);
 
-                    if (window.innerWidth < 767) {
+                    if (window.innerWidth < 923) {
                         $(".franja").css({ width: "calc(100% - 1rem)", left: "0.5rem", fontSize: "13pt" });
                         $(".m").css({ width: "15px" });
                     } else {
@@ -678,7 +880,7 @@ function syncCajaAbout() {
     $(window).on('resize', function() {
         $(".franja").each(function() {
             if ($(this).width() > 55) {
-                if (window.innerWidth < 767) {
+                if (window.innerWidth < 923) {
                     $(this).css({ width: "calc(100% - 1rem)", left: "0.5rem" });
                 } else {
                     $(this).css({ width: "50%", left: "25%" });
@@ -796,6 +998,14 @@ function syncCajaAbout() {
         // Llamar a la función una vez al cargar para inicializar el contenido con la primera unidad centrada
         updateCenteredContent();
     });
+
+
+
+
+
+
+    
     </script>
 </body>
 </html>
+
