@@ -312,11 +312,27 @@ svg {
     left: 25%;
     padding: 0.5rem; /* Padding funcional */
     box-sizing: border-box; /* Incluye padding en el cálculo del tamaño */
-    overflow: hidden; /* Asegurar que el contenido no desborde cuando colapsa */
+    overflow-x: hidden; /* Asegurar que el contenido no desborde cuando colapsa */
     transition: none; /* Transiciones desactivadas para evitar conflictos con jQuery */
     flex-direction: column;
+    overflow-y: auto;
+    max-height: 70%;
 }
+.caja-projectes::-webkit-scrollbar {
+    width: 8px; /* Ancho de la barra lateral */
+  }
+  .caja-projectes::-webkit-scrollbar-track {
+    background: none; /* Color del fondo del track */
+ }
 
+ .caja-projectes::-webkit-scrollbar-thumb {
+    background-color:rgb(187, 187, 187); /* Color de la barra */
+    border-radius: 10px; /* Bordes redondeados */
+  }
+
+  .caja-projectes::-webkit-scrollbar-thumb:hover {
+    background-color: #9c9c9c; /* Color cuando se pasa el ratón por encima */
+  }
 
 .cerrar-projectes{
     width: 100%;
@@ -330,10 +346,24 @@ svg {
     height: auto;
     display: flex;
 }
+
+.portada-mobile{
+    display: none;
+}
+
+.portada-desktop{
+    display: flex;
+}
     
         @media (max-width: 923px) {
 
+            .portada-mobile{
+    display: flex;
+}
 
+.portada-desktop{
+    display: none;
+}
             .caja-about{
     width: calc(100% - 1rem);
     height: auto; /* Inicialmente auto para que pueda expandirse dinámicamente */
@@ -372,7 +402,8 @@ svg {
     left: 0.5rem;
     padding: 0.5rem; /* Padding funcional */
     box-sizing: border-box; /* Incluye padding en el cálculo del tamaño */
-    overflow: hidden; /* Asegurar que el contenido no desborde cuando colapsa */
+    overflow-X: hidden; /* Asegurar que el contenido no desborde cuando colapsa */
+    overflow-y: auto;
     transition: none; /* Transiciones desactivadas para evitar conflictos con jQuery */
 
 
@@ -527,7 +558,10 @@ en branding y lettering.
             <div class="descripcion-larga">esto tendria que ser mas largo</div>
 
         </div>
-        <img src="content/uploads/2024/colapso/colapso-foto-1.jpg">
+        <video loop autoplay muted>
+            <source src="content/uploads/2024/leo-rizzi/storie_2_leorizzi.mp4" type="video/mp4">
+            Tu navegador no soporta la etiqueta de video.
+        </video>
     </a>
 </div>
 <!---------------------------------------------------------------------->
@@ -536,15 +570,22 @@ en branding y lettering.
  <div class="prj-unidad">
     <a>
         <div class="descripcion">
-            <div class="nom-prj">ZELANDIA WOLK</div>
+            <div class="nom-prj">ZELANDIA WALK</div>
             <div class="tags">
-                <div class="tag-prj">Branding</div>
+                <div class="tag-prj">Branding + Editorial</div>
             </div>
             <div class="descripcion-corta">estp es un pequeño projecto de diseño gráfico</div>
             <div class="descripcion-larga">esto tendria que ser mas largo</div>
 
         </div>
-        <img src="content/uploads/2024/colapso/colapso-foto-1.jpg">
+        <video loop autoplay muted class="portada-mobile">
+            <source src="content/uploads/2024/zelandia/zelandia_animación_acortada.mp4" type="video/mp4">
+            Tu navegador no soporta la etiqueta de video.
+        </video>
+        <video loop autoplay muted class="portada-desktop">
+            <source src="content/uploads/2024/zelandia/zelandia_animación_desktop.mp4" type="video/mp4">
+            Tu navegador no soporta la etiqueta de video.
+        </video>
     </a>
 </div>
 <!---------------------------------------------------------------------->
@@ -619,7 +660,7 @@ en branding y lettering.
 <div class="prj-unidad">
     <a>
         <div class="descripcion">
-            <div class="nom-prj">ADIDAS MARATON MADRID</div>
+            <div class="nom-prj">ADIDAS MARATÓN MADRID</div>
             <div class="tags">
                 <div class="tag-prj">Motion Graphics</div>
             </div>
@@ -644,8 +685,12 @@ en branding y lettering.
             <div class="descripcion-larga">esto tendria que ser mas largo</div>
 
         </div>
-        <video loop autoplay muted>
+        <video loop autoplay muted class="portada-mobile">
             <source src="content/uploads/2024/tot/sun&snow/S&S_MOBILE_ANIMACION STORIES.mp4" type="video/mp4">
+            Tu navegador no soporta la etiqueta de video.
+        </video>
+        <video loop autoplay muted class="portada-desktop">
+            <source src="content/uploads/2024/tot/sun&snow/S&S_WEB_ANIMACION STORIES 2.mp4" type="video/mp4">
             Tu navegador no soporta la etiqueta de video.
         </video>
     </a>
@@ -665,7 +710,31 @@ en branding y lettering.
 
         </div>
         <video loop autoplay muted>
-            <source src="content/uploads/2024/tot/sun&snow/S&S_MOBILE_ANIMACION STORIES.mp4" type="video/mp4">
+            <source src="content/uploads/2024/tot/delta/delta_video_home.mp4" type="video/mp4">
+            Tu navegador no soporta la etiqueta de video.
+        </video>
+    </a>
+</div>
+<!---------------------------------------------------------------------->
+<!---------------------------------------------------------------------->
+
+<div class="prj-unidad">
+    <a>
+        <div class="descripcion">
+            <div class="nom-prj">PONTEVECCHIO</div>
+            <div class="tags">
+                <div class="tag-prj">Motion Graphics</div>
+            </div>
+            <div class="descripcion-corta">Trabajo realizado en T.O.T Studio</div>
+            <div class="descripcion-larga">esto tendria que ser mas largo</div>
+
+        </div>
+        <video loop autoplay muted class="portada-desktop">
+            <source src="content/uploads/2024/tot/ponteveccio/PONTEVECCIO_WEB_LOGO_OPTIMIZADO.mp4" type="video/mp4">
+            Tu navegador no soporta la etiqueta de video.
+        </video>
+        <video loop autoplay muted class="portada-mobile">
+            <source src="content/uploads/2024/tot/ponteveccio/PONTEVECCIO_MOBILE_LOGO_OPTIMIZADO.mp4" type="video/mp4">
             Tu navegador no soporta la etiqueta de video.
         </video>
     </a>
@@ -678,13 +747,20 @@ en branding y lettering.
         <div class="descripcion">
             <div class="nom-prj">404 STUDIO</div>
             <div class="tags">
-                <div class="tag-prj">Branding</div>
+                <div class="tag-prj">Branding + Artwork</div>
             </div>
             <div class="descripcion-corta">estp es un pequeño projecto de diseño gráfico</div>
             <div class="descripcion-larga">esto tendria que ser mas largo</div>
 
         </div>
-        <img src="content/uploads/2024/colapso/colapso-foto-1.jpg">
+        <video loop autoplay muted class="portada-mobile">
+            <source src="content/uploads/2024/404/404_portada_movile.mp4" type="video/mp4">
+            Tu navegador no soporta la etiqueta de video.
+        </video>
+        <video loop autoplay muted class="portada-desktop">
+            <source src="content/uploads/2024/404/404_portada_desktop.mp4" type="video/mp4">
+            Tu navegador no soporta la etiqueta de video.
+        </video>
     </a>
 </div>
 <!---------------------------------------------------------------------->
@@ -773,7 +849,11 @@ en branding y lettering.
     </div>
 </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+    
     <script>
+
 
 
 
@@ -1162,37 +1242,39 @@ function syncCajaAbout() {
         let isCloning = false;
 
         // Función para clonar los elementos al final
-        function cloneCycleEnd() {
-            if (isCloning) return;
-            isCloning = true;
+        let isProgrammaticScroll = false;
 
-            const originals = Array.from(granContenedor.children).filter(child => !child.classList.contains('clone'));
-            originals.forEach(original => {
-                const clone = original.cloneNode(true);
-                clone.classList.add('clone');
-                granContenedor.appendChild(clone);
-            });
+function cloneCycleEnd() {
+    if (isCloning) return;
+    isCloning = true;
 
-            isCloning = false;
-        }
+    const originals = Array.from(granContenedor.children).filter(child => !child.classList.contains('clone'));
+    originals.forEach(original => {
+        const clone = original.cloneNode(true);
+        clone.classList.add('clone');
+        granContenedor.appendChild(clone);
+    });
 
-        // Función para clonar los elementos al inicio (en orden inverso)
-        function cloneCycleStart() {
-            if (isCloning) return;
-            isCloning = true;
+    isProgrammaticScroll = true; // Activar bandera para evitar interferencias
+    isCloning = false;
+}
 
-            const originals = Array.from(granContenedor.children).filter(child => !child.classList.contains('clone'));
-            for (let i = originals.length - 1; i >= 0; i--) {
-                const clone = originals[i].cloneNode(true);
-                clone.classList.add('clone');
-                granContenedor.insertBefore(clone, granContenedor.firstChild);
-            }
+function cloneCycleStart() {
+    if (isCloning) return;
+    isCloning = true;
 
-            // Ajustar el scroll para mantener la posición visual
-            granContenedor.scrollLeft += originals.length * originals[0].offsetWidth;
+    const originals = Array.from(granContenedor.children).filter(child => !child.classList.contains('clone'));
+    for (let i = originals.length - 1; i >= 0; i--) {
+        const clone = originals[i].cloneNode(true);
+        clone.classList.add('clone');
+        granContenedor.insertBefore(clone, granContenedor.firstChild);
+    }
 
-            isCloning = false;
-        }
+    isProgrammaticScroll = true; // Activar bandera para evitar interferencias
+    granContenedor.scrollLeft += originals.length * originals[0].offsetWidth;
+    isCloning = false;
+}
+
 
         // Verificar la posición de scroll y clonar dinámicamente
         function checkScrollPosition() {
@@ -1209,14 +1291,22 @@ function syncCajaAbout() {
             }
         }
 
-        // Asignar eventos
-        granContenedor.addEventListener('scroll', checkScrollPosition);
         window.addEventListener('wheel', (event) => {
-            if (window.innerWidth >= 1024 && event.deltaY !== 0) {
-                event.preventDefault();
-                granContenedor.scrollLeft += event.deltaY;
-            }
-        }, { passive: false });
+    const granContenedor = document.getElementById('gran-contenedor');
+    const cajaProjectes = document.querySelector('.caja-projectes');
+
+    // Evitar interceptar el scroll en .caja-projectes
+    if (cajaProjectes.contains(event.target)) {
+        return; // Permitir el scroll predeterminado
+    }
+
+    if (window.innerWidth >= 1024 && event.deltaY !== 0) {
+        event.preventDefault();
+        granContenedor.scrollLeft += event.deltaY;
+    }
+}, { passive: false });
+
+
 
 
 
@@ -1268,6 +1358,23 @@ function syncCajaAbout() {
 
 
 
+    granContenedor.addEventListener('scroll', () => {
+    if (isProgrammaticScroll) {
+        // Si el scroll es programático, no ejecutar lógica adicional
+        isProgrammaticScroll = false;
+        return;
+    }
+
+    const originals = Array.from(granContenedor.children).filter(child => !child.classList.contains('clone'));
+    const originalWidth = originals[0].offsetWidth;
+    const totalWidth = originals.length * originalWidth;
+
+    if (granContenedor.scrollLeft <= originalWidth) {
+        cloneCycleStart();
+    } else if (granContenedor.scrollLeft >= granContenedor.scrollWidth - granContenedor.clientWidth - originalWidth) {
+        cloneCycleEnd();
+    }
+});
 
 
     
