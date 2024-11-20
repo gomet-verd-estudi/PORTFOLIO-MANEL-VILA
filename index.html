@@ -937,20 +937,34 @@ $(document).ready(function () {
     }
 
     // Función para mostrar u ocultar `caja-projectes`
-    function toggleCajaProjectes() {
-        const cajaProjectes = $('.caja-projectes');
-        if (cajaProjectes.is(':visible')) {
-            cajaProjectes.stop(true, true).slideUp('slow');
+ // Función para manejar la visibilidad de `caja-projectes` y sincronizar con `caja-about`
+function toggleCajaProjectes() {
+    const cajaProjectes = $('.caja-projectes');
+    const cajaAbout = $('.caja-about');
+
+    if (!cajaProjectes.is(':visible')) {
+        // Caso 1: Si `.caja-projectes` no es visible
+        if (cajaAbout.is(':visible')) {
+            // Si `.caja-about` está visible, primero ocultarlo
+            cajaAbout.stop(true, true).slideUp('slow', function () {
+                // Después mostrar `.caja-projectes`
+                cajaProjectes.stop(true, true).slideDown('slow');
+            });
         } else {
-            generarProjectesList(); // Generar contenido dinámico
+            // Si `.caja-about` no está visible, mostrar `.caja-projectes` directamente
             cajaProjectes.stop(true, true).slideDown('slow');
         }
+    } else {
+        // Caso 2: Si `.caja-projectes` ya es visible, ocultarlo
+        cajaProjectes.stop(true, true).slideUp('slow');
     }
+}
 
-    // Event listener para `.projectes`
-    $('.projectes').click(function () {
-        toggleCajaProjectes();
-    });
+// Event listener para `.projectes`
+$('.projectes').click(function () {
+    toggleCajaProjectes();
+});
+
 
     // Cerrar `caja-projectes` al hacer clic en `.bot-cerrar-projectes`
     $('.bot-cerrar-projectes').click(function () {
@@ -1416,62 +1430,91 @@ function cloneCycleStart() {
         const granContenedor = $("#gran-contenedor");
         const unidadesOriginales = $(".prj-unidad:not(.clone)");
         const tiempos = $(".tiempos");
-        const interval = 30; // Intervalo en ms para la barra de progreso
+        const interval = 50; // Intervalo en ms para actualizar la barra de progreso
+        const progressDuration = 5000; // Duración total para llenar la barra (5 segundos)
+        const progressStep = 100 / (progressDuration / interval); // Incremento por intervalo
         let percent = 0;
         let currentIndex = 0;
         let barInterval = null;
-        const progressStep = 0.5;
+        let isTransitioning = false; // Previene cambios rápidos entre unidades
+        let isInitializing = true; // Control total durante la inicialización
+        let barras = []; // Array actualizado dinámicamente
 
-        // Crear barras de progreso dinámicamente
-        unidadesOriginales.each((index) => {
-            const barra = $("<div></div>").addClass("barra-progreso").css({
-                width: "100%",
-                height: "5px",
-                backgroundColor: "#ccc",
-                margin: "5px 0",
-                position: "relative",
+        // Crear las barras de progreso dinámicamente
+        function createProgressBars() {
+            tiempos.empty(); // Limpiar las barras previas
+            barras = []; // Reiniciar la lista de barras
+            unidadesOriginales.each(() => {
+                const barra = $("<div></div>").addClass("barra-progreso").css({
+                    width: "100%",
+                    height: "5px",
+                    backgroundColor: "#ccc",
+                    margin: "5px 0",
+                    position: "relative",
+                    borderRadius: "10px"
+
+                    
+                });
+                const progreso = $("<div></div>").addClass("progreso").css({
+                    width: "0%",
+                    height: "100%",
+                    backgroundColor: "blue",
+                    position: "absolute",
+                    borderRadius: "10px"
+                });
+                barra.append(progreso);
+                tiempos.append(barra);
+                barras.push(progreso); // Almacena referencias a las barras
             });
-            const progreso = $("<div></div>").addClass("progreso").css({
-                width: "0%",
-                height: "100%",
-                backgroundColor: "blue",
-                position: "absolute",
-            });
-            barra.append(progreso);
-            tiempos.append(barra);
-        });
+        }
 
-        const barras = $(".barra-progreso .progreso");
-
-        // Función para centrar una unidad suavemente
+        // Centrar una unidad suavemente
         function centerUnit(index) {
+            if (isTransitioning) return; // Evitar cambios durante transiciones
+            isTransitioning = true;
+
             const unit = unidadesOriginales.eq(index);
             const unitCenter = unit[0].offsetLeft + unit[0].offsetWidth / 2;
             const containerCenter = granContenedor.width() / 2;
             const scrollTarget = unitCenter - containerCenter;
 
-            granContenedor.animate({ scrollLeft: scrollTarget }, 800, "swing");
+            granContenedor.stop(true).animate({ scrollLeft: scrollTarget }, 800, "swing", () => {
+                isTransitioning = false; // Liberar transición
+                if (isInitializing) {
+                    isInitializing = false; // Finalizar inicialización después de centrar el primer div
+                    currentIndex = index; // Bloquear índice explícitamente al inicializar
+                    syncProgressBar(); // Iniciar el progreso después de centrar
+                }
+            });
         }
 
-        // Función para manejar la barra de progreso
-        function progressBarCarousel() {
-            barras.css("width", "0%"); // Resetear todas las barras
-            barras.eq(currentIndex).css("width", `${percent}%`); // Llenar la barra actual
-            percent += progressStep;
+        // Sincronizar la barra de progreso con la unidad actual
+        function syncProgressBar() {
+            stopProgress(); // Detener progreso actual
+            percent = 0; // Reiniciar progreso
+            $(barras[currentIndex]).css("width", "0%"); // Reiniciar barra visualmente
+            startProgress(); // Iniciar progreso en la nueva barra
+        }
 
+        // Actualizar progreso de la barra
+        function progressBarCarousel() {
             if (percent >= 100) {
                 percent = 0; // Reiniciar progreso
+                $(barras[currentIndex]).css("width", "100%"); // Completar la barra actual
                 moveToNextUnit(); // Cambiar a la siguiente unidad
+            } else {
+                percent += progressStep;
+                $(barras[currentIndex]).css("width", `${percent}%`); // Actualizar ancho de la barra actual
             }
         }
 
-        // Cambiar a la siguiente unidad y centrarla
+        // Cambiar a la siguiente unidad
         function moveToNextUnit() {
             currentIndex = (currentIndex + 1) % unidadesOriginales.length;
-            centerUnit(currentIndex); // Centrar la siguiente unidad
+            centerUnit(currentIndex); // Centrar la nueva unidad
         }
 
-        // Encontrar el índice de la unidad actualmente centrada
+        // Encontrar índice de la unidad centrada
         function findCenteredUnitIndex() {
             const centerX = window.innerWidth / 2;
             let minDistance = Infinity;
@@ -1491,54 +1534,49 @@ function cloneCycleStart() {
             return centeredIndex;
         }
 
-        // Manejar el scroll manual
-        granContenedor.on("scroll", function () {
-            const newIndex = findCenteredUnitIndex();
-            if (newIndex !== currentIndex) {
-                // Completar la barra de la unidad anterior
-                barras.eq(currentIndex).css("width", "100%");
-                currentIndex = newIndex; // Actualizar al nuevo índice centrado
-                percent = 0; // Reiniciar progreso
-            }
-        });
-
-        // Inicializar el progreso
+        // Inicializar progreso al cargar
         function initialize() {
-            currentIndex = findCenteredUnitIndex(); // Encontrar la unidad inicial centrada
-            percent = 0; // Iniciar el progreso en 0
-            barras.css("width", "0%"); // Reiniciar todas las barras
+            createProgressBars(); // Crear barras antes de cargar contenido
+
+            // Forzar el scroll al inicio para centrar el primer div
+            granContenedor.scrollLeft(0); // Asegurar que se inicie en el primer div
+            currentIndex = 0; // Bloquear el índice en el primer div
             centerUnit(currentIndex); // Centrar la primera unidad
         }
 
-        // Iniciar la barra de progreso
+        // Controlar la barra de progreso
         function startProgress() {
+            stopProgress(); // Evitar duplicados
             barInterval = setInterval(progressBarCarousel, interval);
         }
 
-        // Detener la barra de progreso
         function stopProgress() {
             clearInterval(barInterval);
         }
 
-        // Inicializar y arrancar el progreso
-        initialize();
-        startProgress();
+        // Manejar scroll manual
+        let debounceScroll;
+        granContenedor.on("scroll", function () {
+            if (isInitializing) return; // Bloquear eventos de scroll durante la inicialización
 
-        // Detener y reiniciar el progreso manualmente
-        granContenedor.on("mousedown touchstart", stopProgress);
-        granContenedor.on("mouseup touchend", function () {
-            const centeredIndex = findCenteredUnitIndex();
-            if (centeredIndex !== currentIndex) {
-                // Completar la barra de la unidad anterior
-                barras.eq(currentIndex).css("width", "100%");
-                currentIndex = centeredIndex; // Actualizar índice
-                percent = 0; // Reiniciar progreso
-            }
-            startProgress();
+            clearTimeout(debounceScroll);
+            debounceScroll = setTimeout(() => {
+                const newIndex = findCenteredUnitIndex();
+                if (newIndex !== currentIndex) {
+                    $(barras[currentIndex]).css("width", "0%"); // Reiniciar barra anterior
+                    currentIndex = newIndex; // Actualizar índice centrado
+                    syncProgressBar(); // Sincronizar barra con la unidad centrada
+                }
+            }, 100);
         });
+
+        // Iniciar el proceso
+        initialize();
     });
 </script>
 
 
+
 </body>
 </html>
+
