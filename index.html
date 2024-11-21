@@ -41,8 +41,23 @@
             background-color: blue;
             height: 100%;
             width: 100%;
+
+        }
+
+        #gran-contenedor-v2 {
+            display: grid;
+            overflow-x: hidden;
+            overflow-y: auto;
+            grid-template-columns: 1fr 1fr;
+            background-color: blue;
+            height: 100%;
+            width: 100%;
         }
         #gran-contenedor::-webkit-scrollbar {
+            display: none;
+        }
+
+        #gran-contenedor-v2::-webkit-scrollbar {
             display: none;
         }
 
@@ -50,7 +65,6 @@
         .prj-unidad {
             min-width: 100%;
             height: 100%;
-            border: 1px solid black;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -95,8 +109,8 @@
             line-height: 11pt;
             font-size: 20pt;
             z-index: 10;
-            background-color: rgba(255, 255, 255, 0.495);
-            backdrop-filter: blur(5px);
+            background-color: rgba(234, 233, 233, 0.495);
+            backdrop-filter: blur(10px);
             font-family: 'KMR-Waldenburg', Arial, Helvetica, sans-serif;
         position: absolute;
             border-radius: 50px;
@@ -106,6 +120,33 @@
             justify-content: center;
             overflow: hidden;
             left: 0.5rem;
+        }
+
+        .grid {
+            width: 55px;
+            height: 55px;
+            display: flex;
+            -webkit-text-stroke: 0.5pt blue; /* Trazo de 1px de grosor en negro */
+
+                        color: blue;
+            line-height: 7.7pt;
+            text-align: center;
+            padding-left: 0.1;
+            padding-top: 0.05rem;
+            font-size: 10pt;
+            z-index: 10;
+            background-color: rgba(234, 233, 233, 0.495);
+            backdrop-filter: blur(10px);
+            font-family: 'KMR-Waldenburg', Arial, Helvetica, sans-serif;
+        position: absolute;
+            border-radius: 50px;
+            transition: all 0.5s ease;
+            margin-top: 0.5rem;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            left: calc(55px + 1rem);
+            opacity: 0;
         }
 
         /* Estilos para los divs dinámicos */
@@ -261,8 +302,8 @@ svg {
     display: none; /* Oculto inicialmente para que funcione con slideDown */
     font-size: 18pt;
     z-index: 10;
-    background-color: rgba(255, 255, 255, 0.495);
-    backdrop-filter: blur(5px);
+    background-color: rgba(234, 233, 233, 0.495);
+    backdrop-filter: blur(10px);
     font-family: 'KMR-Waldenburg', Arial, Helvetica, sans-serif;
     color: blue;
     border-radius: 15px;
@@ -273,6 +314,7 @@ svg {
     box-sizing: border-box; /* Incluye padding en el cálculo del tamaño */
     overflow: hidden; /* Asegurar que el contenido no desborde cuando colapsa */
     transition: none; /* Transiciones desactivadas para evitar conflictos con jQuery */
+
 }
 .cerrar-about{
     width: 100%;
@@ -302,8 +344,8 @@ svg {
     display: none; /* Oculto inicialmente para que funcione con slideDown */
     font-size: 18pt;
     z-index: 10;
-    background-color: rgba(255, 255, 255, 0.495);
-    backdrop-filter: blur(5px);
+    background-color: rgba(234, 233, 233, 0.495);
+    backdrop-filter: blur(10px);
     font-family: 'KMR-Waldenburg', Arial, Helvetica, sans-serif;
     color: blue;
     border-radius: 15px;
@@ -317,6 +359,7 @@ svg {
     flex-direction: column;
     overflow-y: auto;
     max-height: 70%;
+
 }
 .caja-projectes::-webkit-scrollbar {
     width: 8px; /* Ancho de la barra lateral */
@@ -365,7 +408,15 @@ svg {
     padding-top: 0rem;
     padding-bottom: 0.2rem;
     }
+
+    
+ 
+
         @media (max-width: 923px) {
+
+
+
+        
 
             .portada-mobile{
     display: flex;
@@ -380,8 +431,8 @@ svg {
     display: none; /* Oculto inicialmente para que funcione con slideDown */
     font-size: 13pt;
     z-index: 10;
-    background-color: rgba(255, 255, 255, 0.495);
-    backdrop-filter: blur(5px);
+    background-color: rgba(234, 233, 233, 0.495);
+    backdrop-filter: blur(10px);
     font-family: 'KMR-Waldenburg', Arial, Helvetica, sans-serif;
     color: blue;
     border-radius: 15px;
@@ -402,8 +453,8 @@ svg {
     display: none; /* Oculto inicialmente para que funcione con slideDown */
     font-size: 13pt;
     z-index: 10;
-    background-color: rgba(255, 255, 255, 0.495);
-    backdrop-filter: blur(5px);
+    background-color: rgba(234, 233, 233, 0.495);
+    backdrop-filter: blur(10px);
     font-family: 'KMR-Waldenburg', Arial, Helvetica, sans-serif;
     color: blue;
     border-radius: 15px;
@@ -480,7 +531,7 @@ svg {
         <div class="about">About</div>
         <div class="contact">Contact</div>
     </div>
-
+    <div class="grid">▢▢<br>▢▢</div>
     <div class="caja-about">
         Soy Manel Vila, diseñador gráfico y director de arte, graduado por la EASD (Escuela de Arte Superior de
 Diseño) de Valencia. Durante los últimos años, he trabajado como freelance en proyectos como los que veréis
@@ -569,7 +620,7 @@ en branding y lettering.
 
         </div>
         <video loop autoplay muted>
-            <source src="content/uploads/2024/leo-rizzi/storie_2_leorizzi.mp4" type="video/mp4">
+            <source src="content/uploads/2024/leo-rizzi/storie_2_leorizzi_1.mp4" type="video/mp4">
             Tu navegador no soporta la etiqueta de video.
         </video>
     </a>
@@ -613,11 +664,11 @@ en branding y lettering.
 
         </div>
         <video loop autoplay muted class="portada-mobile">
-            <source src="content/uploads/2024/zelandia/zelandia_animación_acortada.mp4" type="video/mp4">
+            <source src="content/uploads/2024/way/inflable amorfo FINAL VERTICAL_1.mp4" type="video/mp4">
             Tu navegador no soporta la etiqueta de video.
         </video>
         <video loop autoplay muted class="portada-desktop">
-            <source src="content/uploads/2024/zelandia/zelandia_animación_desktop.mp4" type="video/mp4">
+            <source src="content/uploads/2024/way/inflable amorfo FINAL HORIZONTAL_1.mp4" type="video/mp4">
             Tu navegador no soporta la etiqueta de video.
         </video>
     </a>
@@ -886,8 +937,352 @@ en branding y lettering.
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+
+
+
+
+
+
+
+    
     
     <script>
+
+
+
+
+$(document).ready(function () {
+    const gridButton = $('.grid');
+    let isGranContenedorV2 = false; // Controla el estado de la vista
+    let isCloning = false; // Controla si se está realizando la clonación
+    let isProgrammaticScroll = false; // Controla si el scroll es programático
+
+    // Clones para reiniciar contenido
+    const cajaInferiorTemplate = $('.caja-inferior').clone();
+    const granContenedorTemplate = $('#gran-contenedor').clone();
+
+    gridButton.on('click', function () {
+        const currentText = gridButton.html().trim(); // Obtener texto actual del botón
+
+        if (currentText === '▢') {
+            // Cambiar a vista de lista y reiniciar funciones
+            gridButton.html("▢▢<br>▢▢");
+            reiniciarContenedor('#gran-contenedor-v2', '#gran-contenedor', {
+                display: 'flex',
+                'flex-direction': 'row',
+                'overflow-x': 'auto',
+                'overflow-y': 'hidden',
+            });
+            isGranContenedorV2 = false; // Actualizar el estado
+
+        } else if (currentText === "▢▢<br>▢▢") {
+            // Cambiar a vista de cuadrícula y reiniciar funciones
+            gridButton.text('▢');
+            reiniciarContenedor('#gran-contenedor', '#gran-contenedor-v2', {
+                display: 'grid',
+                'grid-template-columns': '1fr 1fr',
+                'overflow-x': 'hidden',
+                'overflow-y': 'auto',
+            });
+            isGranContenedorV2 = true; // Actualizar el estado
+        }
+
+        // Verificar contenido del div .grid y aplicar display a .caja-inferior
+        toggleCajaInferiorDisplay();
+
+        // Reiniciar funciones generales de la web
+        reiniciarCajaInferior();
+        reiniciarFunciones();
+    });
+
+   // Función para mostrar u ocultar la caja inferior según el contenido de .grid
+   function toggleCajaInferiorDisplay() {
+        const currentText = gridButton.html().trim(); // Obtener texto actual del botón
+        const cajaInferior = $('.caja-inferior');
+
+        console.log("Texto actual del botón:", currentText);
+
+        if (currentText === "▢▢<br>▢▢") {
+            console.log("Ocultando .caja-inferior");
+            cajaInferior.css('display', 'none');
+        } else if (currentText === "▢") {
+            console.log("Mostrando .caja-inferior como flex");
+            cajaInferior.css('display', 'flex');
+        }
+    }
+
+    // Función para reiniciar contenedor principal
+    function reiniciarContenedor(actualId, nuevoId, estilos) {
+        const actualContenedor = $(actualId);
+        const nuevoContenedor = granContenedorTemplate.clone();
+
+        nuevoContenedor
+            .attr('id', nuevoId.replace('#', ''))
+            .css(estilos)
+            .scrollTop(0)
+            .scrollLeft(0);
+
+        actualContenedor.replaceWith(nuevoContenedor);
+    }
+
+    // Función para reiniciar la caja inferior
+    function reiniciarCajaInferior() {
+        $('.caja-inferior').off(); // Eliminar eventos anteriores
+        $('.caja-inferior').replaceWith(cajaInferiorTemplate.clone());
+        inicializarEventosCajaInferior();
+    }
+
+    // Función para reiniciar y asignar funciones
+    function reiniciarFunciones() {
+        generarProjectesList();
+        initializeProgressBars();
+        inicializarContenidoCentrado();
+        initializeCloning(); // Reactivar funciones de clonación
+        inicializarEventosScroll(); // Reactivar función para ocultar `.desc-larga`
+    }
+
+    // Eventos en la caja inferior
+    function inicializarEventosCajaInferior() {
+        const cajaInferior = $('.caja-inferior');
+
+        cajaInferior.on('click', '.bot-mas-info', function () {
+            const descLarga = $(".desc-larga");
+            const botMasInfo = $(this);
+
+            if (descLarga.is(":visible")) {
+                descLarga.slideUp("slow");
+                botMasInfo.text("+info");
+            } else {
+                descLarga.slideDown("slow");
+                botMasInfo.text("-info");
+            }
+        });
+
+        $(".desc-larga").hide();
+        $(".bot-mas-info").text("+info");
+    }
+
+    // Ocultar `desc-larga` al hacer scroll
+    function inicializarEventosScroll() {
+        const granContenedor = $('#gran-contenedor');
+
+        granContenedor.on('scroll', function () {
+            const descLarga = $(".desc-larga");
+            const botMasInfo = $(".bot-mas-info");
+
+            if (descLarga.is(":visible") || botMasInfo.text() === "-info") {
+                descLarga.slideUp("slow");
+                botMasInfo.text("+info");
+            }
+        });
+    }
+
+    // Generar lista de proyectos
+    function generarProjectesList() {
+        const cajaProjectes = $('.contenido-list');
+        cajaProjectes.empty();
+
+        $('.prj-unidad:not(.clone)').each(function () {
+            const nomPrj = $(this).find('.nom-prj').text();
+            const tagPrj = $(this).find('.tag-prj').text();
+            const href = $(this).find('a').attr('href');
+
+            const projectesLink = $('<a class="projectes-list"></a>').attr('href', href).css({
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                width: 'calc(100% - 0.5rem)',
+                height: 'auto',
+                borderBottom: '1pt solid blue',
+                gap: '1rem',
+                marginBottom: '0.2rem',
+                padding: '0.2rem 0',
+                textDecoration: 'none',
+                color: 'inherit',
+            });
+
+            const nomPrjList = $('<div class="nom-prj-list"></div>').text(nomPrj).css({ flex: '1' });
+            const tagPrjList = $('<div class="tag-prj-list"></div>').text(tagPrj).css({ flex: '1', textAlign: 'right' });
+
+            projectesLink.append(nomPrjList, tagPrjList);
+            cajaProjectes.append(projectesLink);
+        });
+    }
+
+    // Barras de progreso
+    function initializeProgressBars() {
+        const tiempos = $(".tiempos");
+        const unidadesOriginales = $(".prj-unidad:not(.clone)");
+        let currentIndex = 0;
+
+        function createProgressBars() {
+            tiempos.empty();
+            unidadesOriginales.each(() => {
+                const barra = $("<div></div>").addClass("barra-progreso").css({
+                    width: "100%",
+                    height: "5px",
+                    backgroundColor: "rgba(210, 210, 210, 0.795)",
+                    margin: "5px 0",
+                    position: "relative",
+                    borderRadius: "10px"
+                });
+                const progreso = $("<div></div>").addClass("progreso").css({
+                    width: "0%",
+                    height: "100%",
+                    backgroundColor: "blue",
+                    position: "absolute",
+                    borderRadius: "10px"
+                });
+                barra.append(progreso);
+                tiempos.append(barra);
+            });
+        }
+
+        function updateProgressBar(index) {
+            $(".progreso").each((i, barra) => {
+                $(barra).css("width", i === index ? "100%" : "0%");
+            });
+        }
+
+        createProgressBars();
+
+        $("#gran-contenedor").on("scroll", function () {
+            const newIndex = findCenteredUnitIndex();
+            if (newIndex !== currentIndex) {
+                currentIndex = newIndex;
+                updateProgressBar(currentIndex);
+            }
+        });
+
+        function findCenteredUnitIndex() {
+            const centerX = window.innerWidth / 2;
+            let minDistance = Infinity;
+            let centeredIndex = -1;
+
+            $(".prj-unidad").each((index, unidad) => {
+                const rect = unidad.getBoundingClientRect();
+                const unitCenterX = rect.left + rect.width / 2;
+                const distance = Math.abs(centerX - unitCenterX);
+
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    centeredIndex = index % unidadesOriginales.length;
+                }
+            });
+
+            return centeredIndex;
+        }
+    }
+
+    // Inicializar contenido centrado
+    function inicializarContenidoCentrado() {
+        const granContenedor = document.getElementById('gran-contenedor');
+
+        function updateCenteredContent() {
+            const centerX = window.innerWidth / 2;
+
+            let centeredUnit = null;
+            let minDistance = Infinity;
+
+            $('.prj-unidad').each(function () {
+                const rect = this.getBoundingClientRect();
+                const unitCenterX = rect.left + rect.width / 2;
+                const distance = Math.abs(centerX - unitCenterX);
+
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    centeredUnit = this;
+                }
+            });
+
+            if (centeredUnit) {
+                const nomPrj = $(centeredUnit).find('.nom-prj').text();
+                const tagPrj = $(centeredUnit).find('.tag-prj').text();
+                const descripcionCorta = $(centeredUnit).find('.descripcion-corta').text();
+                const descripcionLarga = $(centeredUnit).find('.descripcion-larga').text();
+
+                $('.caja-nombre-prj').text(nomPrj);
+                $('.caja-tag-prj').text(tagPrj);
+                $('.texto-info-corta').text(descripcionCorta);
+                $('.desc-larga').text(descripcionLarga);
+            }
+        }
+
+        granContenedor.addEventListener('scroll', updateCenteredContent);
+        updateCenteredContent();
+    }
+
+    // Funciones de clonación
+    function initializeCloning() {
+        const granContenedor = document.getElementById('gran-contenedor');
+
+        granContenedor.addEventListener('scroll', () => {
+            if (isProgrammaticScroll) {
+                isProgrammaticScroll = false;
+                return;
+            }
+
+            const originals = Array.from(granContenedor.children).filter(child => !child.classList.contains('clone'));
+            const originalWidth = originals[0].offsetWidth;
+
+            if (granContenedor.scrollLeft <= originalWidth) {
+                cloneCycleStart();
+            } else if (granContenedor.scrollLeft >= granContenedor.scrollWidth - granContenedor.clientWidth - originalWidth) {
+                cloneCycleEnd();
+            }
+        });
+
+        function cloneCycleEnd() {
+            if (isCloning) return;
+            isCloning = true;
+
+            const originals = Array.from(granContenedor.children).filter(child => !child.classList.contains('clone'));
+            originals.forEach(original => {
+                const clone = original.cloneNode(true);
+                clone.classList.add('clone');
+                granContenedor.appendChild(clone);
+            });
+
+            isProgrammaticScroll = true;
+            isCloning = false;
+        }
+
+        function cloneCycleStart() {
+            if (isCloning) return;
+            isCloning = true;
+
+            const originals = Array.from(granContenedor.children).filter(child => !child.classList.contains('clone'));
+            for (let i = originals.length - 1; i >= 0; i--) {
+                const clone = originals[i].cloneNode(true);
+                clone.classList.add('clone');
+                granContenedor.insertBefore(clone, granContenedor.firstChild);
+            }
+
+            isProgrammaticScroll = true;
+            granContenedor.scrollLeft += originals.length * originals[0].offsetWidth;
+            isCloning = false;
+        }
+    }
+
+    // Inicialización general
+    reiniciarFunciones();
+});
 
 
 
@@ -1129,51 +1524,13 @@ $(document).ready(function() {
     });
 });
 
-function syncCajaAbout() {
-        const franja = document.querySelector('.franja');
-        const cajaAbout = document.querySelector('.caja-about');
-
-        // Obtener ancho y alto de la franja
-        const franjaWidth = franja.offsetWidth;
-
-        // Asignar dimensiones a caja-about
-        cajaAbout.style.width = `${franjaWidth}px`;
-    }
-
-    // Llamar a la función inicialmente
-    syncCajaAbout();
-
-    // Actualizar al cambiar el tamaño de la ventana
-    window.addEventListener('resize', syncCajaAbout);
-
-    // Si hay animaciones que modifican la franja, agregar observador para reaccionar a cambios
-    const observer = new ResizeObserver(syncCajaAbout);
-    observer.observe(document.querySelector('.franja'));
 
 
 
 
 
-    function syncCajaProjectes() {
-        const franja = document.querySelector('.franja');
-        const cajaProjectes = document.querySelector('.caja-projectes');
 
-        // Obtener ancho y alto de la franja
-        const franjaWidth = franja.offsetWidth;
-
-        // Asignar dimensiones a caja-projectes
-        cajaProjectes.style.width = `${franjaWidth}px`;
-    }
-
-    // Llamar a la función inicialmente
-    syncCajaProjectes();
-
-    // Actualizar al cambiar el tamaño de la ventana
-    window.addEventListener('resize', syncCajaProjectes);
-
-    // Si hay animaciones que modifican la franja, agregar observador para reaccionar a cambios
-    const observer2 = new ResizeObserver(syncCajaProjectes);
-    observer2.observe(document.querySelector('.franja'));
+  
 
 
 
@@ -1195,6 +1552,7 @@ function syncCajaAbout() {
                     // Si el elemento está visible, lo ocultamos
                     slideOutToRight(element);
                     $(".franja").css({ width: "55px", left: "0.5rem", fontSize: "20pt", height: "55px" });
+                    $(".grid").css({ width: "55px", left: "calc(55px + 1rem)", fontSize: "9pt", height: "55px", opacity:"0%" });
                     $(".about, .contact, .projectes").css({ padding: "0rem" });
                     $(".nombre-jo").css("width", "55px");
                     $(".m").css({ width: "calc(55px - 1rem)" });
@@ -1206,10 +1564,14 @@ function syncCajaAbout() {
                     slideInFromLeft(element, targetWidth);
 
                     if (window.innerWidth < 923) {
-                        $(".franja").css({ width: "calc(100% - 1rem)", left: "0.5rem", fontSize: "13pt" });
+                        $(".franja").css({ width: "calc(100% - 1.5rem - 30px)", left: "0.5rem", fontSize: "13pt" });
                         $(".m").css({ width: "15px" });
+                        $(".grid").css({ width: "30px", left: "calc(100% - 30px - 0.5rem)", fontSize: "9pt", height: "30px", opacity:"100%" });
+
                     } else {
-                        $(".franja").css({ width: "50%", left: "25%", fontSize: "18pt" });
+                        $(".franja").css({ width: "calc(50% - 30px - 0.25rem)", left: "25%", fontSize: "18pt" });
+                        $(".grid").css({ width: "30px", left: "calc(75% - 30px + 0.25rem)", fontSize: "9pt", height: "30px", opacity:"100%" });
+
                         $(".m").css({ width: "21px" });
                     }
                     $(".m").css({ width: "21px" });
@@ -1272,9 +1634,15 @@ function syncCajaAbout() {
         $(".franja").each(function() {
             if ($(this).width() > 55) {
                 if (window.innerWidth < 923) {
-                    $(this).css({ width: "calc(100% - 1rem)", left: "0.5rem" });
+                    $(this).css({ width: "calc(100% - 30px - 1.5rem)", left: "0.5rem", fontSize: "13pt" });
+                    $(".grid").css({ width: "30px", left: "calc(100% - 30px - 0.5rem)", fontSize: "9pt", height: "30px", opacity:"100%" });
+                    $(".about, .contact, .projectes").css({ padding: "0.5rem" });
+
                 } else {
-                    $(this).css({ width: "50%", left: "25%" });
+                    $(this).css({ width: "calc(50% - 30px - 0.25rem)", left: "25%", fontSize: "18pt" });
+                    $(".grid").css({ width: "30px", left: "calc(75% - 30px + 0.25rem)", fontSize: "9pt", height: "30px", opacity:"100%" });
+                    $(".about, .contact, .projectes").css({ padding: "0.5rem" });
+                    
                 }
             }
         });
@@ -1336,21 +1704,7 @@ function cloneCycleStart() {
             }
         }
 
-        window.addEventListener('wheel', (event) => {
-    const granContenedor = document.getElementById('gran-contenedor');
-    const cajaProjectes = document.querySelector('.caja-projectes');
-
-    // Evitar interceptar el scroll en .caja-projectes
-    if (cajaProjectes.contains(event.target)) {
-        return; // Permitir el scroll predeterminado
-    }
-
-    if (window.innerWidth >= 1024 && event.deltaY !== 0) {
-        event.preventDefault();
-        granContenedor.scrollLeft += event.deltaY;
-    }
-}, { passive: false });
-
+    
 
 
 
@@ -1430,15 +1784,8 @@ function cloneCycleStart() {
         const granContenedor = $("#gran-contenedor");
         const unidadesOriginales = $(".prj-unidad:not(.clone)");
         const tiempos = $(".tiempos");
-        const interval = 50; // Intervalo en ms para actualizar la barra de progreso
-        const progressDuration = 5000; // Duración total para llenar la barra (5 segundos)
-        const progressStep = 100 / (progressDuration / interval); // Incremento por intervalo
-        let percent = 0;
-        let currentIndex = 0;
-        let barInterval = null;
-        let isTransitioning = false; // Previene cambios rápidos entre unidades
-        let isInitializing = true; // Control total durante la inicialización
-        let barras = []; // Array actualizado dinámicamente
+        let currentIndex = 0; // Índice actual del div centrado
+        let barras = []; // Referencias a las barras de progreso
 
         // Crear las barras de progreso dinámicamente
         function createProgressBars() {
@@ -1448,12 +1795,10 @@ function cloneCycleStart() {
                 const barra = $("<div></div>").addClass("barra-progreso").css({
                     width: "100%",
                     height: "5px",
-                    backgroundColor: "#ccc",
+                    backgroundColor: "rgba(210, 210, 210, 0.795)",
                     margin: "5px 0",
                     position: "relative",
                     borderRadius: "10px"
-
-                    
                 });
                 const progreso = $("<div></div>").addClass("progreso").css({
                     width: "0%",
@@ -1468,53 +1813,18 @@ function cloneCycleStart() {
             });
         }
 
-        // Centrar una unidad suavemente
-        function centerUnit(index) {
-            if (isTransitioning) return; // Evitar cambios durante transiciones
-            isTransitioning = true;
-
-            const unit = unidadesOriginales.eq(index);
-            const unitCenter = unit[0].offsetLeft + unit[0].offsetWidth / 2;
-            const containerCenter = granContenedor.width() / 2;
-            const scrollTarget = unitCenter - containerCenter;
-
-            granContenedor.stop(true).animate({ scrollLeft: scrollTarget }, 800, "swing", () => {
-                isTransitioning = false; // Liberar transición
-                if (isInitializing) {
-                    isInitializing = false; // Finalizar inicialización después de centrar el primer div
-                    currentIndex = index; // Bloquear índice explícitamente al inicializar
-                    syncProgressBar(); // Iniciar el progreso después de centrar
+        // Llenar la barra de progreso al 100% instantáneamente
+        function updateProgressBar(index) {
+            barras.forEach((barra, i) => {
+                if (i === index) {
+                    $(barra).css("width", "100%"); // Llenar barra actual
+                } else {
+                    $(barra).css("width", "0%"); // Vaciar otras barras
                 }
             });
         }
 
-        // Sincronizar la barra de progreso con la unidad actual
-        function syncProgressBar() {
-            stopProgress(); // Detener progreso actual
-            percent = 0; // Reiniciar progreso
-            $(barras[currentIndex]).css("width", "0%"); // Reiniciar barra visualmente
-            startProgress(); // Iniciar progreso en la nueva barra
-        }
-
-        // Actualizar progreso de la barra
-        function progressBarCarousel() {
-            if (percent >= 100) {
-                percent = 0; // Reiniciar progreso
-                $(barras[currentIndex]).css("width", "100%"); // Completar la barra actual
-                moveToNextUnit(); // Cambiar a la siguiente unidad
-            } else {
-                percent += progressStep;
-                $(barras[currentIndex]).css("width", `${percent}%`); // Actualizar ancho de la barra actual
-            }
-        }
-
-        // Cambiar a la siguiente unidad
-        function moveToNextUnit() {
-            currentIndex = (currentIndex + 1) % unidadesOriginales.length;
-            centerUnit(currentIndex); // Centrar la nueva unidad
-        }
-
-        // Encontrar índice de la unidad centrada
+        // Encontrar el índice del div centrado en pantalla
         function findCenteredUnitIndex() {
             const centerX = window.innerWidth / 2;
             let minDistance = Infinity;
@@ -1534,41 +1844,27 @@ function cloneCycleStart() {
             return centeredIndex;
         }
 
-        // Inicializar progreso al cargar
-        function initialize() {
-            createProgressBars(); // Crear barras antes de cargar contenido
-
-            // Forzar el scroll al inicio para centrar el primer div
-            granContenedor.scrollLeft(0); // Asegurar que se inicie en el primer div
-            currentIndex = 0; // Bloquear el índice en el primer div
-            centerUnit(currentIndex); // Centrar la primera unidad
-        }
-
-        // Controlar la barra de progreso
-        function startProgress() {
-            stopProgress(); // Evitar duplicados
-            barInterval = setInterval(progressBarCarousel, interval);
-        }
-
-        function stopProgress() {
-            clearInterval(barInterval);
-        }
-
-        // Manejar scroll manual
+        // Manejar el scroll manual para actualizar el div centrado y la barra
         let debounceScroll;
         granContenedor.on("scroll", function () {
-            if (isInitializing) return; // Bloquear eventos de scroll durante la inicialización
-
             clearTimeout(debounceScroll);
             debounceScroll = setTimeout(() => {
                 const newIndex = findCenteredUnitIndex();
                 if (newIndex !== currentIndex) {
-                    $(barras[currentIndex]).css("width", "0%"); // Reiniciar barra anterior
-                    currentIndex = newIndex; // Actualizar índice centrado
-                    syncProgressBar(); // Sincronizar barra con la unidad centrada
+                    currentIndex = newIndex;
+                    updateProgressBar(currentIndex); // Actualizar barra de progreso
                 }
             }, 100);
         });
+
+        // Inicializar la web
+        function initialize() {
+            createProgressBars(); // Crear las barras de progreso
+
+            // Iniciar con la barra correspondiente al primer div llena
+            currentIndex = findCenteredUnitIndex();
+            updateProgressBar(currentIndex);
+        }
 
         // Iniciar el proceso
         initialize();
@@ -1577,6 +1873,6 @@ function cloneCycleStart() {
 
 
 
+
 </body>
 </html>
-
