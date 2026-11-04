@@ -267,6 +267,12 @@ img, video { display: block; }
   -webkit-user-drag: none;
   transition: transform .5s var(--ease);
 }
+/* Portada de vídeo que no encaja con la pantalla: entera, centrada, sobre el fondo del propio vídeo */
+.slide.is-contain { background: var(--bg, #000); }
+.slide.is-contain .slide__media {
+  object-fit: contain;
+  padding: calc(var(--pill) + var(--gut) * 3) var(--gut) calc(var(--bar-h) + 3.4rem);
+}
 
 /* Portada tipográfica (proyectos sin material) */
 .cover {

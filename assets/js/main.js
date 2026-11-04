@@ -64,12 +64,25 @@
     return `<video class="slide__media" muted playsinline preload="none" poster="${encodeURI(m.poster || '')}" data-src="${src(m)}"${posn} aria-label="${esc(p.name)}"></video>`;
   }
   const slideHTML = (i, clone) => `
-    <section class="slide${clone ? ' is-clone' : ''}" data-real="${i}" ${clone ? 'aria-hidden="true"' : `id="p-${projects[i].slug}" aria-label="${esc(projects[i].name)}"`}>
+    <section class="slide${clone ? ' is-clone' : ''}" data-real="${i}"${projects[i].media && projects[i].media.bg ? ` style="--bg:${projects[i].media.bg}"` : ''} ${clone ? 'aria-hidden="true"' : `id="p-${projects[i].slug}" aria-label="${esc(projects[i].name)}"`}>
       ${media(projects[i], i, i < 2)}
     </section>`;
 
   track.innerHTML = slideHTML(N - 1, true) + projects.map((_, i) => slideHTML(i, false)).join('') + slideHTML(0, true);
   const slides = Array.from(track.children);
+
+  /* Encaje de las portadas de vídeo: si la proporción del vídeo no encaja con la pantalla
+     (un vídeo vertical o cuadrado en escritorio), se muestra entero sobre su color de fondo
+     en vez de recortarlo y ampliarlo. */
+  function fitCovers() {
+    const vr = window.innerWidth / window.innerHeight;
+    slides.forEach((s) => {
+      const m = projects[+s.dataset.real].media;
+      const ar = m && m.type === 'video' && m.ar && !(mq.matches && m.mobile) ? m.ar : 0;
+      s.classList.toggle('is-contain', !!ar && Math.max(ar / vr, vr / ar) > 1.4);
+    });
+  }
+  fitCovers();
 
   grid.innerHTML = projects.map((p, i) => {
     const t = thumbOf(p);
@@ -378,7 +391,7 @@
     if (p.services.length) rows.push(['Servicios', p.services.map(esc).join(' · ')]);
     if (p.team) rows.push(['Equipo', esc(p.team)]);
     const items = [];
-    if (p.media && p.media.type === 'video') {
+    if (p.media && p.media.type === 'video' && !(p.gallery || []).some((e) => e[3] === p.media.src)) {
       items.push(`<figure class="g g--full" data-reveal><video muted loop playsinline autoplay preload="metadata" poster="${encodeURI(p.media.poster || '')}" src="${encodeURI(p.media.src)}"></video></figure>`);
     }
     // Horizontales a sangre; verticales/cuadradas por parejas (si queda una suelta, centrada)
@@ -508,6 +521,7 @@
   UI.onChange((s) => { document.body.classList.toggle('is-panel', !!s.panel); });
 
   window.addEventListener('resize', () => {
+    fitCovers();
     W = track.clientWidth;
     jumpSilently(pos);
   });

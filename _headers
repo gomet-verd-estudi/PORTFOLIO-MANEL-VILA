@@ -1,0 +1,10 @@
+# Cabeceras para Cloudflare Pages (en GitHub Pages este archivo se ignora).
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
+
+# Fotos, vídeos y fuentes: caché larga en el navegador (30 días).
+# Si sustituyes un archivo por otro con el mismo nombre, puede tardar en verse: cambia el nombre.
+/content/*
+  Cache-Control: public, max-age=2592000
