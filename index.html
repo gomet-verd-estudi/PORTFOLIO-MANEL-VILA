@@ -12,21 +12,53 @@
 </head>
 <body class="home">
 
-  <nav class="nav" aria-label="Principal">
-    <button class="nav__mark" aria-label="Menú" aria-expanded="false">
-      <svg viewBox="0 0 802.74 673.67" aria-hidden="true"><rect x="266.01" y="0.29" width="81.25" height="673.08" transform="matrix(-0.973 0.2307 -0.2307 -0.973 682.7006 593.8474)"/><rect x="478.13" y="2.94" width="81.25" height="476.69" transform="matrix(0.973 0.2307 -0.2307 0.973 69.6535 -113.1617)"/><rect x="667.45" y="192.78" width="81.25" height="477.96" transform="matrix(0.973 -0.2307 0.2307 0.973 -80.5041 174.9896)"/><rect x="54.03" y="192.78" width="81.25" height="477.96" transform="matrix(-0.973 -0.2307 0.2307 -0.973 87.1645 873.7182)"/></svg>
+  <div class="intro" aria-hidden="true"><svg data-mark></svg></div>
+
+  <!-- Franja: monograma MV → X, se despliega en barra centrada -->
+  <nav class="franja" aria-label="Principal">
+    <button class="franja__mark" aria-label="Abrir menú" aria-expanded="false" aria-controls="franja-items">
+      <svg data-mark aria-hidden="true"></svg>
     </button>
-    <a class="nav__name" href="index.html">Manel Vila</a>
-    <a href="index.html" data-open-grid aria-current="page">Proyectos</a>
-    <a href="about.html">About</a>
-    <a href="about.html#contacto">Contacto</a>
+    <div class="franja__items" id="franja-items">
+      <a class="franja__item franja__name" href="index.html">Manel Vila</a>
+      <button class="franja__item" data-panel="projects">Proyectos</button>
+      <button class="franja__item" data-panel="about">About</button>
+      <button class="franja__item" data-panel="contact">Contacto</button>
+    </div>
   </nav>
 
-  <button class="view-toggle" aria-pressed="false">
-    <span class="view-toggle__icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-    <span class="view-toggle__count">01 / 16</span>
+  <button class="grid-btn" aria-pressed="false">
+    <span class="grid-btn__icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+    <span class="grid-btn__count">01 / 16</span>
     <span class="sr-only">Ver todos los proyectos</span>
   </button>
+
+  <!-- Paneles de cristal -->
+  <section class="panel" data-panel="projects" hidden aria-label="Proyectos">
+    <div class="panel__inner"><div class="panel__pad">
+      <div class="plist"></div>
+      <div class="panel__foot"><span>Índice</span><button class="panel__close" aria-label="Cerrar">(X)</button></div>
+    </div></div>
+  </section>
+
+  <section class="panel" data-panel="about" hidden aria-label="About">
+    <div class="panel__inner"><div class="panel__pad">
+      <p>Soy Manel Vila, diseñador gráfico y director de arte, graduado por la EASD de Valencia. He trabajado como freelance en proyectos como los que veréis a continuación y he colaborado con estudios como Jotateam Studio, Socis Club o T.O.T Studio.</p>
+      <p>Trabajo con soltura en cualquier rama del diseño gráfico, aunque me he especializado en branding y lettering.</p>
+      <div class="panel__foot"><a class="panel__link" href="about.html">About completo →</a><button class="panel__close" aria-label="Cerrar">(X)</button></div>
+    </div></div>
+  </section>
+
+  <section class="panel" data-panel="contact" hidden aria-label="Contacto">
+    <div class="panel__inner"><div class="panel__pad">
+      <div class="contact-list">
+        <a href="mailto:gometverdestudi@gmail.com">gometverdestudi@gmail.com</a>
+        <a href="tel:+34684450515">+34 684 450 515</a>
+        <a href="https://www.instagram.com/gometverdestudi/" target="_blank" rel="noopener">@gometverdestudi</a>
+      </div>
+      <div class="panel__foot"><span>Valencia · Barcelona</span><button class="panel__close" aria-label="Cerrar">(X)</button></div>
+    </div></div>
+  </section>
 
   <main>
     <h1 class="sr-only">Manel Vila — Proyectos</h1>
@@ -34,20 +66,33 @@
     <div class="grid" id="grid" aria-label="Todos los proyectos"></div>
   </main>
 
+  <div class="cursor" aria-hidden="true"><span>Ver proyecto</span></div>
+
+  <!-- Caja inferior -->
   <div class="info">
     <div class="more" id="more"><div class="more__inner"></div></div>
-    <div class="progress" id="progress"></div>
+    <div class="tiempos">
+      <button class="play" aria-pressed="false" aria-label="Pausar pase automático"></button>
+      <div class="progress" id="progress"></div>
+    </div>
     <div class="bar">
-      <span class="bar__num">01</span>
-      <span class="bar__name"></span>
-      <span class="bar__tag"></span>
-      <span class="bar__short"></span>
+      <span class="bar__num roll"></span>
+      <span class="bar__name roll"></span>
+      <span class="bar__tag roll"></span>
+      <span class="bar__short roll"></span>
       <button class="bar__more" aria-controls="more" aria-expanded="false">+info</button>
     </div>
   </div>
 
+  <!-- Ficha de proyecto -->
+  <section class="sheet" id="sheet" tabindex="-1" hidden role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+    <button class="sheet__close" aria-label="Cerrar proyecto">(X)</button>
+    <div class="sheet__body"></div>
+  </section>
+
+  <script src="assets/js/gallery.js"></script>
   <script src="assets/js/projects.js"></script>
-  <script src="assets/js/nav.js"></script>
+  <script src="assets/js/ui.js"></script>
   <script src="assets/js/main.js"></script>
 </body>
 </html>

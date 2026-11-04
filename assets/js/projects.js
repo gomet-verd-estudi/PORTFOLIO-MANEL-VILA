@@ -176,3 +176,13 @@ window.PROJECTS = [
     media: { type: 'video', src: U + 'tot/ponteveccio/PONTEVECCIO_WEB_LOGO_OPTIMIZADO.mp4', mobile: U + 'tot/ponteveccio/PONTEVECCIO_MOBILE_LOGO_OPTIMIZADO.mp4', poster: P + 'pontevecchio.jpg' }
   }
 ];
+
+/* Une las imágenes extraídas del deck de Figma (assets/js/gallery.js) con cada proyecto.
+   Si un proyecto no tiene portada propia, usa la primera imagen de su galería. */
+(function () {
+  const G = window.GALLERY || {};
+  window.PROJECTS.forEach((p) => {
+    p.gallery = G[p.slug] || [];
+    if (!p.media && p.gallery.length) p.media = { type: 'image', src: p.gallery[0][0] };
+  });
+})();
