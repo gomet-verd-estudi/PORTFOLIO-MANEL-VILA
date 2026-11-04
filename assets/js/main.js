@@ -390,8 +390,12 @@
       let z = j; while (z < kinds.length - 1 && kinds[z + 1] !== 'full') z++;
       if ((z - a + 1) % 2 === 1 && j === z) kinds[j] = 'solo';
     });
-    gal.forEach(([s, w, h], j) => {
-      items.push(`<figure class="g g--${kinds[j]}" data-reveal><img src="${encodeURI(s)}" width="${w}" height="${h}" alt="${esc(p.name)}" loading="lazy" decoding="async"></figure>`);
+    gal.forEach(([s, w, h, vid], j) => {
+      // Si la pieza del deck era un vídeo y ya está subido, se reproduce; si no, se muestra su fotograma
+      const inner = vid
+        ? `<video muted loop playsinline autoplay preload="metadata" poster="${encodeURI(s)}" src="${encodeURI(vid)}" width="${w}" height="${h}"></video>`
+        : `<img src="${encodeURI(s)}" width="${w}" height="${h}" alt="${esc(p.name)}" loading="lazy" decoding="async">`;
+      items.push(`<figure class="g g--${kinds[j]}" data-reveal>${inner}</figure>`);
     });
     if (!items.length && p.media && p.media.type === 'image') {
       items.push(`<figure class="g g--full" data-reveal><img src="${encodeURI(p.media.src)}" alt="${esc(p.name)}" loading="lazy"></figure>`);
