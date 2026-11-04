@@ -1,0 +1,187 @@
+{
+ "content/media/404-studio.mp4": {
+  "h264": "content/media/404-studio.mp4",
+  "hevc": "content/media/404-studio.hevc.mp4",
+  "av1": "content/media/404-studio.av1.mp4",
+  "bytes": {
+   "h264": 1919651,
+   "hevc": 1000130,
+   "av1": 804771
+  }
+ },
+ "content/media/404-studio-movil.mp4": {
+  "h264": "content/media/404-studio-movil.mp4",
+  "hevc": "content/media/404-studio-movil.hevc.mp4",
+  "av1": "content/media/404-studio-movil.av1.mp4",
+  "bytes": {
+   "h264": 2691515,
+   "hevc": 1494409,
+   "av1": 1188477
+  }
+ },
+ "content/media/claur-tiles.mp4": {
+  "h264": "content/media/claur-tiles.mp4",
+  "hevc": "content/media/claur-tiles.hevc.mp4",
+  "av1": "content/media/claur-tiles.av1.mp4",
+  "bytes": {
+   "h264": 842241,
+   "hevc": 767510,
+   "av1": 567982
+  }
+ },
+ "content/media/leo-rizzi.mp4": {
+  "h264": "content/media/leo-rizzi.mp4",
+  "hevc": "content/media/leo-rizzi.hevc.mp4",
+  "bytes": {
+   "h264": 5159075,
+   "hevc": 4646435
+  }
+ },
+ "content/media/zelandia-walk.mp4": {
+  "h264": "content/media/zelandia-walk.mp4",
+  "bytes": {
+   "h264": 253251
+  }
+ },
+ "content/media/zelandia-walk-movil.mp4": {
+  "h264": "content/media/zelandia-walk-movil.mp4",
+  "bytes": {
+   "h264": 326433
+  }
+ },
+ "content/media/way.mp4": {
+  "h264": "content/media/way.mp4",
+  "hevc": "content/media/way.hevc.mp4",
+  "av1": "content/media/way.av1.mp4",
+  "bytes": {
+   "h264": 2325214,
+   "hevc": 922957,
+   "av1": 797473
+  }
+ },
+ "content/media/way-movil.mp4": {
+  "h264": "content/media/way-movil.mp4",
+  "hevc": "content/media/way-movil.hevc.mp4",
+  "av1": "content/media/way-movil.av1.mp4",
+  "bytes": {
+   "h264": 2329050,
+   "hevc": 959600,
+   "av1": 796812
+  }
+ },
+ "content/media/sun-and-snow.mp4": {
+  "h264": "content/media/sun-and-snow.mp4",
+  "hevc": "content/media/sun-and-snow.hevc.mp4",
+  "av1": "content/media/sun-and-snow.av1.mp4",
+  "bytes": {
+   "h264": 2433528,
+   "hevc": 1518700,
+   "av1": 1210184
+  }
+ },
+ "content/media/delta.mp4": {
+  "h264": "content/media/delta.mp4",
+  "hevc": "content/media/delta.hevc.mp4",
+  "av1": "content/media/delta.av1.mp4",
+  "bytes": {
+   "h264": 1357709,
+   "hevc": 1210654,
+   "av1": 1135154
+  }
+ },
+ "content/media/pontevecchio.mp4": {
+  "h264": "content/media/pontevecchio.mp4",
+  "hevc": "content/media/pontevecchio.hevc.mp4",
+  "av1": "content/media/pontevecchio.av1.mp4",
+  "bytes": {
+   "h264": 834768,
+   "hevc": 512910,
+   "av1": 404739
+  }
+ },
+ "content/media/pontevecchio-movil.mp4": {
+  "h264": "content/media/pontevecchio-movil.mp4",
+  "hevc": "content/media/pontevecchio-movil.hevc.mp4",
+  "av1": "content/media/pontevecchio-movil.av1.mp4",
+  "bytes": {
+   "h264": 956109,
+   "hevc": 662745,
+   "av1": 518312
+  }
+ },
+ "content/media/vintage-palace.mp4": {
+  "h264": "content/media/vintage-palace.mp4",
+  "hevc": "content/media/vintage-palace.hevc.mp4",
+  "av1": "content/media/vintage-palace.av1.mp4",
+  "bytes": {
+   "h264": 3062193,
+   "hevc": 2013766,
+   "av1": 2147961
+  }
+ },
+ "content/uploads/figma-video/404-studio/02.mp4": {
+  "h264": "content/uploads/figma-video/404-studio/02.mp4",
+  "bytes": {
+   "h264": 1302219
+  }
+ },
+ "content/uploads/figma-video/dmatinada/01.mp4": {
+  "h264": "content/uploads/figma-video/dmatinada/01.mp4",
+  "hevc": "content/media/g-dmatinada-01.hevc.mp4",
+  "av1": "content/media/g-dmatinada-01.av1.mp4",
+  "bytes": {
+   "h264": 109076,
+   "hevc": 60939,
+   "av1": 96497
+  }
+ },
+ "content/uploads/figma-video/orbis-vacui/09.mp4": {
+  "h264": "content/uploads/figma-video/orbis-vacui/09.mp4",
+  "hevc": "content/media/g-orbis-vacui-09.hevc.mp4",
+  "av1": "content/media/g-orbis-vacui-09.av1.mp4",
+  "bytes": {
+   "h264": 2937314,
+   "hevc": 2335937,
+   "av1": 2650109
+  }
+ },
+ "content/uploads/figma-video/bernal/03.mp4": {
+  "h264": "content/uploads/figma-video/bernal/03.mp4",
+  "hevc": "content/media/g-bernal-03.hevc.mp4",
+  "av1": "content/media/g-bernal-03.av1.mp4",
+  "bytes": {
+   "h264": 543190,
+   "hevc": 233731,
+   "av1": 243451
+  }
+ },
+ "content/uploads/figma-video/bernal/04.mp4": {
+  "h264": "content/uploads/figma-video/bernal/04.mp4",
+  "hevc": "content/media/g-bernal-04.hevc.mp4",
+  "av1": "content/media/g-bernal-04.av1.mp4",
+  "bytes": {
+   "h264": 338971,
+   "hevc": 129528,
+   "av1": 135582
+  }
+ },
+ "content/uploads/figma-video/bernal-vida-y-milagros/portada.mp4": {
+  "h264": "content/uploads/figma-video/bernal-vida-y-milagros/portada.mp4",
+  "hevc": "content/media/g-bernal-vida-y-milagros.hevc.mp4",
+  "av1": "content/media/g-bernal-vida-y-milagros.av1.mp4",
+  "bytes": {
+   "h264": 470758,
+   "hevc": 283479,
+   "av1": 263926
+  }
+ },
+ "_descartados": {
+  "content/media/leo-rizzi.av1.mp4": 1793793341.0112298,
+  "content/media/zelandia-walk.hevc.mp4": 1793793341.3792298,
+  "content/media/zelandia-walk.av1.mp4": 1793793341.3792298,
+  "content/media/zelandia-walk-movil.hevc.mp4": 1793793341.3632298,
+  "content/media/zelandia-walk-movil.av1.mp4": 1793793341.3632298,
+  "content/media/g-404-studio-02.hevc.mp4": 1793825852.1269884,
+  "content/media/g-404-studio-02.av1.mp4": 1793825852.1269884
+ }
+}

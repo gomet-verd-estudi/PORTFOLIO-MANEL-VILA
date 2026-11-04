@@ -51,6 +51,38 @@ const url = (p) => encodeURI(p);                 // rutas con espacios, tildes, 
 const abs = (p) => SITE + '/' + url(p).replace(/^\//, '');
 const exists = (p) => fs.existsSync(path.join(ROOT, p));
 const small = (p) => { const s = p.replace(/\.jpg$/, '-800.jpg'); return s !== p && exists(s) ? s : null; };
+const avifOf = (p) => { const a = p.replace(/\.jpg$/, '.avif'); return a !== p && exists(a) ? a : null; };
+
+/** Dimensiones de un JPEG leyendo su cabecera (sin dependencias). */
+const DIMS = {};
+function dims(p) {
+  if (DIMS[p]) return DIMS[p];
+  const b = fs.readFileSync(path.join(ROOT, p));
+  let i = 2;
+  while (i < b.length) {
+    if (b[i] !== 0xff) { i++; continue; }
+    const m = b[i + 1], len = b.readUInt16BE(i + 2);
+    if ((m >= 0xc0 && m <= 0xc3) || (m >= 0xc5 && m <= 0xc7) || (m >= 0xc9 && m <= 0xcb) || (m >= 0xcd && m <= 0xcf)) {
+      return (DIMS[p] = [b.readUInt16BE(i + 7), b.readUInt16BE(i + 5)]);
+    }
+    i += 2 + len;
+  }
+  return (DIMS[p] = [1600, 900]);
+}
+
+/* Vídeos: variantes AV1 / HEVC / H.264 (tools/videos.py → content/media/manifest.json) */
+const VMAN = exists('content/media/manifest.json') ? JSON.parse(fs.readFileSync(path.join(ROOT, 'content/media/manifest.json'), 'utf8')) : {};
+const vOf = (p) => VMAN[p] || { h264: p };
+const TYPES = { av1: `video/mp4; codecs="av01.0.08M.10"`, hevc: `video/mp4; codecs="hvc1.1.6.L120.90"`, h264: 'video/mp4' };
+/** Variantes de un vídeo de la más ligera a la más pesada; H.264 siempre al final como respaldo. */
+const ranked = (v) => ['av1', 'hevc'].filter((k) => v[k]).sort((a, b) => (v.bytes || {})[a] - (v.bytes || {})[b]).concat('h264');
+function sources(R, p, media = '') {
+  const v = vOf(p);
+  const mq = media ? ` media="${media}"` : '';
+  // El navegador usa el primer <source> que puede reproducir: así recibe el archivo más ligero que soporta
+  return ranked(v).map((k) => `<source src="${R}${url(v[k])}" type='${TYPES[k]}'${mq}>`).join('');
+}
+
 const thumbOf = (p) => (p.media ? (p.media.type === 'image' ? p.media.src : p.media.poster) : (p.gallery[0] && p.gallery[0][0]));
 const plain = (s) => String(s ?? '').replace(/\s+/g, ' ').trim();
 const clip = (s, n = 158) => { s = plain(s); return s.length <= n ? s : s.slice(0, s.lastIndexOf(' ', n - 1)) + '…'; };
@@ -61,12 +93,15 @@ const write = (rel, html) => {
   fs.writeFileSync(f, html.replace(/[ \t]+\n/g, '\n'));
 };
 
-/** <img> con srcset si existe la versión ligera (-800). */
-function img(R, src, { w, h, alt = '', sizes = '100vw', lazy = true, cls = '', extra = '' } = {}) {
-  const s = small(src);
-  const set = s && w > 900 ? ` srcset="${R}${url(s)} 800w, ${R}${url(src)} ${w}w" sizes="${sizes}"` : '';
-  const dims = w && h ? ` width="${w}" height="${h}"` : '';
-  return `<img${cls ? ` class="${cls}"` : ''} src="${R}${url(src)}"${set}${dims} alt="${esc(alt)}"${lazy ? ' loading="lazy"' : ''} decoding="async"${extra}>`;
+/** <picture>: AVIF (completo + 800 px) con respaldo JPG. Las medidas se leen del propio archivo. */
+function img(R, src, { alt = '', sizes = '100vw', lazy = true, cls = '', extra = '', priority = false } = {}) {
+  const [w, h] = dims(src);
+  const s = w > 900 ? small(src) : null;
+  const av = avifOf(src), avs = s ? avifOf(s) : null;
+  const aset = av ? (avs ? `${R}${url(avs)} 800w, ${R}${url(av)} ${w}w` : `${R}${url(av)}`) : '';
+  const jset = s ? ` srcset="${R}${url(s)} 800w, ${R}${url(src)} ${w}w" sizes="${sizes}"` : '';
+  const load = priority ? ' fetchpriority="high"' : lazy ? ' loading="lazy"' : '';
+  return `<picture>${aset ? `<source type="image/avif" srcset="${aset}"${avs ? ` sizes="${sizes}"` : ''}>` : ''}<img${cls ? ` class="${cls}"` : ''} src="${R}${url(src)}"${jset} width="${w}" height="${h}" alt="${esc(alt)}"${load} decoding="async"${extra}></picture>`;
 }
 
 const MARK = '<svg data-mark aria-hidden="true"></svg>';
@@ -185,6 +220,10 @@ const personLD = () => ({
 });
 const websiteLD = () => ({ '@type': 'WebSite', '@id': `${SITE}/#web`, url: `${SITE}/`, name: PERSON.name, inLanguage: 'es', author: { '@id': `${SITE}/#manel-vila` } });
 
+/** Cinta que corre (la frase del estudio, repetida). */
+const marquee = (text = 'Always WIPing · Working In Play · Branding · Lettering · Dirección de arte · ') =>
+  `<div class="marquee" aria-hidden="true"><div class="marquee__track">${('<span>' + esc(text) + '</span>').repeat(4)}</div></div>`;
+
 const scripts = (R, list) => list.map((s) => `  <script src="${R}assets/js/${s}.js"></script>`).join('\n');
 
 /* ---------- HOME ---------- */
@@ -193,14 +232,16 @@ function home() {
   const tiles = PROJECTS.map((p, i) => {
     const t = thumbOf(p);
     const vis = t
-      ? img(R, t, { w: 1600, alt: '', sizes: '(max-width: 923px) 50vw, 50vw' })
+      ? img(R, t, { alt: '', sizes: '(max-width: 923px) 100vw, 58vw' })
       : `<span class="cover"><span class="cover__title">[${esc(p.name)}]</span></span>`;
     return `
       <a class="tile" href="${projectPath(p)}" data-index="${i}" style="--i:${i}">
-        ${vis}
-        <span class="tile__label"><span>${pad(i + 1)}</span><span>${esc(p.name)}</span><span>${esc(p.tag)}</span></span>
+        <span class="tile__media"${p.media && p.media.bg ? ` style="--bg:${p.media.bg}"` : ''}>${vis}</span>
+        <span class="tile__cap"><span class="tile__num">${pad(i + 1)}</span><span class="tile__name">${esc(p.name)}</span><span class="tile__tag">${esc(p.tag)}</span></span>
       </a>`;
   }).join('');
+  const first = PROJECTS[0].media || {};
+  const lcp = first.poster || (first.type === 'image' ? first.src : '');
   return `${head({
     R,
     title: `${PERSON.name} — Diseño gráfico y dirección de arte`,
@@ -209,7 +250,8 @@ function home() {
     jsonld: [{ '@context': 'https://schema.org', '@graph': [websiteLD(), personLD(), {
       '@type': 'ItemList', name: 'Proyectos', itemListElement: PROJECTS.map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: `${SITE}/${projectPath(p)}`, name: p.name }))
     }] }],
-    extra: '  <noscript><style>.grid{position:static;visibility:visible;opacity:1;padding-top:6rem}.tile{opacity:1;transform:none}.tile__label{transform:none}.track,.info,.grid-btn,.intro{display:none}.home{overflow:auto;height:auto}</style></noscript>\n'
+    extra: `  <link rel="preload" as="image" href="${url(lcp)}" fetchpriority="high">
+  <noscript><style>.grid{position:static;visibility:visible;opacity:1}.tile{opacity:1;transform:none}.track,.info,.grid-btn,.intro{display:none}.home{overflow:auto;height:auto}</style></noscript>\n`
   })}
 <body class="home">
 
@@ -226,7 +268,11 @@ ${panels(R, 'home')}
   <main id="contenido">
     <h1 class="sr-only">${PERSON.name} — diseñador gráfico y director de arte. Proyectos</h1>
     <div class="track" id="track" aria-label="Proyectos destacados" aria-roledescription="carrusel"></div>
-    <nav class="grid" id="grid" aria-label="Todos los proyectos">${tiles}
+    <nav class="grid" id="grid" aria-label="Todos los proyectos">
+      <header class="grid__head">
+        <h2 class="grid__title">[Proyectos]</h2>
+        <p class="grid__meta"><span>${pad(N)} trabajos</span><span>Branding · Lettering · Editorial · Motion</span></p>
+      </header>${tiles}
     </nav>
   </main>
 
@@ -244,10 +290,11 @@ ${panels(R, 'home')}
       <span class="bar__tag roll"></span>
       <span class="bar__short roll"></span>
       <button class="bar__more" aria-controls="more" aria-expanded="false">+info</button>
+      <a class="bar__cta" href="${projectPath(PROJECTS[0])}">Ver proyecto <span aria-hidden="true">→</span></a>
     </div>
   </div>
 
-${scripts(R, ['gallery', 'projects', 'ui', 'main'])}
+${scripts(R, ['gallery', 'projects', 'media', 'ui', 'main'])}
 </body>
 </html>
 `;
@@ -275,13 +322,18 @@ function heroHTML(R, p) {
   if (m.type === 'video') {
     return `<figure class="pj__hero${tall ? ' is-tall' : ''}"${style}>
       <video muted loop playsinline autoplay preload="metadata" poster="${R}${url(m.poster || '')}" aria-label="${esc(p.name)} — vídeo de portada">
-        ${m.mobile ? `<source src="${R}${url(m.mobile)}" type="video/mp4" media="(max-width: 923px)">` : ''}
-        <source src="${R}${url(m.src)}" type="video/mp4">
+        ${m.mobile ? sources(R, m.mobile, '(max-width: 923px)') : ''}${sources(R, m.src)}
       </video>
     </figure>`;
   }
   const g = p.gallery.find((e) => e[0] === m.src);
-  return `<figure class="pj__hero"${style}>${img(R, m.src, { w: g ? g[1] : 1600, h: g ? g[2] : undefined, alt: `${p.name} — portada`, lazy: false })}</figure>`;
+  return `<figure class="pj__hero"${style}>${img(R, m.src, { alt: `${p.name} — portada`, lazy: false, priority: true })}</figure>`;
+}
+
+function videoData(R, vid) {
+  const v = vOf(vid);
+  const alts = ranked(v).filter((k) => k !== 'h264').map((k) => `${R}${url(v[k])} ${k}`).join(',');
+  return ` data-video="${R}${url(v.h264)}"` + (alts ? ` data-alts="${alts}"` : '');
 }
 
 function project(p, i) {
@@ -298,7 +350,7 @@ function project(p, i) {
     const sizes = kinds[j] === 'full' ? '100vw' : '(max-width: 923px) 100vw, 50vw';
     return `
       <figure class="g g--${kinds[j]}" data-reveal data-n="${j}">
-        <button class="g__open" aria-label="Ampliar imagen ${j + 1} de ${total}">${img(R, src, { w, h, alt, sizes, extra: vid && exists(vid) ? ` data-video="${R}${url(vid)}"` : '' })}</button>
+        <button class="g__open" aria-label="Ampliar imagen ${j + 1} de ${total}">${img(R, src, { alt, sizes, extra: vid && exists(vid) ? videoData(R, vid) : '' })}</button>
         <figcaption>${pad(j + 1)} — ${pad(total)}</figcaption>
       </figure>`;
   }).join('');
@@ -351,6 +403,7 @@ function project(p, i) {
   })}
 <body class="project" data-index="${i}" data-slug="${p.slug}">
   <div class="readbar" aria-hidden="true"></div>
+  <div class="pj__sticky" aria-hidden="true"><span>[${esc(p.name)}]</span></div>
 ${franja(R, 'project')}
 
   <a class="grid-btn pj__back" href="${R}#${p.slug}" aria-label="Volver a los proyectos">
@@ -387,7 +440,7 @@ ${panels(R, 'project', i)}
       <a class="pj__next" href="${R}${projectPath(nx)}" rel="next">
         <span class="pj__next-label">Siguiente proyecto · ${pad(((i + 1) % N) + 1)}</span>
         <span class="pj__next-title">[${esc(nx.name)}]</span>
-        ${nxThumb ? `<span class="pj__next-img">${img(R, nxThumb, { w: 1600, alt: '', sizes: '40vw' })}</span>` : ''}
+        ${nxThumb ? `<span class="pj__next-img">${img(R, nxThumb, { alt: '', sizes: '(max-width: 923px) 100vw, 30vw' })}</span>` : ''}
       </a>
       <div class="pj__pn">
         <a href="${R}${projectPath(pv)}" rel="prev">← ${esc(pv.name)}</a>
@@ -396,6 +449,7 @@ ${panels(R, 'project', i)}
     </nav>
   </main>
 
+  ${marquee()}
   <footer class="site-foot">
     ${contactLinks('site-foot__links')}
     <span>${PERSON.name} · Valencia · Barcelona</span>
@@ -492,6 +546,7 @@ ${panels(R, 'about')}
       </div>
     </section>
 
+    ${marquee()}
     <section class="contact" id="contacto" aria-labelledby="contact-title">
       <div class="chips">
         <span class="chip chip--num">✶</span>
@@ -555,6 +610,20 @@ write('about/index.html', about());
 write('about.html', legacyAbout);
 PROJECTS.forEach((p, i) => write(`${projectPath(p)}index.html`, project(p, i)));
 write('sitemap.xml', sitemap);
+
+// Mapa de medios para el navegador: variantes de vídeo y AVIF de las portadas/imágenes usadas por JS
+const imgs = {};
+for (const p of PROJECTS) {
+  const m = p.media || {};
+  for (const src of [m.type === 'image' ? m.src : null, m.type === 'image' ? m.mobile : null, m.poster].filter(Boolean)) {
+    const [w, h] = dims(src);
+    const sm = w > 900 ? small(src) : null;
+    imgs[src] = { w, h, avif: avifOf(src), small: sm, smallAvif: sm ? avifOf(sm) : null };
+  }
+}
+write('assets/js/media.js', `/* Generado por tools/build.mjs: variantes AV1/HEVC/H.264 y AVIF. No editar a mano. */
+window.MEDIA = ${JSON.stringify({ video: Object.fromEntries(Object.entries(VMAN).filter(([k]) => !k.startsWith('_'))), img: imgs })};
+`);
 
 // Avisa de rutas que no existen (fotos o vídeos que faltan)
 const missing = new Set();
