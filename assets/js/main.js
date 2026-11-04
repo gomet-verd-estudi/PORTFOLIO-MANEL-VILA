@@ -19,7 +19,6 @@
   const mq = window.matchMedia('(max-width: 923px)');
   const fine = window.matchMedia('(hover: hover) and (pointer: fine)');
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const coarse = window.matchMedia('(pointer: coarse)');
   /* Códec más ligero que el navegador puede reproducir: AV1 → HEVC → H.264 (ver tools/videos.py) */
   const MEDIA = window.MEDIA || { video: {}, img: {} };
   const probe = document.createElement('video');
@@ -52,7 +51,7 @@
   const playBtn = $('.play');
   const cursor = $('.cursor');
   const bar = {
-    num: $('.bar__num'), name: $('.bar__name'), tag: $('.bar__tag'), short: $('.bar__short'), more: $('.bar__more'), cta: $('.bar__cta')
+    num: $('.bar__num'), name: $('.bar__name'), tag: $('.bar__tag'), short: $('.bar__short'), more: $('.bar__more')
   };
 
   let cur = -1;          // índice real activo
@@ -159,7 +158,6 @@
     roll(bar.num, pad(i + 1), dir);
     roll(bar.name, p.name, dir);
     bar.name.href = pageOf(i);
-    bar.cta.href = pageOf(i);
     roll(bar.tag, p.tag, dir);
     roll(bar.short, p.short, dir);
     countEl.textContent = `${pad(i + 1)} / ${pad(N)}`;
@@ -279,11 +277,7 @@
   let suppressClick = false;
   track.addEventListener('click', (e) => {
     if (suppressClick) { suppressClick = false; return; }
-    if (!e.target.closest('.slide')) return;
-    // Móvil: como unas stories — toque a la izquierda vuelve, a la derecha avanza.
-    // El proyecto se abre desde "Ver proyecto" o el nombre de la barra inferior.
-    if (coarse.matches) { e.clientX < innerWidth * 0.3 ? prev() : next(); return; }
-    openProject(cur);
+    if (e.target.closest('.slide')) openProject(cur);
   });
 
   // Teclado
@@ -347,12 +341,11 @@
   /* ================================================================
      +info
      ================================================================ */
-  function openMore() { flags.more = true; more.classList.add('is-open'); bar.more.textContent = '-info'; bar.more.setAttribute('aria-expanded', 'true'); }
+  function openMore() { if (UI.state.panel && UI.hidePanel) UI.hidePanel(); flags.more = true; more.classList.add('is-open'); bar.more.textContent = '-info'; bar.more.setAttribute('aria-expanded', 'true'); }
   function closeMore() { flags.more = false; more.classList.remove('is-open'); bar.more.textContent = '+info'; bar.more.setAttribute('aria-expanded', 'false'); }
   bar.more.addEventListener('click', () => (flags.more ? closeMore() : openMore()));
   more.addEventListener('click', (e) => { const a = e.target.closest('.more__open'); if (a) { e.preventDefault(); openProject(cur); } });
   bar.name.addEventListener('click', (e) => { e.preventDefault(); openProject(cur); });
-  bar.cta.addEventListener('click', (e) => { e.preventDefault(); openProject(cur); });
 
   /* ================================================================
      Vista grid
@@ -441,7 +434,11 @@
   /* ================================================================
      Integración con la franja (ui.js) y resize
      ================================================================ */
-  UI.onChange((s) => { document.body.classList.toggle('is-panel', !!s.panel); });
+  // Desplegables excluyentes: abrir un panel del menú recoge el +info (y al revés), para que nunca se pisen
+  UI.onChange((s) => {
+    document.body.classList.toggle('is-panel', !!s.panel);
+    if (s.panel && flags.more) closeMore();
+  });
 
   window.addEventListener('resize', () => {
     fitCovers();
@@ -473,24 +470,6 @@
     setCurrent(start, 1);
     if (location.search.includes('grid')) setGrid(true);
   });
-
-  /* Móvil: pista de uso la primera vez (tocar a los lados, mantener para pausar) */
-  if (coarse.matches && !reduced) {
-    let seen = false;
-    try { seen = localStorage.getItem('mv-hint') === '1'; localStorage.setItem('mv-hint', '1'); } catch (e) { /* sin storage */ }
-    if (!seen) {
-      const hint = document.createElement('div');
-      hint.className = 'hint';
-      hint.setAttribute('aria-hidden', 'true');
-      hint.innerHTML = '<span>← Toca</span><span>Mantén para pausar</span><span>Toca →</span>';
-      document.body.appendChild(hint);
-      const delay = document.body.classList.contains('is-intro') ? 2400 : 600;
-      setTimeout(() => hint.classList.add('is-on'), delay);
-      const off = () => { hint.classList.remove('is-on'); setTimeout(() => hint.remove(), 600); };
-      setTimeout(off, delay + 3600);
-      track.addEventListener('pointerdown', off, { once: true });
-    }
-  }
 
   window.HOME = { goTo: (i) => { if (flags.grid) setGrid(false); goTo(i, { dir: i > cur ? 1 : -1 }); }, setGrid };
 })();

@@ -146,26 +146,6 @@ window.PROJECTS = [
     media: { type: 'video', src: M + 'zelandia-walk.mp4', mobile: M + 'zelandia-walk-movil.mp4', poster: P + 'zelandia.jpg', ar: 16 / 9, arMobile: 1080 / 1926, bg: '#fff' }
   },
   {
-    slug: 'way',
-    name: 'Way',
-    tag: '3D',
-    short: 'Pieza 3D: un inflable amorfo en movimiento.',
-    long: '',
-    services: ['3D'],
-    team: '',
-    media: { type: 'video', src: M + 'way.mp4', mobile: M + 'way-movil.mp4', poster: P + 'way.jpg', ar: 16 / 9, arMobile: 1080 / 1920, bg: '#000' }
-  },
-  {
-    slug: 'colapso',
-    name: 'Colapso',
-    tag: 'Artwork',
-    short: 'Pieza de artwork.',
-    long: '',
-    services: ['Artwork'],
-    team: '',
-    media: { type: 'image', src: P + 'colapso.jpg' }
-  },
-  {
     slug: 'sun-and-snow',
     studio: TOT,
     name: 'Sun&Snow',

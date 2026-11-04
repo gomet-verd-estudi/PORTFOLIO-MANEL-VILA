@@ -290,7 +290,6 @@ ${panels(R, 'home')}
       <span class="bar__tag roll"></span>
       <span class="bar__short roll"></span>
       <button class="bar__more" aria-controls="more" aria-expanded="false">+info</button>
-      <a class="bar__cta" href="${projectPath(PROJECTS[0])}">Ver proyecto <span aria-hidden="true">→</span></a>
     </div>
   </div>
 

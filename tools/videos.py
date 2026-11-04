@@ -28,8 +28,6 @@ VIDEOS = [
     (f'{U}/leo-rizzi/storie_2_leorizzi_1.mp4', 'leo-rizzi', 720, 31, False),
     (f'{U}/zelandia/zelandia_animación_desktop.mp4', 'zelandia-walk', 1920, 25, False),
     (f'{U}/zelandia/zelandia_animación_acortada.mp4', 'zelandia-walk-movil', 1080, 25, False),
-    (f'{U}/way/inflable amorfo FINAL HORIZONTAL_1.mp4', 'way', 1920, 25, False),
-    (f'{U}/way/inflable amorfo FINAL VERTICAL_1.mp4', 'way-movil', 1080, 25, False),
     (f'{U}/tot/sun&snow/S&S_MOBILE_ANIMACION STORIES.mp4', 'sun-and-snow', 1080, 25, False),
     (f'{U}/tot/delta/delta_video_home.mp4', 'delta', 720, 28, False),
     (f'{U}/tot/ponteveccio/PONTEVECCIO_WEB_LOGO_OPTIMIZADO.mp4', 'pontevecchio', 1920, 25, False),

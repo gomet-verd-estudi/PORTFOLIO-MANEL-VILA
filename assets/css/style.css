@@ -24,6 +24,10 @@
   --gut: 0.5rem;
   --pill: 55px;
   --bar-h: 38px;
+  /* Altura de la interfaz fija: el menú arranca aquí y los paneles justo debajo, sin pisarse */
+  --top: calc(env(safe-area-inset-top, 0px) + var(--gut));
+  --panel-top: calc(var(--top) + var(--bar-h) + var(--gut));
+  --panel-bottom: 1rem;
   --ease: cubic-bezier(.65, 0, .35, 1);
   --ease-out: cubic-bezier(.16, 1, .3, 1);
   --fs-s: 11pt;
@@ -75,7 +79,7 @@ picture { display: contents; }
    -------------------------------------------------------------------------- */
 .franja {
   position: fixed;
-  top: var(--gut);
+  top: var(--top);
   left: var(--gut);
   z-index: 60;
   width: var(--pill);
@@ -136,7 +140,7 @@ picture { display: contents; }
 /* Botón grid ▢▢/▢▢ ↔ ▢ — se acopla a la barra cuando el menú está abierto */
 .grid-btn {
   position: fixed;
-  top: var(--gut);
+  top: var(--top);
   right: var(--gut);
   z-index: 60;
   height: var(--pill);
@@ -174,7 +178,7 @@ picture { display: contents; }
    -------------------------------------------------------------------------- */
 .panel {
   position: fixed;
-  top: calc(var(--gut) * 2 + var(--bar-h));
+  top: var(--panel-top);
   left: 25%;
   width: 50%;
   z-index: 55;
@@ -191,7 +195,9 @@ picture { display: contents; }
 }
 .panel.is-open { grid-template-rows: 1fr; opacity: 1; }
 .panel__inner { min-height: 0; overflow: hidden; }
-.panel.is-open .panel__inner { overflow-y: auto; max-height: 70vh; overscroll-behavior: contain; }
+.panel.is-open .panel__inner { overflow-y: auto; max-height: min(70vh, calc(100vh - var(--panel-top) - var(--panel-bottom))); max-height: min(70svh, calc(100svh - var(--panel-top) - var(--panel-bottom))); overscroll-behavior: contain; }
+/* En la home los paneles terminan antes de la barra de info inferior */
+.home { --panel-bottom: 6.6rem; }
 .panel__pad { padding: .5rem; }
 .panel__inner::-webkit-scrollbar { width: 8px; }
 .panel__inner::-webkit-scrollbar-thumb { background: #bbb; border-radius: 10px; }
@@ -397,7 +403,7 @@ picture { display: contents; }
   display: grid;
   grid-template-columns: 2.2rem 1fr 1fr 2fr auto;
   gap: 1rem; align-items: baseline;
-  padding: .3rem var(--gut) .35rem;
+  padding: .3rem var(--gut) calc(.35rem + env(safe-area-inset-bottom, 0px));
   background: var(--blue); color: var(--white);
 }
 .roll { display: inline-grid; overflow: hidden; vertical-align: bottom; }
@@ -465,7 +471,6 @@ picture { display: contents; }
 .tile:nth-of-type(6n+6) { grid-column: 6 / span 7; --tar: 16 / 10; }
 .tile .cover { padding: 1rem; }
 .tile .cover__title { font-size: clamp(28px, 4.4vw, 84px); margin-top: auto; }
-.bar__cta { display: none; }
 
 /* --------------------------------------------------------------------------
    PÁGINA DE PROYECTO
@@ -579,24 +584,9 @@ picture { display: contents; }
 .site-foot__links { display: flex; flex-wrap: wrap; gap: .4rem 1.6rem; align-items: baseline; }
 @media (hover: hover) { .site-foot a:hover { text-decoration: underline; text-underline-offset: 3px; } }
 
-/* Pista de uso en móvil (solo la primera visita) */
-.hint {
-  position: fixed; left: var(--gut); right: var(--gut); top: 46%; z-index: 45;
-  display: flex; justify-content: space-between; align-items: center; gap: .5rem;
-  pointer-events: none; opacity: 0; transform: translateY(8px);
-  transition: opacity .5s ease, transform .6s var(--ease-out);
-}
-.hint span {
-  padding: .5rem .8rem; border-radius: 999px;
-  background: var(--glass); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
-  font-size: 10pt; text-transform: uppercase; letter-spacing: .02em;
-}
-.hint span:nth-child(2) { background: var(--blue); color: var(--white); }
-.hint.is-on { opacity: 1; transform: none; }
-
 /* Título compacto que aparece al pasar el título grande */
 .pj__sticky {
-  position: fixed; top: var(--gut); left: 50%; z-index: 59;
+  position: fixed; top: var(--top); left: 50%; z-index: 59;
   height: var(--pill); max-width: calc(100vw - var(--pill) * 2 - var(--gut) * 6);
   display: flex; align-items: center; padding: 0 1.15rem;
   border-radius: 999px; background: var(--glass);
@@ -772,39 +762,6 @@ html.is-lightbox { overflow: hidden; }
   .tile__name { font-size: 15px; }
   .tile:nth-of-type(3n+1) .tile__name { font-size: 22px; letter-spacing: -.01em; }
 
-  /* Home en móvil: formato stories */
-  .home .tiempos {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 62;
-    padding: calc(env(safe-area-inset-top, 0px) + 6px) var(--gut) 3.2rem;
-    background: linear-gradient(rgba(0, 0, 0, .26), rgba(0, 0, 0, 0));
-    pointer-events: none;
-  }
-  .home .tiempos .progress { pointer-events: auto; }
-  .home .play { display: none; }
-  .home .progress { gap: 3px; }
-  .home .progress button { height: 12px; }
-  .home .progress i { height: 2.5px; background: rgba(237, 236, 236, .75); box-shadow: 0 0 0 .5px rgba(0, 0, 0, .08); }
-  .home .franja, .home .grid-btn { top: calc(env(safe-area-inset-top, 0px) + var(--gut) + 14px); }
-  .home.is-grid .franja, .home.is-grid .grid-btn { top: var(--gut); }
-  .bar {
-    grid-template-columns: auto 1fr auto;
-    grid-template-areas: "num tag more" "name name name" "cta cta cta";
-    gap: .35rem .7rem; align-items: center;
-    padding: .75rem var(--gut) calc(.9rem + env(safe-area-inset-bottom, 0px));
-  }
-  .bar__num { grid-area: num; font-size: 10pt; opacity: .8; }
-  .bar__tag { grid-area: tag; grid-column: auto; grid-row: auto; font-size: 9.5pt; text-transform: uppercase; letter-spacing: .02em; opacity: .8; }
-  .bar__more { grid-area: more; grid-column: auto; grid-row: auto; font-size: 10pt; }
-  .bar__name { grid-area: name; font-size: clamp(30px, 9.2vw, 44px); line-height: .98; letter-spacing: -.025em; text-transform: none; }
-  .bar__name.roll > span { white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; padding-bottom: .06em; }
-  .bar__cta {
-    grid-area: cta; justify-self: start; margin-top: .35rem;
-    display: inline-flex; align-items: center; gap: .55rem;
-    height: 36px; padding: 0 1.05rem;
-    border: 1.2px solid currentColor; border-radius: 999px;
-    font-size: 10pt; text-transform: uppercase; letter-spacing: .03em;
-  }
-  .bar__cta:active { background: var(--white); color: var(--blue); }
 
   .pj__head { padding-left: var(--gut); padding-right: var(--gut); }
   .pj__hero video, .pj__hero img { aspect-ratio: var(--ar-m, var(--ar)); }

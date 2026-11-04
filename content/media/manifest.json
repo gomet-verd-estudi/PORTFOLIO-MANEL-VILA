@@ -49,26 +49,6 @@
    "h264": 326433
   }
  },
- "content/media/way.mp4": {
-  "h264": "content/media/way.mp4",
-  "hevc": "content/media/way.hevc.mp4",
-  "av1": "content/media/way.av1.mp4",
-  "bytes": {
-   "h264": 2325214,
-   "hevc": 922957,
-   "av1": 797473
-  }
- },
- "content/media/way-movil.mp4": {
-  "h264": "content/media/way-movil.mp4",
-  "hevc": "content/media/way-movil.hevc.mp4",
-  "av1": "content/media/way-movil.av1.mp4",
-  "bytes": {
-   "h264": 2329050,
-   "hevc": 959600,
-   "av1": 796812
-  }
- },
  "content/media/sun-and-snow.mp4": {
   "h264": "content/media/sun-and-snow.mp4",
   "hevc": "content/media/sun-and-snow.hevc.mp4",

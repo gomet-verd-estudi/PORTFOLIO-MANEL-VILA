@@ -2,3 +2,5 @@
 /about.html        /about/      301
 /proyectos         /?grid       302
 /proyectos/        /?grid       302
+/proyectos/colapso/  /?grid       301
+/proyectos/way/      /?grid       301
