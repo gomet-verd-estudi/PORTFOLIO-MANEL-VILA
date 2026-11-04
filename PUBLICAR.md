@@ -32,6 +32,9 @@ A partir de aquí, cada cambio que se fusione en `main` se publica solo en manel
 ## Archivos de este repositorio relacionados
 
 - `_headers`: caché de fotos y vídeos y cabeceras de seguridad. Lo usa Cloudflare Pages; GitHub Pages lo ignora.
+- `_redirects`: redirecciones de direcciones antiguas, como `/about.html` → `/about/`. Solo Cloudflare Pages.
 - `404.html`: la página que se muestra cuando una dirección no existe.
-- `robots.txt` y `sitemap.xml`: para los buscadores.
-- `content/posters/og.jpg`: la imagen que aparece al compartir el enlace en WhatsApp, Instagram, LinkedIn, etc.
+- `robots.txt` y `sitemap.xml`: para los buscadores. El sitemap incluye cada proyecto y sus imágenes, y se regenera con `node tools/build.mjs`.
+- `site.webmanifest`, `favicon.ico` y `apple-touch-icon.png`: iconos para el navegador y para el móvil.
+- `assets/js/host.js`: si alguien entra por la dirección antigua de GitHub Pages, lo lleva a manelvila.com, solo si el dominio responde.
+- `content/posters/og.jpg`: la imagen que aparece al compartir el enlace.

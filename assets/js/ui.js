@@ -152,16 +152,8 @@
      Lista de proyectos del panel + previsualización que sigue al cursor
      ------------------------------------------------------------------ */
   const list = document.querySelector('.plist');
-  if (list && window.PROJECTS) {
-    const isHome = document.body.classList.contains('home');
-    const pad = (n) => String(n).padStart(2, '0');
-    list.innerHTML = window.PROJECTS.map((p, i) => `
-      <a class="plist__row" href="${isHome ? '#' + p.slug : 'index.html#' + p.slug}" data-index="${i}">
-        <span class="plist__num">${pad(i + 1)}</span>
-        <span class="plist__name">${p.name}</span>
-        <span class="plist__tag">${p.tag}</span>
-      </a>`).join('');
-
+  if (list) {
+    // La lista viene escrita en el HTML (tools/build.mjs): enlaces reales a cada proyecto.
     const preview = document.createElement('div');
     preview.className = 'peek';
     preview.setAttribute('aria-hidden', 'true');
@@ -169,7 +161,6 @@
     document.body.appendChild(preview);
     const pimg = preview.firstChild;
     let tx = 0, ty = 0, px = 0, py = 0, raf = 0, on = false;
-    const thumb = (p) => (p.media ? (p.media.type === 'image' ? p.media.src : p.media.poster) : (p.gallery && p.gallery[0]));
     const loop = () => {
       px += (tx - px) * 0.18; py += (ty - py) * 0.18;
       preview.style.transform = `translate3d(${px}px, ${py}px, 0)`;
@@ -182,25 +173,34 @@
     });
     list.addEventListener('pointerover', (e) => {
       const row = e.target.closest('.plist__row'); if (!row || e.pointerType !== 'mouse') return;
-      const src = thumb(window.PROJECTS[+row.dataset.index]);
+      const src = row.dataset.thumb;
       if (!src) { preview.classList.remove('is-on'); return; }
-      if (pimg.getAttribute('src') !== encodeURI(src)) pimg.src = encodeURI(src);
+      if (pimg.getAttribute('src') !== src) pimg.src = src;
       if (!on) { px = tx = e.clientX + 24; py = ty = e.clientY - 80; }
       on = true; preview.classList.add('is-on');
       if (!raf) raf = requestAnimationFrame(loop);
     });
     list.addEventListener('pointerleave', () => { on = false; preview.classList.remove('is-on'); });
-
-    list.addEventListener('click', (e) => {
-      const row = e.target.closest('.plist__row'); if (!row) return;
-      if (isHome && window.HOME) {
-        e.preventDefault();
-        const i = +row.dataset.index;
-        on = false; preview.classList.remove('is-on');
-        queue(closeNav).then(() => window.HOME.goTo(i, { fromMenu: true }));
-      }
-    });
+    list.addEventListener('click', () => { on = false; preview.classList.remove('is-on'); });
   }
+
+  /* ------------------------------------------------------------------
+     Copiar el email con un clic
+     ------------------------------------------------------------------ */
+  document.addEventListener('click', async (e) => {
+    const b = e.target.closest('[data-copy]'); if (!b) return;
+    e.preventDefault();
+    const text = b.dataset.copy;
+    try { await navigator.clipboard.writeText(text); }
+    catch (err) {
+      const t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select();
+      try { document.execCommand('copy'); } catch (er) { /* sin portapapeles */ }
+      t.remove();
+    }
+    const label = b.textContent;
+    b.textContent = 'Copiado ✓'; b.classList.add('is-done');
+    setTimeout(() => { b.textContent = label; b.classList.remove('is-done'); }, 1800);
+  });
 
   /* ------------------------------------------------------------------
      Intro: el monograma se construye barra a barra (una vez por sesión)
@@ -219,7 +219,7 @@
   }
 
   /* ------------------------------------------------------------------
-     Revelado al hacer scroll (about)
+     Revelado al hacer scroll
      ------------------------------------------------------------------ */
   const reveals = document.querySelectorAll('[data-reveal]');
   if (reveals.length) {
