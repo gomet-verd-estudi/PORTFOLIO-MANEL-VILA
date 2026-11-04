@@ -557,13 +557,15 @@ window.GALLERY = {
   ],
   [
    "content/uploads/figma/bernal/03.jpg",
-   1000,
-   563
+   628,
+   356,
+   "content/uploads/figma-video/bernal/03.mp4"
   ],
   [
    "content/uploads/figma/bernal/04.jpg",
-   1000,
-   563
+   628,
+   356,
+   "content/uploads/figma-video/bernal/04.mp4"
   ],
   [
    "content/uploads/figma/bernal/05.jpg",

@@ -423,7 +423,10 @@
     const v = document.createElement('video');
     Object.assign(v, { muted: true, loop: true, playsInline: true, autoplay: true, preload: 'auto', poster: img.src });
     v.width = img.width; v.height = img.height;
-    v.addEventListener('loadeddata', () => { img.replaceWith(v); v.play().catch(() => {}); }, { once: true });
+    v.addEventListener('loadeddata', () => {
+      if (fig.classList.contains('g--full') && v.videoWidth < 900) fig.classList.add('g--small');
+      img.replaceWith(v); v.play().catch(() => {});
+    }, { once: true });
     v.addEventListener('error', () => v.remove(), { once: true });
     v.src = img.dataset.video;
   }
@@ -473,7 +476,10 @@
     const [slug, view] = location.hash.slice(1).split('/');
     const i = projects.findIndex((p) => p.slug === slug);
     if (i < 0) return;
-    if (view === 'ver') { if (!flags.sheet) { goTo(i, { smooth: false, dir: 0 }); openSheet(i, false); } }
+    if (view === 'ver') {
+      if (!flags.sheet) { goTo(i, { smooth: false, dir: 0 }); openSheet(i, false); }
+      else if (i !== cur) { goTo(i, { smooth: false, dir: 0 }); fillSheet(i); }
+    }
     else { if (flags.sheet) closeSheet(true); if (i !== cur) goTo(i, { dir: i > cur ? 1 : -1 }); }
   });
 

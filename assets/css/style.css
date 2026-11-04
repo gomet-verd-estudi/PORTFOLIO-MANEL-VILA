@@ -482,7 +482,7 @@ img, video { display: block; }
   font-size: clamp(13px, 1.25vw, 19px); line-height: 1.25;
   text-transform: uppercase; letter-spacing: .01em;
 }
-.sheet__gallery { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gut); padding: 0 var(--gut); }
+.sheet__gallery { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gut); padding: 0 var(--gut); align-items: center; }
 .g { margin: 0; background: #000; overflow: hidden; opacity: 0; transform: translateY(40px); transition: opacity .9s var(--ease-out), transform 1.1s var(--ease-out); }
 .g.is-in { opacity: 1; transform: none; }
 .g--full { grid-column: 1 / -1; }
@@ -493,7 +493,12 @@ img, video { display: block; }
 .g video { max-height: 92vh; object-fit: contain; }
 .is-sheet .grid-btn { opacity: 0; pointer-events: none; }
 .grid-btn { transition: right .6s var(--ease), height .6s var(--ease), min-width .6s var(--ease), padding .6s var(--ease), opacity .3s ease; }
-.g--half img, .g--half video { height: 100%; object-fit: cover; max-height: none; }
+/* Las parejas no se recortan: cada pieza del deck se ve entera */
+.g--half { background: transparent; display: grid; place-items: center; }
+.g.g--half img, .g.g--half video { width: auto; max-width: 100%; height: auto; max-height: 92vh; }
+/* Vídeos de baja resolución: centrados a su tamaño, sin escalar a sangre */
+.g.g--small { background: transparent; display: grid; place-items: center; }
+.g.g--small video { width: min(100%, 980px); }
 .g.g--solo video { width: auto; max-width: 100%; max-height: 92vh; }
 .sheet__next {
   display: block; width: 100%;
