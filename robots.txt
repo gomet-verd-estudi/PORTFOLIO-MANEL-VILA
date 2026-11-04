@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /content/src/legacy-index.html
+
+Sitemap: https://manelvila.com/sitemap.xml

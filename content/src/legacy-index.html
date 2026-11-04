@@ -1,0 +1,1878 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scroll Infinito Bidireccional</title>
+    <style>
+        /* Estilos generales */
+
+        @font-face {
+            font-family: 'KMR-Waldenburg';
+            src: url('content/src/font/KMR-Waldenburg-Buch.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        /* Aplicar la fuente personalizada globalmente */
+        body {
+            font-family: 'KMR-Waldenburg', Arial, Helvetica, sans-serif;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        /* Estilos de contenedor principal */
+        #gran-contenedor {
+            display: flex;
+            flex-direction: row;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-snap-type: x mandatory;
+            background-color: blue;
+            height: 100%;
+            width: 100%;
+
+        }
+
+        #gran-contenedor-v2 {
+            display: grid;
+            overflow-x: hidden;
+            overflow-y: auto;
+            grid-template-columns: 1fr 1fr;
+            background-color: blue;
+            height: 100%;
+            width: 100%;
+        }
+        #gran-contenedor::-webkit-scrollbar {
+            display: none;
+        }
+
+        #gran-contenedor-v2::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Estilos de cada unidad de proyecto */
+        .prj-unidad {
+            min-width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            scroll-snap-align: center;
+            position: relative;
+        }
+
+        .prj-unidad a {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            color: white;
+        }
+
+        .prj-unidad img, .prj-unidad video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .descripcion {
+            display: none;
+            flex-direction: column;
+            color: blue;
+            position: absolute;
+            z-index: 5;
+            margin: 0.5rem;
+            line-height: 12pt;
+            font-size: 11pt;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: 500;
+            bottom: 0.5rem;
+        }
+
+        /* Estilos de la franja superior */
+        .franja {
+            width: 55px;
+            height: 55px;
+            display: flex;
+                        color: blue;
+            line-height: 11pt;
+            font-size: 20pt;
+            z-index: 10;
+            background-color: rgba(234, 233, 233, 0.495);
+            backdrop-filter: blur(10px);
+            font-family: 'KMR-Waldenburg', Arial, Helvetica, sans-serif;
+        position: absolute;
+            border-radius: 50px;
+            transition: all 0.5s ease;
+            margin-top: 0.5rem;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            left: 0.5rem;
+        }
+
+        .grid {
+            width: 55px;
+            height: 55px;
+            display: flex;
+            -webkit-text-stroke: 0.5pt blue; /* Trazo de 1px de grosor en negro */
+
+                        color: blue;
+            line-height: 7.7pt;
+            text-align: center;
+            padding-left: 0.1;
+            padding-top: 0.05rem;
+            font-size: 10pt;
+            z-index: 10;
+            background-color: rgba(234, 233, 233, 0.495);
+            backdrop-filter: blur(10px);
+            font-family: 'KMR-Waldenburg', Arial, Helvetica, sans-serif;
+        position: absolute;
+            border-radius: 50px;
+            transition: all 0.5s ease;
+            margin-top: 0.5rem;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            left: calc(55px + 1rem);
+            opacity: 0;
+        }
+
+        /* Estilos para los divs dinámicos */
+        .nombre-jo {
+            display: flex;
+            width: auto;
+            height: 55px;
+            overflow: visible;
+
+            align-items: center;
+        }
+
+        /* Ajustes para otros elementos dentro de .franja */
+        .projectes, .about, .contact{
+            width: 0;
+            opacity: 0;
+            overflow-y: none;
+            transition: width 0.5s ease, opacity 0.5s ease;
+            align-items: center;
+        }
+    
+.m{
+    width: calc(55px - 1rem);
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin: 0.5rem;
+overflow: visible;
+padding-bottom: 0.2rem;
+}
+
+.franja-info{
+    max-width: 100%;
+    min-width: 100%;
+
+    height: auto;
+    background-color: blue;
+    display: flex;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+    line-height: 12pt;
+            font-size: 11pt;
+            font-family: 'KMR-Waldenburg', Arial, Helvetica, sans-serif;
+            color: white;
+            margin: 0;
+}
+
+.caja-info{
+    display: flex;
+    width: 50%;
+    flex-direction: row;
+}
+
+.peque-desc{
+    display: flex;
+    width: 50%;
+    flex-direction: column;
+
+}
+
+.parte-desc{
+    flex-direction: row;
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.texto-info-corta{
+    display: flex;
+    width: 100%;
+  
+}
+.bot-mas-info{
+display: flex;
+width: 10%;
+height: auto;
+justify-content: end;
+}
+.caja-inferior {
+    position: fixed;       /* Posición fija para que se mantenga en la parte inferior de la pantalla */
+    bottom: 0;             /* Alineación en la parte inferior */
+    left: 0;               /* Alineación al borde izquierdo */
+    right: 0;              /* Alineación al borde derecho */
+    width: 100%;           /* Ocupa todo el ancho de la pantalla */
+    height: auto;          /* Mantiene la altura en función de su contenido */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;   /* Centra el contenido horizontalmente */
+    padding: 0rem; 
+    padding-bottom: 0;
+    padding-left: 1rem;      /* Espaciado alrededor del contenido */
+    gap: 0.5rem;
+    box-sizing: border-box; /* Incluye el padding en el ancho total */
+    z-index: 100;          /* Asegura que esté por encima de otros elementos */
+}
+.desc-larga{
+    width: 50%;
+
+    display: flex;
+    z-index: 4;
+    background-color: blue;
+    font-size: 11pt;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: 500;
+            color: white;
+            padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+}
+.anel{
+    display: inline-block; /* Asegura que se ajuste al contenido */
+    white-space: nowrap;   /* Evita el salto de línea */
+    overflow: visible;     /* Asegura que el texto no se corte */
+    width: 0;
+}
+.caja-nombre-prj{
+    width: 50%;
+    display: flex;
+    align-items: center;
+}
+
+.caja-tag-prj{
+    width: 50%;
+    display: flex;
+    align-items: center;
+}
+
+
+svg {
+      width: 100%;
+      height: 100%;
+      margin: 0 auto;
+      display: flex;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+    }
+
+    rect {
+      transition: all 0.5s ease; /* Suaviza los cambios de todas las propiedades */
+    }
+
+   
+
+    .caja-about {
+    width: 50%;
+    height: auto; /* Inicialmente auto para que pueda expandirse dinámicamente */
+    display: none; /* Oculto inicialmente para que funcione con slideDown */
+    font-size: 18pt;
+    z-index: 10;
+    background-color: rgba(234, 233, 233, 0.495);
+    backdrop-filter: blur(10px);
+    font-family: 'KMR-Waldenburg', Arial, Helvetica, sans-serif;
+    color: blue;
+    border-radius: 15px;
+    top: calc(30px + 1rem);
+    position: absolute;
+    left: 25%;
+    padding: 0.5rem; /* Padding funcional */
+    box-sizing: border-box; /* Incluye padding en el cálculo del tamaño */
+    overflow: hidden; /* Asegurar que el contenido no desborde cuando colapsa */
+    transition: none; /* Transiciones desactivadas para evitar conflictos con jQuery */
+
+}
+.cerrar-about{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    height: auto;
+    justify-content: end;
+}
+.bot-cerrar-about{
+    width: auto;
+    height: auto;
+    display: flex;
+}
+
+.contenido-list{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    height: auto;
+}
+
+.caja-projectes {
+    width: 50%;
+    height: auto; /* Inicialmente auto para que pueda expandirse dinámicamente */
+    display: none; /* Oculto inicialmente para que funcione con slideDown */
+    font-size: 18pt;
+    z-index: 10;
+    background-color: rgba(234, 233, 233, 0.495);
+    backdrop-filter: blur(10px);
+    font-family: 'KMR-Waldenburg', Arial, Helvetica, sans-serif;
+    color: blue;
+    border-radius: 15px;
+    top: calc(30px + 1rem);
+    position: absolute;
+    left: 25%;
+    padding: 0.5rem; /* Padding funcional */
+    box-sizing: border-box; /* Incluye padding en el cálculo del tamaño */
+    overflow-x: hidden; /* Asegurar que el contenido no desborde cuando colapsa */
+    transition: none; /* Transiciones desactivadas para evitar conflictos con jQuery */
+    flex-direction: column;
+    overflow-y: auto;
+    max-height: 70%;
+
+}
+.caja-projectes::-webkit-scrollbar {
+    width: 8px; /* Ancho de la barra lateral */
+  }
+  .caja-projectes::-webkit-scrollbar-track {
+    background: none; /* Color del fondo del track */
+ }
+
+ .caja-projectes::-webkit-scrollbar-thumb {
+    background-color:rgb(187, 187, 187); /* Color de la barra */
+    border-radius: 10px; /* Bordes redondeados */
+  }
+
+  .caja-projectes::-webkit-scrollbar-thumb:hover {
+    background-color: #9c9c9c; /* Color cuando se pasa el ratón por encima */
+  }
+
+.cerrar-projectes{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    height: auto;
+    justify-content: end;
+}
+.bot-cerrar-projectes{
+    width: auto;
+    height: auto;
+    display: flex;
+}
+
+.portada-mobile{
+    display: none;
+}
+
+.portada-desktop{
+    display: flex;
+}
+    .tiempos{
+        width: 100%;
+        height: auto;
+        display: flex;
+        gap: 0.2rem;
+        flex-direction: row;
+        padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0rem;
+    padding-bottom: 0.2rem;
+    }
+
+    
+ 
+
+        @media (max-width: 923px) {
+
+
+
+        
+
+            .portada-mobile{
+    display: flex;
+}
+
+.portada-desktop{
+    display: none;
+}
+            .caja-about{
+    width: calc(100% - 1rem);
+    height: auto; /* Inicialmente auto para que pueda expandirse dinámicamente */
+    display: none; /* Oculto inicialmente para que funcione con slideDown */
+    font-size: 13pt;
+    z-index: 10;
+    background-color: rgba(234, 233, 233, 0.495);
+    backdrop-filter: blur(10px);
+    font-family: 'KMR-Waldenburg', Arial, Helvetica, sans-serif;
+    color: blue;
+    border-radius: 15px;
+    top: calc(30px + 1rem);
+    position: absolute;
+    left: 0.5rem;
+    padding: 0.5rem; /* Padding funcional */
+    box-sizing: border-box; /* Incluye padding en el cálculo del tamaño */
+    overflow: hidden; /* Asegurar que el contenido no desborde cuando colapsa */
+    transition: none; /* Transiciones desactivadas para evitar conflictos con jQuery */
+
+
+    }
+
+    .caja-projectes{
+    width: calc(100% - 1rem);
+    height: auto; /* Inicialmente auto para que pueda expandirse dinámicamente */
+    display: none; /* Oculto inicialmente para que funcione con slideDown */
+    font-size: 13pt;
+    z-index: 10;
+    background-color: rgba(234, 233, 233, 0.495);
+    backdrop-filter: blur(10px);
+    font-family: 'KMR-Waldenburg', Arial, Helvetica, sans-serif;
+    color: blue;
+    border-radius: 15px;
+    top: calc(30px + 1rem);
+    position: absolute;
+    left: 0.5rem;
+    padding: 0.5rem; /* Padding funcional */
+    box-sizing: border-box; /* Incluye padding en el cálculo del tamaño */
+    overflow-X: hidden; /* Asegurar que el contenido no desborde cuando colapsa */
+    overflow-y: auto;
+    transition: none; /* Transiciones desactivadas para evitar conflictos con jQuery */
+
+
+    }
+  
+
+            .franja {
+                font-size: 13pt;
+                justify-content: center;
+                align-items: center;
+            }
+            .caja-tag-prj{
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+            .caja-info{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+}
+.texto-info-corta{
+    display: flex;
+    width: 100%;
+    padding-left: 0rem;
+}
+.peque-desc{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
+
+            .franja-info{
+   flex-direction: column;
+}
+
+
+.desc-larga{
+   width: 100%;
+}
+        }
+    </style>
+</head>
+<body>
+    <div class="franja">
+        <div class="nombre-jo">
+            <div class="m">
+                <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                viewBox="0 0 802.74 673.67" style="enable-background:new 0 0 802.74 673.67;" xml:space="preserve">
+                <style type="text/css">
+                  .st0 { fill: #0600FF; }
+                </style>
+                <rect x="266.01" y="0.29" width="81.25" height="673.08" transform="matrix(-0.973 0.2307 -0.2307 -0.973 682.7006 593.8474)" class="st0" />
+                <rect x="478.13" y="2.94" width="81.25" height="476.69" transform="matrix(0.973 0.2307 -0.2307 0.973 69.6535 -113.1617)" class="st0" />
+                <rect x="667.45" y="192.78" width="81.25" height="477.96" transform="matrix(0.973 -0.2307 0.2307 0.973 -80.5041 174.9896)" class="st0" />
+                <rect x="54.03" y="192.78" width="81.25" height="477.96" transform="matrix(-0.973 -0.2307 0.2307 -0.973 87.1645 873.7182)" class="st0" />
+              </svg> 
+        </div> 
+            <div class="anel">Manel Vila</div>
+            
+        </div>
+        <div class="projectes">Projects</div>
+        <div class="about">About</div>
+        <div class="contact">Contact</div>
+    </div>
+    <div class="grid">▢▢<br>▢▢</div>
+    <div class="caja-about">
+        Soy Manel Vila, diseñador gráfico y director de arte, graduado por la EASD (Escuela de Arte Superior de
+Diseño) de Valencia. Durante los últimos años, he trabajado como freelance en proyectos como los que veréis
+a continuación. Además, he colaborado con estudios como Jotateam Studio, Socis Club o T.OT. Studio.
+<br>
+<br>
+
+ Trabajo con soltura en cualquier rama del diseño gráfico, aunque me he especializado principalmente
+en branding y lettering.
+ Me considero una persona comprometida, con capacidad para trabajar en equipo y bajo presión
+ <div class="cerrar-about"><div class="bot-cerrar-about">(X)</div></div>
+    </div>
+
+    <div class="caja-projectes">
+        <div class="contenido-list"></div>
+ <div class="cerrar-projectes"><div class="bot-cerrar-projectes">(X)</div></div>
+    </div>
+
+
+    <div id="gran-contenedor">
+        <div class="prj-unidad">
+            <a href="content/src/projectes/claur.html">
+                <div class="descripcion">
+                    <div class="nom-prj">CLAUR TILES</div>
+                    <div class="tags">
+                        <div class="tag-prj">Branding</div>
+                    </div>
+                    <div class="descripcion-corta">Diseño de la nueva identidad de Claur Tiles.</div>
+                    <div class="descripcion-larga">Claur Tiles es un taller de fabricación de azulejos realizados a mano para
+                        cada cliente, especializado en proyectos de interiorismo y arquitectura.</div>
+
+                </div>
+                <video loop autoplay muted>
+                    <source src="content/uploads/2024/claur/ct-video-inicial.mp4" type="video/mp4">
+                    Tu navegador no soporta la etiqueta de video.
+                </video>
+            </a>
+        </div>
+
+        <div class="prj-unidad">
+            <a href="content/src/projectes/colapso.html">
+                <div class="descripcion">
+                    <div class="nom-prj">COLAPSO</div>
+                    <div class="tags">
+                        <div class="tag-prj">Artwork</div>
+                    </div>
+                    <div class="descripcion-corta">estp es un pequeño projecto de diseño gráfico</div>
+                    <div class="descripcion-larga">esto tendria que ser mas largo</div>
+
+                </div>
+                <img src="content/uploads/2024/colapso/colapso-foto-1.jpg">
+            </a>
+        </div>
+
+
+
+
+ <!---------------------------------------------------------------------->
+
+        <div class="prj-unidad">
+            <a>
+                <div class="descripcion">
+                    <div class="nom-prj">D'MATINADA ESTUDI</div>
+                    <div class="tags">
+                        <div class="tag-prj">Branding</div>
+                    </div>
+                    <div class="descripcion-corta">estp es un pequeño projecto de diseño gráfico</div>
+                    <div class="descripcion-larga">esto tendria que ser mas largo</div>
+
+                </div>
+                <img src="content/uploads/2024/colapso/colapso-foto-1.jpg">
+            </a>
+        </div>
+<!---------------------------------------------------------------------->
+ <!---------------------------------------------------------------------->
+
+ <div class="prj-unidad">
+    <a>
+        <div class="descripcion">
+            <div class="nom-prj">LEO RIZZI</div>
+            <div class="tags">
+                <div class="tag-prj">Artwork</div>
+            </div>
+            <div class="descripcion-corta">estp es un pequeño projecto de diseño gráfico</div>
+            <div class="descripcion-larga">esto tendria que ser mas largo</div>
+
+        </div>
+        <video loop autoplay muted>
+            <source src="content/uploads/2024/leo-rizzi/storie_2_leorizzi_1.mp4" type="video/mp4">
+            Tu navegador no soporta la etiqueta de video.
+        </video>
+    </a>
+</div>
+<!---------------------------------------------------------------------->
+ <!---------------------------------------------------------------------->
+
+ <div class="prj-unidad">
+    <a>
+        <div class="descripcion">
+            <div class="nom-prj">ZELANDIA WALK</div>
+            <div class="tags">
+                <div class="tag-prj">Branding + Editorial</div>
+            </div>
+            <div class="descripcion-corta">estp es un pequeño projecto de diseño gráfico</div>
+            <div class="descripcion-larga">esto tendria que ser mas largo</div>
+
+        </div>
+        <video loop autoplay muted class="portada-mobile">
+            <source src="content/uploads/2024/zelandia/zelandia_animación_acortada.mp4" type="video/mp4">
+            Tu navegador no soporta la etiqueta de video.
+        </video>
+        <video loop autoplay muted class="portada-desktop">
+            <source src="content/uploads/2024/zelandia/zelandia_animación_desktop.mp4" type="video/mp4">
+            Tu navegador no soporta la etiqueta de video.
+        </video>
+    </a>
+</div>
+<!---------------------------------------------------------------------->
+ <!---------------------------------------------------------------------->
+
+ <div class="prj-unidad">
+    <a>
+        <div class="descripcion">
+            <div class="nom-prj">WAY</div>
+            <div class="tags">
+                <div class="tag-prj">3D</div>
+            </div>
+            <div class="descripcion-corta">estp es un pequeño projecto de diseño gráfico</div>
+            <div class="descripcion-larga">esto tendria que ser mas largo</div>
+
+        </div>
+        <video loop autoplay muted class="portada-mobile">
+            <source src="content/uploads/2024/way/inflable amorfo FINAL VERTICAL_1.mp4" type="video/mp4">
+            Tu navegador no soporta la etiqueta de video.
+        </video>
+        <video loop autoplay muted class="portada-desktop">
+            <source src="content/uploads/2024/way/inflable amorfo FINAL HORIZONTAL_1.mp4" type="video/mp4">
+            Tu navegador no soporta la etiqueta de video.
+        </video>
+    </a>
+</div>
+<!---------------------------------------------------------------------->
+ <!---------------------------------------------------------------------->
+
+ <div class="prj-unidad">
+    <a>
+        <div class="descripcion">
+            <div class="nom-prj">MB1TO1</div>
+            <div class="tags">
+                <div class="tag-prj">Branding</div>
+            </div>
+            <div class="descripcion-corta">estp es un pequeño projecto de diseño gráfico</div>
+            <div class="descripcion-larga">esto tendria que ser mas largo</div>
+
+        </div>
+        <img src="content/uploads/2024/colapso/colapso-foto-1.jpg">
+    </a>
+</div>
+<!---------------------------------------------------------------------->
+ <!---------------------------------------------------------------------->
+
+ <div class="prj-unidad">
+    <a>
+        <div class="descripcion">
+            <div class="nom-prj">ORBIS VACUI</div>
+            <div class="tags">
+                <div class="tag-prj">Branding</div>
+            </div>
+            <div class="descripcion-corta">estp es un pequeño projecto de diseño gráfico</div>
+            <div class="descripcion-larga">esto tendria que ser mas largo</div>
+
+        </div>
+        <img src="content/uploads/2024/colapso/colapso-foto-1.jpg">
+    </a>
+</div>
+<!---------------------------------------------------------------------->
+<div class="prj-unidad">
+    <a>
+        <div class="descripcion">
+            <div class="nom-prj">TENDA</div>
+            <div class="tags">
+                <div class="tag-prj">Artwork</div>
+            </div>
+            <div class="descripcion-corta">estp es un pequeño projecto de diseño gráfico</div>
+            <div class="descripcion-larga">esto tendria que ser mas largo</div>
+
+        </div>
+        <img src="content/uploads/2024/colapso/colapso-foto-1.jpg">
+    </a>
+</div>
+<!---------------------------------------------------------------------->
+ <!---------------------------------------------------------------------->
+
+ <div class="prj-unidad">
+    <a>
+        <div class="descripcion">
+            <div class="nom-prj">VINTAGE PALACE</div>
+            <div class="tags">
+                <div class="tag-prj">Branding</div>
+            </div>
+            <div class="descripcion-corta">estp es un pequeño projecto de diseño gráfico</div>
+            <div class="descripcion-larga">esto tendria que ser mas largo</div>
+
+        </div>
+        <img src="content/uploads/2024/colapso/colapso-foto-1.jpg">
+    </a>
+</div>
+<!---------------------------------------------------------------------->
+<!---------------------------------------------------------------------->
+
+<div class="prj-unidad">
+    <a>
+        <div class="descripcion">
+            <div class="nom-prj">ADIDAS MARATÓN MADRID</div>
+            <div class="tags">
+                <div class="tag-prj">Motion Graphics</div>
+            </div>
+            <div class="descripcion-corta">estp es un pequeño projecto de diseño gráfico</div>
+            <div class="descripcion-larga">esto tendria que ser mas largo</div>
+
+        </div>
+        <img src="content/uploads/2024/colapso/colapso-foto-1.jpg">
+    </a>
+</div>
+<!---------------------------------------------------------------------->
+<!---------------------------------------------------------------------->
+
+<div class="prj-unidad">
+    <a>
+        <div class="descripcion">
+            <div class="nom-prj">SUN&SNOW</div>
+            <div class="tags">
+                <div class="tag-prj">Motion Graphics</div>
+            </div>
+            <div class="descripcion-corta">Trabajo realizado en T.O.T Studio</div>
+            <div class="descripcion-larga">esto tendria que ser mas largo</div>
+
+        </div>
+        <video loop autoplay muted class="portada-mobile">
+            <source src="content/uploads/2024/tot/sun&snow/S&S_MOBILE_ANIMACION STORIES.mp4" type="video/mp4">
+            Tu navegador no soporta la etiqueta de video.
+        </video>
+        <video loop autoplay muted class="portada-desktop">
+            <source src="content/uploads/2024/tot/sun&snow/S&S_WEB_ANIMACION STORIES 2.mp4" type="video/mp4">
+            Tu navegador no soporta la etiqueta de video.
+        </video>
+    </a>
+</div>
+<!---------------------------------------------------------------------->
+<!---------------------------------------------------------------------->
+
+<div class="prj-unidad">
+    <a>
+        <div class="descripcion">
+            <div class="nom-prj">DELTA</div>
+            <div class="tags">
+                <div class="tag-prj">Motion Graphics + IA</div>
+            </div>
+            <div class="descripcion-corta">Trabajo realizado en T.O.T Studio</div>
+            <div class="descripcion-larga">esto tendria que ser mas largo</div>
+
+        </div>
+        <video loop autoplay muted>
+            <source src="content/uploads/2024/tot/delta/delta_video_home.mp4" type="video/mp4">
+            Tu navegador no soporta la etiqueta de video.
+        </video>
+    </a>
+</div>
+<!---------------------------------------------------------------------->
+<!---------------------------------------------------------------------->
+
+<div class="prj-unidad">
+    <a>
+        <div class="descripcion">
+            <div class="nom-prj">PONTEVECCHIO</div>
+            <div class="tags">
+                <div class="tag-prj">Motion Graphics</div>
+            </div>
+            <div class="descripcion-corta">Trabajo realizado en T.O.T Studio</div>
+            <div class="descripcion-larga">esto tendria que ser mas largo</div>
+
+        </div>
+        <video loop autoplay muted class="portada-desktop">
+            <source src="content/uploads/2024/tot/ponteveccio/PONTEVECCIO_WEB_LOGO_OPTIMIZADO.mp4" type="video/mp4">
+            Tu navegador no soporta la etiqueta de video.
+        </video>
+        <video loop autoplay muted class="portada-mobile">
+            <source src="content/uploads/2024/tot/ponteveccio/PONTEVECCIO_MOBILE_LOGO_OPTIMIZADO.mp4" type="video/mp4">
+            Tu navegador no soporta la etiqueta de video.
+        </video>
+    </a>
+</div>
+<!---------------------------------------------------------------------->
+<!---------------------------------------------------------------------->
+
+<div class="prj-unidad">
+    <a>
+        <div class="descripcion">
+            <div class="nom-prj">404 STUDIO</div>
+            <div class="tags">
+                <div class="tag-prj">Branding + Artwork</div>
+            </div>
+            <div class="descripcion-corta">estp es un pequeño projecto de diseño gráfico</div>
+            <div class="descripcion-larga">esto tendria que ser mas largo</div>
+
+        </div>
+        <video loop autoplay muted class="portada-mobile">
+            <source src="content/uploads/2024/404/404_portada_movile.mp4" type="video/mp4">
+            Tu navegador no soporta la etiqueta de video.
+        </video>
+        <video loop autoplay muted class="portada-desktop">
+            <source src="content/uploads/2024/404/404_portada_desktop.mp4" type="video/mp4">
+            Tu navegador no soporta la etiqueta de video.
+        </video>
+    </a>
+</div>
+<!---------------------------------------------------------------------->
+<!---------------------------------------------------------------------->
+<div class="prj-unidad">
+    <a>
+        <div class="descripcion">
+            <div class="nom-prj">BERNAL</div>
+            <div class="tags">
+                <div class="tag-prj">Artwork</div>
+            </div>
+            <div class="descripcion-corta">estp es un pequeño projecto de diseño gráfico</div>
+            <div class="descripcion-larga">esto tendria que ser mas largo</div>
+
+        </div>
+        <img src="content/uploads/2024/colapso/colapso-foto-1.jpg">
+    </a>
+</div>
+<!---------------------------------------------------------------------->
+<!---------------------------------------------------------------------->
+<div class="prj-unidad">
+    <a>
+        <div class="descripcion">
+            <div class="nom-prj">AD SPAIN</div>
+            <div class="tags">
+                <div class="tag-prj">RRSS</div>
+            </div>
+            <div class="descripcion-corta">estp es un pequeño projecto de diseño gráfico</div>
+            <div class="descripcion-larga">esto tendria que ser mas largo</div>
+
+        </div>
+        <img src="content/uploads/2024/colapso/colapso-foto-1.jpg">
+    </a>
+</div>
+<!---------------------------------------------------------------------->
+<!---------------------------------------------------------------------->
+<div class="prj-unidad">
+    <a>
+        <div class="descripcion">
+            <div class="nom-prj">KANICHE</div>
+            <div class="tags">
+                <div class="tag-prj">Artwork and AD</div>
+            </div>
+            <div class="descripcion-corta">estp es un pequeño projecto de diseño gráfico</div>
+            <div class="descripcion-larga">esto tendria que ser mas largo</div>
+
+        </div>
+        <img src="content/uploads/2024/colapso/colapso-foto-1.jpg">
+    </a>
+</div>
+<!---------------------------------------------------------------------->
+<!---------------------------------------------------------------------->
+<div class="prj-unidad">
+    <a href="">
+        <div class="descripcion">
+            <div class="nom-prj">CISMA</div>
+            <div class="tags">
+                <div class="tag-prj">Editorial</div>
+            </div>
+            <div class="descripcion-corta">estp es un pequeño projecto de diseño gráfico</div>
+            <div class="descripcion-larga">esto tendria que ser mas largo</div>
+
+        </div>
+        <img src="content/uploads/2024/colapso/colapso-foto-1.jpg">
+    </a>
+</div>
+<!---------------------------------------------------------------------->
+        
+      
+    </div>
+<div class="caja-inferior">
+    <div class="desc-larga">esto que es</div>
+
+    <div class="franja-info">
+        <div class="caja-info">
+            <div class="caja-nombre-prj">Cliente</div>  <div class="caja-tag-prj">Tag</div>
+        </div>
+        <div class="peque-desc">
+            <div class="parte-desc">
+                <div class="texto-info-corta">desc</div>
+                <div class="bot-mas-info">+info</div>
+            </div>
+          
+
+        </div>
+    </div>
+    <div class="tiempos"></div>
+</div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+
+
+
+
+
+
+
+    
+    
+    <script>
+
+
+
+
+$(document).ready(function () {
+    const gridButton = $('.grid');
+    let isGranContenedorV2 = false; // Controla el estado de la vista
+    let isCloning = false; // Controla si se está realizando la clonación
+    let isProgrammaticScroll = false; // Controla si el scroll es programático
+
+    // Clones para reiniciar contenido
+    const cajaInferiorTemplate = $('.caja-inferior').clone();
+    const granContenedorTemplate = $('#gran-contenedor').clone();
+
+    gridButton.on('click', function () {
+        const currentText = gridButton.html().trim(); // Obtener texto actual del botón
+
+        if (currentText === '▢') {
+            // Cambiar a vista de lista y reiniciar funciones
+            gridButton.html("▢▢<br>▢▢");
+            reiniciarContenedor('#gran-contenedor-v2', '#gran-contenedor', {
+                display: 'flex',
+                'flex-direction': 'row',
+                'overflow-x': 'auto',
+                'overflow-y': 'hidden',
+            });
+            isGranContenedorV2 = false; // Actualizar el estado
+
+        } else if (currentText === "▢▢<br>▢▢") {
+            // Cambiar a vista de cuadrícula y reiniciar funciones
+            gridButton.text('▢');
+            reiniciarContenedor('#gran-contenedor', '#gran-contenedor-v2', {
+                display: 'grid',
+                'grid-template-columns': '1fr 1fr',
+                'overflow-x': 'hidden',
+                'overflow-y': 'auto',
+            });
+            isGranContenedorV2 = true; // Actualizar el estado
+        }
+
+        // Verificar contenido del div .grid y aplicar display a .caja-inferior
+        toggleCajaInferiorDisplay();
+
+        // Reiniciar funciones generales de la web
+        reiniciarCajaInferior();
+        reiniciarFunciones();
+    });
+
+   // Función para mostrar u ocultar la caja inferior según el contenido de .grid
+   function toggleCajaInferiorDisplay() {
+        const currentText = gridButton.html().trim(); // Obtener texto actual del botón
+        const cajaInferior = $('.caja-inferior');
+
+        console.log("Texto actual del botón:", currentText);
+
+        if (currentText === "▢▢<br>▢▢") {
+            console.log("Ocultando .caja-inferior");
+            cajaInferior.css('display', 'none');
+        } else if (currentText === "▢") {
+            console.log("Mostrando .caja-inferior como flex");
+            cajaInferior.css('display', 'flex');
+        }
+    }
+
+    // Función para reiniciar contenedor principal
+    function reiniciarContenedor(actualId, nuevoId, estilos) {
+        const actualContenedor = $(actualId);
+        const nuevoContenedor = granContenedorTemplate.clone();
+
+        nuevoContenedor
+            .attr('id', nuevoId.replace('#', ''))
+            .css(estilos)
+            .scrollTop(0)
+            .scrollLeft(0);
+
+        actualContenedor.replaceWith(nuevoContenedor);
+    }
+
+    // Función para reiniciar la caja inferior
+    function reiniciarCajaInferior() {
+        $('.caja-inferior').off(); // Eliminar eventos anteriores
+        $('.caja-inferior').replaceWith(cajaInferiorTemplate.clone());
+        inicializarEventosCajaInferior();
+    }
+
+    // Función para reiniciar y asignar funciones
+    function reiniciarFunciones() {
+        generarProjectesList();
+        initializeProgressBars();
+        inicializarContenidoCentrado();
+        initializeCloning(); // Reactivar funciones de clonación
+        inicializarEventosScroll(); // Reactivar función para ocultar `.desc-larga`
+    }
+
+    // Eventos en la caja inferior
+    function inicializarEventosCajaInferior() {
+        const cajaInferior = $('.caja-inferior');
+
+        cajaInferior.on('click', '.bot-mas-info', function () {
+            const descLarga = $(".desc-larga");
+            const botMasInfo = $(this);
+
+            if (descLarga.is(":visible")) {
+                descLarga.slideUp("slow");
+                botMasInfo.text("+info");
+            } else {
+                descLarga.slideDown("slow");
+                botMasInfo.text("-info");
+            }
+        });
+
+        $(".desc-larga").hide();
+        $(".bot-mas-info").text("+info");
+    }
+
+    // Ocultar `desc-larga` al hacer scroll
+    function inicializarEventosScroll() {
+        const granContenedor = $('#gran-contenedor');
+
+        granContenedor.on('scroll', function () {
+            const descLarga = $(".desc-larga");
+            const botMasInfo = $(".bot-mas-info");
+
+            if (descLarga.is(":visible") || botMasInfo.text() === "-info") {
+                descLarga.slideUp("slow");
+                botMasInfo.text("+info");
+            }
+        });
+    }
+
+    // Generar lista de proyectos
+    function generarProjectesList() {
+        const cajaProjectes = $('.contenido-list');
+        cajaProjectes.empty();
+
+        $('.prj-unidad:not(.clone)').each(function () {
+            const nomPrj = $(this).find('.nom-prj').text();
+            const tagPrj = $(this).find('.tag-prj').text();
+            const href = $(this).find('a').attr('href');
+
+            const projectesLink = $('<a class="projectes-list"></a>').attr('href', href).css({
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                width: 'calc(100% - 0.5rem)',
+                height: 'auto',
+                borderBottom: '1pt solid blue',
+                gap: '1rem',
+                marginBottom: '0.2rem',
+                padding: '0.2rem 0',
+                textDecoration: 'none',
+                color: 'inherit',
+            });
+
+            const nomPrjList = $('<div class="nom-prj-list"></div>').text(nomPrj).css({ flex: '1' });
+            const tagPrjList = $('<div class="tag-prj-list"></div>').text(tagPrj).css({ flex: '1', textAlign: 'right' });
+
+            projectesLink.append(nomPrjList, tagPrjList);
+            cajaProjectes.append(projectesLink);
+        });
+    }
+
+    // Barras de progreso
+    function initializeProgressBars() {
+        const tiempos = $(".tiempos");
+        const unidadesOriginales = $(".prj-unidad:not(.clone)");
+        let currentIndex = 0;
+
+        function createProgressBars() {
+            tiempos.empty();
+            unidadesOriginales.each(() => {
+                const barra = $("<div></div>").addClass("barra-progreso").css({
+                    width: "100%",
+                    height: "5px",
+                    backgroundColor: "rgba(210, 210, 210, 0.795)",
+                    margin: "5px 0",
+                    position: "relative",
+                    borderRadius: "10px"
+                });
+                const progreso = $("<div></div>").addClass("progreso").css({
+                    width: "0%",
+                    height: "100%",
+                    backgroundColor: "blue",
+                    position: "absolute",
+                    borderRadius: "10px"
+                });
+                barra.append(progreso);
+                tiempos.append(barra);
+            });
+        }
+
+        function updateProgressBar(index) {
+            $(".progreso").each((i, barra) => {
+                $(barra).css("width", i === index ? "100%" : "0%");
+            });
+        }
+
+        createProgressBars();
+
+        $("#gran-contenedor").on("scroll", function () {
+            const newIndex = findCenteredUnitIndex();
+            if (newIndex !== currentIndex) {
+                currentIndex = newIndex;
+                updateProgressBar(currentIndex);
+            }
+        });
+
+        function findCenteredUnitIndex() {
+            const centerX = window.innerWidth / 2;
+            let minDistance = Infinity;
+            let centeredIndex = -1;
+
+            $(".prj-unidad").each((index, unidad) => {
+                const rect = unidad.getBoundingClientRect();
+                const unitCenterX = rect.left + rect.width / 2;
+                const distance = Math.abs(centerX - unitCenterX);
+
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    centeredIndex = index % unidadesOriginales.length;
+                }
+            });
+
+            return centeredIndex;
+        }
+    }
+
+    // Inicializar contenido centrado
+    function inicializarContenidoCentrado() {
+        const granContenedor = document.getElementById('gran-contenedor');
+
+        function updateCenteredContent() {
+            const centerX = window.innerWidth / 2;
+
+            let centeredUnit = null;
+            let minDistance = Infinity;
+
+            $('.prj-unidad').each(function () {
+                const rect = this.getBoundingClientRect();
+                const unitCenterX = rect.left + rect.width / 2;
+                const distance = Math.abs(centerX - unitCenterX);
+
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    centeredUnit = this;
+                }
+            });
+
+            if (centeredUnit) {
+                const nomPrj = $(centeredUnit).find('.nom-prj').text();
+                const tagPrj = $(centeredUnit).find('.tag-prj').text();
+                const descripcionCorta = $(centeredUnit).find('.descripcion-corta').text();
+                const descripcionLarga = $(centeredUnit).find('.descripcion-larga').text();
+
+                $('.caja-nombre-prj').text(nomPrj);
+                $('.caja-tag-prj').text(tagPrj);
+                $('.texto-info-corta').text(descripcionCorta);
+                $('.desc-larga').text(descripcionLarga);
+            }
+        }
+
+        granContenedor.addEventListener('scroll', updateCenteredContent);
+        updateCenteredContent();
+    }
+
+    // Funciones de clonación
+    function initializeCloning() {
+        const granContenedor = document.getElementById('gran-contenedor');
+
+        granContenedor.addEventListener('scroll', () => {
+            if (isProgrammaticScroll) {
+                isProgrammaticScroll = false;
+                return;
+            }
+
+            const originals = Array.from(granContenedor.children).filter(child => !child.classList.contains('clone'));
+            const originalWidth = originals[0].offsetWidth;
+
+            if (granContenedor.scrollLeft <= originalWidth) {
+                cloneCycleStart();
+            } else if (granContenedor.scrollLeft >= granContenedor.scrollWidth - granContenedor.clientWidth - originalWidth) {
+                cloneCycleEnd();
+            }
+        });
+
+        function cloneCycleEnd() {
+            if (isCloning) return;
+            isCloning = true;
+
+            const originals = Array.from(granContenedor.children).filter(child => !child.classList.contains('clone'));
+            originals.forEach(original => {
+                const clone = original.cloneNode(true);
+                clone.classList.add('clone');
+                granContenedor.appendChild(clone);
+            });
+
+            isProgrammaticScroll = true;
+            isCloning = false;
+        }
+
+        function cloneCycleStart() {
+            if (isCloning) return;
+            isCloning = true;
+
+            const originals = Array.from(granContenedor.children).filter(child => !child.classList.contains('clone'));
+            for (let i = originals.length - 1; i >= 0; i--) {
+                const clone = originals[i].cloneNode(true);
+                clone.classList.add('clone');
+                granContenedor.insertBefore(clone, granContenedor.firstChild);
+            }
+
+            isProgrammaticScroll = true;
+            granContenedor.scrollLeft += originals.length * originals[0].offsetWidth;
+            isCloning = false;
+        }
+    }
+
+    // Inicialización general
+    reiniciarFunciones();
+});
+
+
+
+
+
+
+$(document).ready(function () {
+    function generarProjectesList() {
+        const cajaProjectes = $('.contenido-list');
+        cajaProjectes.empty(); // Limpiar contenido previo
+
+        $('.prj-unidad:not(.clone)').each(function () {
+            const nomPrj = $(this).find('.nom-prj').text(); // Texto del nombre del proyecto
+            const tagPrj = $(this).find('.tag-prj').text(); // Texto del tag
+            const href = $(this).find('a').attr('href'); // Obtener el href del enlace
+
+            // Crear un nuevo elemento <a>
+            const projectesLink = $('<a class="projectes-list"></a>').attr('href', href).css({
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                width: 'calc(100% - 0.5rem)',
+                height: 'auto',
+                borderBottom: '1pt solid blue',
+                gap: '1rem',
+                marginBottom: '0.2rem',
+                padding: '0.2rem 0',
+                textDecoration: 'none',
+                color: 'inherit',
+            });
+
+            // Crear elementos internos para nombre y tag
+            const nomPrjList = $('<div class="nom-prj-list"></div>').text(nomPrj).css({
+                flex: '1',
+            });
+            const tagPrjList = $('<div class="tag-prj-list"></div>').text(tagPrj).css({
+                flex: '1',
+                textAlign: 'right',
+            });
+
+            // Añadir los elementos al enlace
+            projectesLink.append(nomPrjList, tagPrjList);
+
+            // Añadir el enlace a la caja de proyectos
+            cajaProjectes.append(projectesLink);
+        });
+    }
+
+    // Función para mostrar u ocultar `caja-projectes`
+ // Función para manejar la visibilidad de `caja-projectes` y sincronizar con `caja-about`
+function toggleCajaProjectes() {
+    const cajaProjectes = $('.caja-projectes');
+    const cajaAbout = $('.caja-about');
+
+    if (!cajaProjectes.is(':visible')) {
+        // Caso 1: Si `.caja-projectes` no es visible
+        if (cajaAbout.is(':visible')) {
+            // Si `.caja-about` está visible, primero ocultarlo
+            cajaAbout.stop(true, true).slideUp('slow', function () {
+                // Después mostrar `.caja-projectes`
+                cajaProjectes.stop(true, true).slideDown('slow');
+            });
+        } else {
+            // Si `.caja-about` no está visible, mostrar `.caja-projectes` directamente
+            cajaProjectes.stop(true, true).slideDown('slow');
+        }
+    } else {
+        // Caso 2: Si `.caja-projectes` ya es visible, ocultarlo
+        cajaProjectes.stop(true, true).slideUp('slow');
+    }
+}
+
+// Event listener para `.projectes`
+$('.projectes').click(function () {
+    toggleCajaProjectes();
+});
+
+
+    // Cerrar `caja-projectes` al hacer clic en `.bot-cerrar-projectes`
+    $('.bot-cerrar-projectes').click(function () {
+        $('.caja-projectes').stop(true, true).slideUp('slow');
+    });
+
+
+    // Manejar clics en `.about`, `.contact`, `.nombre-jo`
+    $('.about, .contact, .nombre-jo').click(function (event) {
+        const target = $(this); // Elemento que dispara el evento
+        if ($('.caja-projectes').is(':visible')) {
+            $('.caja-projectes').stop(true, true).slideUp('slow', function () {
+                // Ejecutar acción relacionada con el botón después de ocultar
+                target.trigger('click');
+            });
+            event.stopImmediatePropagation();
+        }
+    });
+
+    // Actualizar contenido dinámicamente al añadir o cambiar `.prj-unidad`
+    const observer = new MutationObserver(() => {
+        generarProjectesList(); // Actualizar contenido dinámico
+    });
+    observer.observe(document.getElementById('gran-contenedor'), { childList: true, subtree: true });
+
+    // Generar contenido inicial
+    generarProjectesList();
+});
+
+
+
+
+
+
+$(document).ready(function () {
+    // Configurar inicialmente como oculto con jQuery
+    $(".caja-about").hide();
+
+    // Manejar el clic en el botón .about
+    $(".about").click(function () {
+        const cajaAbout = $(".caja-about");
+
+        if (cajaAbout.is(":visible")) {
+            // Ocultar el contenido con slideUp
+            cajaAbout.stop(true, true).slideUp("slow");
+        } else {
+            // Mostrar el contenido con slideDown
+            cajaAbout.stop(true, true).slideDown("slow");
+        }
+    });
+
+
+    $(".bot-cerrar-about").click(function () {
+        const cajaAbout = $(".caja-about");
+
+        if (cajaAbout.is(":visible")) {
+            // Ocultar el contenido con slideUp
+            cajaAbout.stop(true, true).slideUp("slow");
+        } 
+    });
+
+
+});
+
+// Función para ajustar el font-size de la franja en función del ancho de la pantalla
+function ajustarFontSize() {
+        const franja = document.querySelector('.franja');
+        if (window.innerWidth < 923) {
+            franja.style.fontSize = '13pt';
+        } else {
+            franja.style.fontSize = '18pt';
+        }
+    }
+
+    // Llamar a la función inicialmente para establecer el tamaño correcto
+    ajustarFontSize();
+
+    // Escuchar el evento resize para cambiar el tamaño dinámicamente
+    window.addEventListener('resize', ajustarFontSize);
+
+
+
+
+
+
+$(document).ready(function () {
+    const rects = document.querySelectorAll('rect');
+    const initialProps = [
+        { x: '266.01', y: '0.29', width: '81.25', height: '673.08', transform: 'matrix(-0.973 0.2307 -0.2307 -0.973 682.7006 593.8474)' },
+        { x: '478.13', y: '2.94', width: '81.25', height: '476.69', transform: 'matrix(0.973 0.2307 -0.2307 0.973 69.6535 -113.1617)' },
+        { x: '667.45', y: '192.78', width: '81.25', height: '477.96', transform: 'matrix(0.973 -0.2307 0.2307 0.973 -80.5041 174.9896)' },
+        { x: '54.03', y: '192.78', width: '81.25', height: '477.96', transform: 'matrix(-0.973 -0.2307 0.2307 -0.973 87.1645 873.7182)' }
+    ];
+    const finalProps = [
+        { x: '121.84', y: '-26.52', width: '81.25', height: '378.27', transform: 'matrix(0.7071 -0.7071 0.7071 0.7071 -67.4031 162.5112)' },
+        { x: '470.4', y: '-26.62', width: '81.25', height: '378.4', transform: 'matrix(-0.7071 -0.7071 0.7071 -0.7071 757.4236 638.8838)' },
+        { x: '-26.67', y: '470.51', width: '378.27', height: '81.25', transform: 'matrix(0.7071 -0.7071 0.7071 0.7071 -313.8434 264.5908)' },
+        { x: '470.36', y: '322', width: '81.25', height: '378.27', transform: 'matrix(0.7071 -0.7071 0.7071 0.7071 -211.7646 511.0289)' }
+    ];
+    let isTransformed = false;
+
+    $('.nombre-jo').click(function () {
+        const cajaProjectes = $('.caja-projectes');
+
+        // Si .caja-projectes está visible, primero lo ocultamos
+        if (cajaProjectes.is(':visible')) {
+            cajaProjectes.stop(true, true).slideUp('slow', function () {
+                animateSvg();
+            });
+        } else {
+            animateSvg();
+        }
+
+        // Función para manejar la animación del SVG
+        function animateSvg() {
+            const props = isTransformed ? initialProps : finalProps;
+            rects.forEach((rect, index) => {
+                rect.setAttribute('x', props[index].x);
+                rect.setAttribute('y', props[index].y);
+                rect.setAttribute('width', props[index].width);
+                rect.setAttribute('height', props[index].height);
+                rect.setAttribute('transform', props[index].transform);
+            });
+            isTransformed = !isTransformed;
+        }
+    });
+});
+
+
+$(document).ready(function() {
+    // Seleccionar el contenedor de scroll
+    const granContenedor = $("#gran-contenedor");
+
+    // Ocultar el .desc-larga inicialmente
+    $(".desc-larga").hide();
+
+    // Alternar visibilidad de .desc-larga al hacer clic en .bot-mas-info
+    $(".bot-mas-info").click(function() {
+        const descLarga = $(".desc-larga");
+        const botMasInfo = $(this);
+
+        // Alternar con animaciones de slide
+        if (descLarga.is(":visible")) {
+            descLarga.slideUp("slow");   // Ocultar con slide up
+            botMasInfo.text("+info");         // Cambiar texto a "+"
+        } else {
+            descLarga.slideDown("slow"); // Mostrar con slide down
+            botMasInfo.text("-info");     // Cambiar texto a "-info"
+        }
+    });
+
+    // Listener para el evento de scroll en #gran-contenedor
+    granContenedor.on("scroll", function() {
+        const descLarga = $(".desc-larga");
+        const botMasInfo = $(".bot-mas-info");
+
+        // Si el .desc-larga está visible o el texto es "-info", ocultarlo con slideUp
+        if (descLarga.is(":visible") || botMasInfo.text() === "-info") {
+            descLarga.slideUp("slow"); // Ocultar con slideUp
+            botMasInfo.text("+info");      // Cambiar el texto de vuelta a "+"
+        }
+    });
+});
+
+
+
+
+
+
+
+  
+
+
+
+    $(document).ready(function() {
+    // Calcular el ancho natural del elemento .anel sin modificar su apariencia inicial
+    const anelNaturalWidth = getNaturalWidth($(".anel"));
+
+    $(".nombre-jo").click(function() {
+        const cajaAbout = $(".caja-about");
+
+        // Función para ejecutar las acciones principales
+        function ejecutarAcciones() {
+            const elements = [".anel", ".projectes", ".about", ".contact"];
+            const franja = $(".franja");
+
+            elements.forEach(selector => {
+                const element = $(selector);
+                if (element.width() > 0) {
+                    // Si el elemento está visible, lo ocultamos
+                    slideOutToRight(element);
+                    $(".franja").css({ width: "55px", left: "0.5rem", fontSize: "20pt", height: "55px" });
+                    $(".grid").css({ width: "55px", left: "calc(55px + 1rem)", fontSize: "9pt", height: "55px", opacity:"0%" });
+                    $(".about, .contact, .projectes").css({ padding: "0rem" });
+                    $(".nombre-jo").css("width", "55px");
+                    $(".m").css({ width: "calc(55px - 1rem)" });
+                    $(".m").css("padding-bottom", "0.2rem");
+                    $(".menu").css("align-item", "start");
+                } else {
+                    // Si el elemento está oculto, mostramos con el ancho calculado
+                    const targetWidth = selector === ".anel" ? anelNaturalWidth : getNaturalWidth(element);
+                    slideInFromLeft(element, targetWidth);
+
+                    if (window.innerWidth < 923) {
+                        $(".franja").css({ width: "calc(100% - 1.5rem - 30px)", left: "0.5rem", fontSize: "13pt" });
+                        $(".m").css({ width: "15px" });
+                        $(".grid").css({ width: "30px", left: "calc(100% - 30px - 0.5rem)", fontSize: "9pt", height: "30px", opacity:"100%" });
+
+                    } else {
+                        $(".franja").css({ width: "calc(50% - 30px - 0.25rem)", left: "25%", fontSize: "18pt" });
+                        $(".grid").css({ width: "30px", left: "calc(75% - 30px + 0.25rem)", fontSize: "9pt", height: "30px", opacity:"100%" });
+
+                        $(".m").css({ width: "21px" });
+                    }
+                    $(".m").css({ width: "21px" });
+                    $(".franja").css({ height: "30px", justifyContent: "start" });
+                    $(".about, .contact, .projectes").css({ padding: "0.5rem" });
+                    $(".nombre-jo").css("width", "100%");
+                    $(".m").css("padding-bottom", "0rem");
+                }
+            });
+        }
+
+        // Si caja-about está visible, ocúltalo primero
+        if (cajaAbout.is(":visible")) {
+            cajaAbout.slideUp(300, ejecutarAcciones);
+        } else {
+            // Si no está visible, ejecuta directamente las acciones
+            ejecutarAcciones();
+        }
+    });
+
+    // Función para calcular el ancho natural
+    function getNaturalWidth(element) {
+        const originalCss = {
+            position: element.css("position"),
+            visibility: element.css("visibility"),
+            display: element.css("display"),
+            width: element.css("width")
+        };
+
+        element.css({
+            position: "absolute",
+            visibility: "hidden",
+            display: "inline-block",
+            width: "auto"
+        });
+
+        const naturalWidth = element.width();
+        element.css(originalCss);
+        return naturalWidth;
+    }
+
+    // Animación de entrada
+    function slideInFromLeft(element, targetWidth, duration = 300) {
+        element.css({ display: 'inline-flex' }).animate({
+            width: targetWidth,
+            opacity: 1
+        }, duration, "swing");
+    }
+
+    // Animación de salida
+    function slideOutToRight(element, duration = 300) {
+        element.animate({
+            width: 0,
+            opacity: 0
+        }, duration, "swing");
+    }
+
+    // Evento para ajustar el diseño cuando se cambia el tamaño de la ventana
+    $(window).on('resize', function() {
+        $(".franja").each(function() {
+            if ($(this).width() > 55) {
+                if (window.innerWidth < 923) {
+                    $(this).css({ width: "calc(100% - 30px - 1.5rem)", left: "0.5rem", fontSize: "13pt" });
+                    $(".grid").css({ width: "30px", left: "calc(100% - 30px - 0.5rem)", fontSize: "9pt", height: "30px", opacity:"100%" });
+                    $(".about, .contact, .projectes").css({ padding: "0.5rem" });
+
+                } else {
+                    $(this).css({ width: "calc(50% - 30px - 0.25rem)", left: "25%", fontSize: "18pt" });
+                    $(".grid").css({ width: "30px", left: "calc(75% - 30px + 0.25rem)", fontSize: "9pt", height: "30px", opacity:"100%" });
+                    $(".about, .contact, .projectes").css({ padding: "0.5rem" });
+                    
+                }
+            }
+        });
+    });
+});
+
+
+
+        const granContenedor = document.getElementById('gran-contenedor');
+        let isCloning = false;
+
+        // Función para clonar los elementos al final
+        let isProgrammaticScroll = false;
+
+function cloneCycleEnd() {
+    if (isCloning) return;
+    isCloning = true;
+
+    const originals = Array.from(granContenedor.children).filter(child => !child.classList.contains('clone'));
+    originals.forEach(original => {
+        const clone = original.cloneNode(true);
+        clone.classList.add('clone');
+        granContenedor.appendChild(clone);
+    });
+
+    isProgrammaticScroll = true; // Activar bandera para evitar interferencias
+    isCloning = false;
+}
+
+function cloneCycleStart() {
+    if (isCloning) return;
+    isCloning = true;
+
+    const originals = Array.from(granContenedor.children).filter(child => !child.classList.contains('clone'));
+    for (let i = originals.length - 1; i >= 0; i--) {
+        const clone = originals[i].cloneNode(true);
+        clone.classList.add('clone');
+        granContenedor.insertBefore(clone, granContenedor.firstChild);
+    }
+
+    isProgrammaticScroll = true; // Activar bandera para evitar interferencias
+    granContenedor.scrollLeft += originals.length * originals[0].offsetWidth;
+    isCloning = false;
+}
+
+
+        // Verificar la posición de scroll y clonar dinámicamente
+        function checkScrollPosition() {
+            const originals = Array.from(granContenedor.children).filter(child => !child.classList.contains('clone'));
+            const originalWidth = originals[0].offsetWidth;
+            const totalWidth = originals.length * originalWidth;
+
+            if (granContenedor.scrollLeft <= originalWidth) {
+                // Si estamos al inicio, clonar al principio
+                cloneCycleStart();
+            } else if (granContenedor.scrollLeft >= granContenedor.scrollWidth - granContenedor.clientWidth - originalWidth) {
+                // Si estamos al final, clonar al final
+                cloneCycleEnd();
+            }
+        }
+
+    
+
+
+
+
+        $(document).ready(function() {
+        const granContenedor = document.getElementById('gran-contenedor');
+        
+        // Función para actualizar el contenido cuando una unidad está centrada
+        function updateCenteredContent() {
+            // Obtener el centro de la ventana
+            const centerX = window.innerWidth / 2;
+
+            let centeredUnit = null;
+            let minDistance = Infinity;
+
+            // Iterar sobre cada prj-unidad
+            $('.prj-unidad').each(function() {
+                const rect = this.getBoundingClientRect();
+                const unitCenterX = rect.left + rect.width / 2;
+                const distance = Math.abs(centerX - unitCenterX);
+
+                // Verificar cuál está más cerca del centro
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    centeredUnit = this;
+                }
+            });
+
+            // Si encontramos una unidad centrada, actualizar el contenido
+            if (centeredUnit) {
+                const nomPrj = $(centeredUnit).find('.nom-prj').text();
+                const tagPrj = $(centeredUnit).find('.tag-prj').text();
+                const descripcionCorta = $(centeredUnit).find('.descripcion-corta').text();
+                const descripcionLarga = $(centeredUnit).find('.descripcion-larga').text();
+
+                $('.caja-nombre-prj').text(nomPrj);
+                $('.caja-tag-prj').text(tagPrj);
+                $('.texto-info-corta').text(descripcionCorta);
+                $('.desc-larga').text(descripcionLarga);
+            }
+        }
+
+        // Escuchar el evento de scroll y actualizar el contenido dinámicamente
+        granContenedor.addEventListener('scroll', updateCenteredContent);
+
+        // Llamar a la función una vez al cargar para inicializar el contenido con la primera unidad centrada
+        updateCenteredContent();
+    });
+
+
+
+
+    granContenedor.addEventListener('scroll', () => {
+    if (isProgrammaticScroll) {
+        // Si el scroll es programático, no ejecutar lógica adicional
+        isProgrammaticScroll = false;
+        return;
+    }
+
+    const originals = Array.from(granContenedor.children).filter(child => !child.classList.contains('clone'));
+    const originalWidth = originals[0].offsetWidth;
+    const totalWidth = originals.length * originalWidth;
+
+    if (granContenedor.scrollLeft <= originalWidth) {
+        cloneCycleStart();
+    } else if (granContenedor.scrollLeft >= granContenedor.scrollWidth - granContenedor.clientWidth - originalWidth) {
+        cloneCycleEnd();
+    }
+});
+
+
+    
+    </script>
+
+<script>
+    $(document).ready(function () {
+        const granContenedor = $("#gran-contenedor");
+        const unidadesOriginales = $(".prj-unidad:not(.clone)");
+        const tiempos = $(".tiempos");
+        let currentIndex = 0; // Índice actual del div centrado
+        let barras = []; // Referencias a las barras de progreso
+
+        // Crear las barras de progreso dinámicamente
+        function createProgressBars() {
+            tiempos.empty(); // Limpiar las barras previas
+            barras = []; // Reiniciar la lista de barras
+            unidadesOriginales.each(() => {
+                const barra = $("<div></div>").addClass("barra-progreso").css({
+                    width: "100%",
+                    height: "5px",
+                    backgroundColor: "rgba(210, 210, 210, 0.795)",
+                    margin: "5px 0",
+                    position: "relative",
+                    borderRadius: "10px"
+                });
+                const progreso = $("<div></div>").addClass("progreso").css({
+                    width: "0%",
+                    height: "100%",
+                    backgroundColor: "blue",
+                    position: "absolute",
+                    borderRadius: "10px"
+                });
+                barra.append(progreso);
+                tiempos.append(barra);
+                barras.push(progreso); // Almacena referencias a las barras
+            });
+        }
+
+        // Llenar la barra de progreso al 100% instantáneamente
+        function updateProgressBar(index) {
+            barras.forEach((barra, i) => {
+                if (i === index) {
+                    $(barra).css("width", "100%"); // Llenar barra actual
+                } else {
+                    $(barra).css("width", "0%"); // Vaciar otras barras
+                }
+            });
+        }
+
+        // Encontrar el índice del div centrado en pantalla
+        function findCenteredUnitIndex() {
+            const centerX = window.innerWidth / 2;
+            let minDistance = Infinity;
+            let centeredIndex = -1;
+
+            $(".prj-unidad").each((index, unidad) => {
+                const rect = unidad.getBoundingClientRect();
+                const unitCenterX = rect.left + rect.width / 2;
+                const distance = Math.abs(centerX - unitCenterX);
+
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    centeredIndex = index % unidadesOriginales.length;
+                }
+            });
+
+            return centeredIndex;
+        }
+
+        // Manejar el scroll manual para actualizar el div centrado y la barra
+        let debounceScroll;
+        granContenedor.on("scroll", function () {
+            clearTimeout(debounceScroll);
+            debounceScroll = setTimeout(() => {
+                const newIndex = findCenteredUnitIndex();
+                if (newIndex !== currentIndex) {
+                    currentIndex = newIndex;
+                    updateProgressBar(currentIndex); // Actualizar barra de progreso
+                }
+            }, 100);
+        });
+
+        // Inicializar la web
+        function initialize() {
+            createProgressBars(); // Crear las barras de progreso
+
+            // Iniciar con la barra correspondiente al primer div llena
+            currentIndex = findCenteredUnitIndex();
+            updateProgressBar(currentIndex);
+        }
+
+        // Iniciar el proceso
+        initialize();
+    });
+</script>
+
+
+
+
+</body>
+</html>
