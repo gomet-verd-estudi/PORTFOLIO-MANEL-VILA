@@ -19,7 +19,27 @@
   const mq = window.matchMedia('(max-width: 923px)');
   const fine = window.matchMedia('(hover: hover) and (pointer: fine)');
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const src = (m) => encodeURI(mq.matches && m.mobile ? m.mobile : m.src);
+  const coarse = window.matchMedia('(pointer: coarse)');
+  /* Códec más ligero que el navegador puede reproducir: AV1 → HEVC → H.264 (ver tools/videos.py) */
+  const MEDIA = window.MEDIA || { video: {}, img: {} };
+  const probe = document.createElement('video');
+  const can = { av1: !!probe.canPlayType('video/mp4; codecs="av01.0.08M.10"'), hevc: !!probe.canPlayType('video/mp4; codecs="hvc1.1.6.L120.90"') };
+  const best = (p) => {
+    const v = MEDIA.video[p] || { h264: p };
+    const ok = ['av1', 'hevc'].filter((k) => v[k] && can[k]).sort((a, b) => (v.bytes || {})[a] - (v.bytes || {})[b]);
+    return ok.length ? v[ok[0]] : v.h264;   // el más ligero que este navegador puede reproducir
+  };
+  const src = (m) => encodeURI(m.type === 'video' ? best(mq.matches && m.mobile ? m.mobile : m.src) : (mq.matches && m.mobile ? m.mobile : m.src));
+  /* <picture> con AVIF para las portadas de imagen */
+  function picture(path, alt, cls, eager) {
+    const d = MEDIA.img[path];
+    const e = encodeURI;
+    if (!d) return `<img class="${cls}" src="${e(path)}" alt="${esc(alt)}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">`;
+    const sizes = '100vw';
+    const aset = d.avif ? (d.smallAvif ? `${e(d.smallAvif)} 800w, ${e(d.avif)} ${d.w}w` : e(d.avif)) : '';
+    const jset = d.small ? ` srcset="${e(d.small)} 800w, ${e(path)} ${d.w}w" sizes="${sizes}"` : '';
+    return `<picture>${aset ? `<source type="image/avif" srcset="${aset}" sizes="${sizes}">` : ''}<img class="${cls}" src="${e(path)}"${jset} width="${d.w}" height="${d.h}" alt="${esc(alt)}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async"></picture>`;
+  }
   const thumbOf = (p) => (p.media ? (p.media.type === 'image' ? p.media.src : p.media.poster) : (p.gallery && p.gallery[0] && p.gallery[0][0]));
 
   const track = $('#track');
@@ -32,7 +52,7 @@
   const playBtn = $('.play');
   const cursor = $('.cursor');
   const bar = {
-    num: $('.bar__num'), name: $('.bar__name'), tag: $('.bar__tag'), short: $('.bar__short'), more: $('.bar__more')
+    num: $('.bar__num'), name: $('.bar__name'), tag: $('.bar__tag'), short: $('.bar__short'), more: $('.bar__more'), cta: $('.bar__cta')
   };
 
   let cur = -1;          // índice real activo
@@ -59,8 +79,10 @@
     const m = p.media;
     if (!m) return cover(p, i);
     const posn = m.position ? ` style="object-position:${m.position}"` : '';
-    if (m.type === 'image') return `<img class="slide__media" src="${src(m)}" alt="${esc(p.name)}"${posn} ${eager ? '' : 'loading="lazy"'} decoding="async">`;
-    return `<video class="slide__media" muted playsinline preload="none" poster="${encodeURI(m.poster || '')}" data-src="${src(m)}"${posn} aria-label="${esc(p.name)}"></video>`;
+    if (m.type === 'image') return picture(mq.matches && m.mobile ? m.mobile : m.src, p.name, 'slide__media', eager);
+    // El fotograma (poster) solo se pide para el primero; el resto, al acercarse (ver syncVideos)
+    const poster = encodeURI(m.poster || '');
+    return `<video class="slide__media" muted playsinline preload="none" ${eager ? `poster="${poster}"` : `data-poster="${poster}"`} data-src="${src(m)}"${posn} aria-label="${esc(p.name)}"></video>`;
   }
   const slideHTML = (i, clone) => `
     <section class="slide${clone ? ' is-clone' : ''}" data-real="${i}"${projects[i].media && projects[i].media.bg ? ` style="--bg:${projects[i].media.bg}"` : ''} ${clone ? 'aria-hidden="true"' : `id="p-${projects[i].slug}" aria-label="${esc(projects[i].name)}"`}>
@@ -105,12 +127,21 @@
      Vídeos: carga diferida y solo suena (muted) el visible
      ================================================================ */
   const near = (i) => { const d = Math.abs(i - cur); return d <= 1 || d === N - 1; };
+  // Ahorro de datos del sistema (Android / Chrome): solo fotogramas, sin vídeo
+  const saveData = !!(navigator.connection && navigator.connection.saveData);
   function syncVideos() {
+    if (cur < 0) return;
     slides.forEach((s, p) => {
       const v = s.querySelector('video'); if (!v) return;
       const r = +s.dataset.real;
-      if (near(r) && !v.getAttribute('src')) { v.src = v.dataset.src; v.preload = 'auto'; }
-      if (p === pos && !flags.grid) {
+      const isCur = p === pos;
+      const close = isCur || (near(r) && !s.classList.contains('is-clone'));
+      if (close && v.dataset.poster && !v.getAttribute('poster')) v.poster = v.dataset.poster;
+      if (saveData) return;
+      // El actual se descarga entero; los vecinos solo su arranque (metadata), para entrar al instante
+      if (close && !v.getAttribute('src')) { v.preload = isCur ? 'auto' : 'metadata'; v.src = v.dataset.src; }
+      if (isCur && v.preload !== 'auto') v.preload = 'auto';
+      if (isCur && !flags.grid) {
         const pr = v.play(); if (pr && pr.catch) pr.catch(() => {});
       } else if (!v.paused) v.pause();
     });
@@ -128,6 +159,7 @@
     roll(bar.num, pad(i + 1), dir);
     roll(bar.name, p.name, dir);
     bar.name.href = pageOf(i);
+    bar.cta.href = pageOf(i);
     roll(bar.tag, p.tag, dir);
     roll(bar.short, p.short, dir);
     countEl.textContent = `${pad(i + 1)} / ${pad(N)}`;
@@ -247,7 +279,11 @@
   let suppressClick = false;
   track.addEventListener('click', (e) => {
     if (suppressClick) { suppressClick = false; return; }
-    if (e.target.closest('.slide')) openProject(cur);
+    if (!e.target.closest('.slide')) return;
+    // Móvil: como unas stories — toque a la izquierda vuelve, a la derecha avanza.
+    // El proyecto se abre desde "Ver proyecto" o el nombre de la barra inferior.
+    if (coarse.matches) { e.clientX < innerWidth * 0.3 ? prev() : next(); return; }
+    openProject(cur);
   });
 
   // Teclado
@@ -316,6 +352,7 @@
   bar.more.addEventListener('click', () => (flags.more ? closeMore() : openMore()));
   more.addEventListener('click', (e) => { const a = e.target.closest('.more__open'); if (a) { e.preventDefault(); openProject(cur); } });
   bar.name.addEventListener('click', (e) => { e.preventDefault(); openProject(cur); });
+  bar.cta.addEventListener('click', (e) => { e.preventDefault(); openProject(cur); });
 
   /* ================================================================
      Vista grid
@@ -339,9 +376,9 @@
     const m = projects[+t.dataset.index].media;
     if (!m || m.type !== 'video') return;
     const v = document.createElement('video');
-    Object.assign(v, { muted: true, loop: true, playsInline: true, src: encodeURI(m.src) });
+    Object.assign(v, { muted: true, loop: true, playsInline: true, src: encodeURI(best(m.src)) });
     v.className = 'tile__video';
-    t.insertBefore(v, t.querySelector('.tile__label'));
+    t.querySelector('.tile__media').appendChild(v);
     t._v = v;
     v.addEventListener('playing', () => v.classList.add('is-on'), { once: true });
     v.play().catch(() => {});
@@ -362,14 +399,14 @@
      Abrir proyecto (página propia, con transición de la portada)
      ================================================================ */
   function openProject(i) {
-    const media = slides[pos] && slides[pos].firstElementChild;
+    const media = slides[pos] && slides[pos].querySelector('.slide__media');
     if (media) media.style.viewTransitionName = 'hero';
     closeMore();
     location.href = pageOf(i);
   }
   // Al volver con el botón atrás (bfcache), limpiar la transición y retomar el vídeo
   addEventListener('pageshow', (e) => {
-    slides.forEach((s) => s.firstElementChild && (s.firstElementChild.style.viewTransitionName = ''));
+    slides.forEach((s) => { const m = s.querySelector('.slide__media'); if (m) m.style.viewTransitionName = ''; });
     grid.querySelectorAll('img').forEach((im) => (im.style.viewTransitionName = ''));
     if (e.persisted) { last = performance.now(); syncVideos(); }
   });
@@ -436,6 +473,24 @@
     setCurrent(start, 1);
     if (location.search.includes('grid')) setGrid(true);
   });
+
+  /* Móvil: pista de uso la primera vez (tocar a los lados, mantener para pausar) */
+  if (coarse.matches && !reduced) {
+    let seen = false;
+    try { seen = localStorage.getItem('mv-hint') === '1'; localStorage.setItem('mv-hint', '1'); } catch (e) { /* sin storage */ }
+    if (!seen) {
+      const hint = document.createElement('div');
+      hint.className = 'hint';
+      hint.setAttribute('aria-hidden', 'true');
+      hint.innerHTML = '<span>← Toca</span><span>Mantén para pausar</span><span>Toca →</span>';
+      document.body.appendChild(hint);
+      const delay = document.body.classList.contains('is-intro') ? 2400 : 600;
+      setTimeout(() => hint.classList.add('is-on'), delay);
+      const off = () => { hint.classList.remove('is-on'); setTimeout(() => hint.remove(), 600); };
+      setTimeout(off, delay + 3600);
+      track.addEventListener('pointerdown', off, { once: true });
+    }
+  }
 
   window.HOME = { goTo: (i) => { if (flags.grid) setGrid(false); goTo(i, { dir: i > cur ? 1 : -1 }); }, setGrid };
 })();

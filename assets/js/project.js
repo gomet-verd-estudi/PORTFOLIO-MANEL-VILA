@@ -27,6 +27,13 @@
   addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
+  /* ---------- título compacto cuando el grande sale de pantalla ---------- */
+  const title = $('.pj__title');
+  if (title && 'IntersectionObserver' in window) {
+    new IntersectionObserver(([en]) => document.body.classList.toggle('is-past-title', !en.isIntersecting && en.boundingClientRect.top < 0))
+      .observe(title);
+  }
+
   /* ---------- vídeos del deck ---------- */
   function tryVideo(fig) {
     const im = fig.querySelector('img[data-video]'); if (!im || im._tried) return;
@@ -34,15 +41,19 @@
     const v = document.createElement('video');
     Object.assign(v, { muted: true, loop: true, playsInline: true, autoplay: true, preload: 'auto' });
     v.poster = im.currentSrc || im.src;
-    v.width = im.width; v.height = im.height;
+    v.width = +im.getAttribute('width'); v.height = +im.getAttribute('height');
     v.setAttribute('aria-label', im.alt);
     v.addEventListener('loadeddata', () => {
       if (fig.classList.contains('g--full') && v.videoWidth < 900) fig.classList.add('g--small');
-      im.replaceWith(v);
+      (im.parentElement.tagName === 'PICTURE' ? im.parentElement : im).replaceWith(v);
       v.play().catch(() => {});
     }, { once: true });
     v.addEventListener('error', () => v.remove(), { once: true });
-    v.src = im.dataset.video;
+    // data-alts: variantes de más ligera a más pesada ("url av1,url hevc"); se usa la primera reproducible
+    const TYPES = { av1: 'video/mp4; codecs="av01.0.08M.10"', hevc: 'video/mp4; codecs="hvc1.1.6.L120.90"' };
+    const alt = (im.dataset.alts || '').split(',').filter(Boolean).map((x) => x.split(' '))
+      .find(([, k]) => v.canPlayType(TYPES[k]));
+    v.src = alt ? alt[0] : im.dataset.video;
   }
   const figs = $$('.pj__gallery .g');
   if ('IntersectionObserver' in window) {
@@ -75,17 +86,17 @@
       el = document.createElement('video');
       Object.assign(el, { muted: true, loop: true, playsInline: true, autoplay: true, controls: false, src: v.currentSrc || v.src, poster: v.poster });
     } else {
-      el = new Image();
-      el.alt = im.alt;
-      el.src = im.src;              // la versión grande, no la de 800px
-      el.decoding = 'async';
+      // Copia del <picture> (AVIF + JPG) pidiendo la versión grande
+      el = (im.closest('picture') || im).cloneNode(true);
+      el.querySelectorAll('[sizes]').forEach((n) => n.setAttribute('sizes', '100vw'));
+      const ci = el.tagName === 'IMG' ? el : el.querySelector('img');
+      ci.removeAttribute('loading');
     }
     stage.replaceChildren(el);
     if (!reduced && el.animate) el.animate([{ opacity: 0, transform: 'scale(.985)' }, { opacity: 1, transform: 'none' }], { duration: 380, easing: 'cubic-bezier(.16,1,.3,1)' });
     count.textContent = `${String(at + 1).padStart(2, '0')} — ${String(figs.length).padStart(2, '0')}`;
     // precarga la siguiente
-    const nx = figs[(at + 1) % figs.length].querySelector('img');
-    if (nx) { const pre = new Image(); pre.src = nx.src; }
+
   }
   function open(n) {
     if (!lb || typeof lb.showModal !== 'function') return;
