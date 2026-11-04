@@ -5,49 +5,59 @@
  *   - { type: 'video', src: '...', mobile: '...' (opcional), poster: '...', ar: ancho/alto, bg: '#color' }
  *     ar  → proporción del vídeo. Si no encaja con la pantalla (vertical o cuadrado en escritorio),
  *           el vídeo se muestra entero, centrado, sobre el color bg (el fondo del propio vídeo).
+ *     arMobile → proporción del vídeo de móvil, si tiene uno distinto.
+ *     deck → si el vídeo de portada es también una pieza de la galería del deck, su ruta allí (para no repetirlo).
  *   - { type: 'image', src: '...', mobile: '...' (opcional) }
  *   - null  → se muestra una portada tipográfica hasta que se añada el material.
  *
- * Para añadir la portada de un proyecto: sube el archivo a content/uploads/<slug>/
- * y rellena `media`.
+ * studio: estudio en el que se desarrolló el proyecto (se muestra en la ficha).
+ *
+ * Después de editar este archivo, regenera las páginas: `node tools/build.mjs`.
  */
 const U = 'content/uploads/2024/';
 const P = 'content/posters/';
 const FV = 'content/uploads/figma-video/';
+const M = 'content/media/'; // vídeos de portada optimizados para la web (tools/videos.sh)
+const GVE = 'Gomet Verd Estudi';
+const TOT = 'T.O.T Studio';
 
 window.PROJECTS = [
   {
     slug: 'vintage-palace',
+    studio: GVE,
     name: 'Vintage Palace',
     tag: 'Branding',
     short: 'Identidad para Vintage Palace.',
     long: 'Creamos la identidad de Vintage Palace capturando la esencia urbana y potente de los años 80, 90 y 2000, incorporando elementos exclusivos y llamativos a partir del concepto “Palace” y manteniendo sus raíces como base para el diseño.',
     services: ['Identidad corporativa', 'RRSS', 'Packaging', '3D', 'Dirección de arte'],
     team: 'Junto a @albaocanya. Fotografía de @thisisart.',
-    media: { type: 'video', src: FV + 'vintage-palace/01.mp4', poster: P + 'vintage-palace.jpg', ar: 720 / 1280, bg: '#fbfbfb' }
+    media: { type: 'video', src: M + 'vintage-palace.mp4', poster: P + 'vintage-palace.jpg', ar: 720 / 1280, bg: '#fbfbfb', deck: FV + 'vintage-palace/01.mp4' }
   },
   {
     slug: '404-studio',
+    studio: GVE,
     name: '404 Studio',
     tag: 'Branding + Artwork',
     short: 'Identidad y gráfica de desfile para la 080 Barcelona Fashion Week.',
     long: 'Diseño de la nueva identidad del estudio de moda 404 Studio y de la gráfica para su última colección “No me quedan lágrimas”, basada en el cine quinqui de los 80 y presentada en la 080 Barcelona Fashion Week.',
     services: ['Identidad corporativa', 'Gráfica para el desfile 080', 'Tipografía para camisetas en colaboración con Adidas'],
     team: '',
-    media: { type: 'video', src: U + '404/404_portada_desktop.mp4', mobile: U + '404/404_portada_movile.mp4', poster: P + '404.jpg', ar: 16 / 9, bg: '#000' }
+    media: { type: 'video', src: M + '404-studio.mp4', mobile: M + '404-studio-movil.mp4', poster: P + '404.jpg', ar: 16 / 9, arMobile: 1080 / 1920, bg: '#000' }
   },
   {
     slug: 'claur-tiles',
+    studio: GVE,
     name: 'Claur Tiles',
     tag: 'Branding',
     short: 'Nueva identidad de Claur Tiles.',
     long: 'Diseño de la nueva identidad de Claur Tiles, un taller de fabricación de azulejos realizados a mano para cada cliente, especializado en proyectos de interiorismo y arquitectura.',
     services: ['Identidad corporativa', 'Packaging', 'Dirección de arte'],
     team: 'Fotografía de @mmariavaroo.',
-    media: { type: 'video', src: U + 'claur/ct-video-inicial.mp4', poster: P + 'claur.jpg', ar: 1, bg: '#000' }
+    media: { type: 'video', src: M + 'claur-tiles.mp4', poster: P + 'claur.jpg', ar: 1, bg: '#000' }
   },
   {
     slug: 'bernal-vida-y-milagros',
+    studio: GVE,
     name: 'Bernal / Vida y Milagros',
     tag: 'Branding + Editorial',
     short: 'Universo gráfico para el segundo álbum de Bernal.',
@@ -58,6 +68,7 @@ window.PROJECTS = [
   },
   {
     slug: 'dmatinada',
+    studio: GVE,
     name: 'D’Matinada',
     tag: 'Branding',
     short: 'Identidad para el estudio creativo D’Matinada.',
@@ -68,6 +79,7 @@ window.PROJECTS = [
   },
   {
     slug: 'orbis-vacui',
+    studio: GVE,
     name: 'Orbis Vacui',
     tag: 'Branding',
     short: 'Identidad para la promotora sociocultural Orbis Vacui.',
@@ -78,16 +90,19 @@ window.PROJECTS = [
   },
   {
     slug: 'leo-rizzi',
+    year: 2022,
+    studio: GVE,
     name: 'Leo Rizzi · Gira 2022',
     tag: 'Lettering + Cartelería',
     short: 'Cartel de la gira “Bailando alrededor del río”.',
     long: 'El cantante Leo Rizzi nos pidió el cartel de su gira, “Bailando alrededor del río”, y su adaptación a los formatos de Instagram. Partiendo de su estilo musical y del título de la gira, planteamos como concepto las plantas que crecen alrededor del río y cómo bailan cuando las mece el viento.',
     services: ['Lettering', 'Cartelería'],
     team: 'Fotografía de @stteveenn.',
-    media: { type: 'video', src: U + 'leo-rizzi/storie_2_leorizzi_1.mp4', poster: P + 'leo-rizzi.jpg', ar: 9 / 16, bg: '#000' }
+    media: { type: 'video', src: M + 'leo-rizzi.mp4', poster: P + 'leo-rizzi.jpg', ar: 9 / 16, bg: '#000' }
   },
   {
     slug: 'bernal',
+    studio: GVE,
     name: 'Bernal / ¿Qué tal todo allí fuera?',
     tag: 'Lettering + Editorial',
     short: 'Títulos del videoclip “Parques” y funda de vinilo hecha a mano.',
@@ -98,6 +113,7 @@ window.PROJECTS = [
   },
   {
     slug: 'kaniche',
+    studio: GVE,
     name: 'Kaniche Pedigree Hot Dogs',
     tag: 'Artwork + Dirección de arte',
     short: 'Cartelería interior entre la actitud punk y la alta sociedad.',
@@ -108,6 +124,7 @@ window.PROJECTS = [
   },
   {
     slug: 'cisma',
+    studio: GVE,
     name: 'Cisma',
     tag: 'Editorial',
     short: 'Fotolibro documental sobre Alzira.',
@@ -122,27 +139,27 @@ window.PROJECTS = [
     slug: 'zelandia-walk',
     name: 'Zelandia Walk',
     tag: 'Branding + Editorial',
-    short: 'Branding y editorial.',
+    short: 'Branding y editorial para Zelandia Walk.',
     long: '',
     services: ['Branding', 'Editorial'],
     team: '',
-    media: { type: 'video', src: U + 'zelandia/zelandia_animación_desktop.mp4', mobile: U + 'zelandia/zelandia_animación_acortada.mp4', poster: P + 'zelandia.jpg' }
+    media: { type: 'video', src: M + 'zelandia-walk.mp4', mobile: M + 'zelandia-walk-movil.mp4', poster: P + 'zelandia.jpg', ar: 16 / 9, arMobile: 1080 / 1926, bg: '#fff' }
   },
   {
     slug: 'way',
     name: 'Way',
     tag: '3D',
-    short: 'Pieza 3D.',
+    short: 'Pieza 3D: un inflable amorfo en movimiento.',
     long: '',
     services: ['3D'],
     team: '',
-    media: { type: 'video', src: U + 'way/inflable amorfo FINAL HORIZONTAL_1.mp4', mobile: U + 'way/inflable amorfo FINAL VERTICAL_1.mp4', poster: P + 'way.jpg' }
+    media: { type: 'video', src: M + 'way.mp4', mobile: M + 'way-movil.mp4', poster: P + 'way.jpg', ar: 16 / 9, arMobile: 1080 / 1920, bg: '#000' }
   },
   {
     slug: 'colapso',
     name: 'Colapso',
     tag: 'Artwork',
-    short: 'Artwork.',
+    short: 'Pieza de artwork.',
     long: '',
     services: ['Artwork'],
     team: '',
@@ -150,33 +167,36 @@ window.PROJECTS = [
   },
   {
     slug: 'sun-and-snow',
+    studio: TOT,
     name: 'Sun&Snow',
     tag: 'Motion Graphics',
     short: 'Trabajo realizado en T.O.T Studio.',
     long: '',
     services: ['Motion Graphics'],
-    team: 'Trabajo realizado en T.O.T Studio.',
-    media: { type: 'video', src: U + 'tot/sun&snow/S&S_MOBILE_ANIMACION STORIES.mp4', poster: P + 'sunsnow.jpg', ar: 1080 / 1854, bg: '#000' }
+    team: '',
+    media: { type: 'video', src: M + 'sun-and-snow.mp4', poster: P + 'sunsnow.jpg', ar: 1080 / 1854, bg: '#000' }
   },
   {
     slug: 'delta',
+    studio: TOT,
     name: 'Delta',
     tag: 'Motion Graphics + IA',
     short: 'Trabajo realizado en T.O.T Studio.',
     long: '',
     services: ['Motion Graphics', 'IA'],
-    team: 'Trabajo realizado en T.O.T Studio.',
-    media: { type: 'video', src: U + 'tot/delta/delta_video_home.mp4', poster: P + 'delta.jpg', ar: 1, bg: '#1f1f1f' }
+    team: '',
+    media: { type: 'video', src: M + 'delta.mp4', poster: P + 'delta.jpg', ar: 1, bg: '#1f1f1f' }
   },
   {
     slug: 'pontevecchio',
+    studio: TOT,
     name: 'Pontevecchio',
     tag: 'Motion Graphics',
     short: 'Trabajo realizado en T.O.T Studio.',
     long: '',
     services: ['Motion Graphics'],
-    team: 'Trabajo realizado en T.O.T Studio.',
-    media: { type: 'video', src: U + 'tot/ponteveccio/PONTEVECCIO_WEB_LOGO_OPTIMIZADO.mp4', mobile: U + 'tot/ponteveccio/PONTEVECCIO_MOBILE_LOGO_OPTIMIZADO.mp4', poster: P + 'pontevecchio.jpg' }
+    team: '',
+    media: { type: 'video', src: M + 'pontevecchio.mp4', mobile: M + 'pontevecchio-movil.mp4', poster: P + 'pontevecchio.jpg', ar: 2050 / 1080, arMobile: 1080 / 1854, bg: '#000' }
   }
 ];
 

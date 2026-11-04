@@ -1,0 +1,4 @@
+# Redirecciones para Cloudflare Pages (GitHub Pages ignora este archivo)
+/about.html        /about/      301
+/proyectos         /?grid       302
+/proyectos/        /?grid       302

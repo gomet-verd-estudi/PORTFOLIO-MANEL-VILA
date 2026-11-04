@@ -1,7 +1,7 @@
 # Vídeos del deck de Figma
 
 Figma no deja descargar los archivos de vídeo, así que la web muestra de momento su fotograma.
-Para que se reproduzcan, exporta cada vídeo y súbelo a esta carpeta con este nombre exacto. No hay que tocar nada más: la web lo detecta sola.
+Para que se reproduzcan, exporta cada vídeo, súbelo a esta carpeta con este nombre exacto y regenera la web con `node tools/build.mjs`.
 
 | Archivo a subir | Vídeo original en el deck |
 |---|---|
