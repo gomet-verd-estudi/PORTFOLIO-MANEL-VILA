@@ -183,6 +183,11 @@ window.PROJECTS = [
   const G = window.GALLERY || {};
   window.PROJECTS.forEach((p) => {
     p.gallery = G[p.slug] || [];
-    if (!p.media && p.gallery.length) p.media = { type: 'image', src: p.gallery[0][0] };
+    if (!p.media && p.gallery.length) {
+      // Portada: la primera imagen horizontal del deck (escritorio) y la primera vertical (móvil)
+      const wide = p.gallery.find(([, w, h]) => w / h >= 1.3) || p.gallery[0];
+      const tall = p.gallery.find(([, w, h]) => h / w >= 1.15) || wide;
+      p.media = { type: 'image', src: wide[0], mobile: tall[0] };
+    }
   });
 })();

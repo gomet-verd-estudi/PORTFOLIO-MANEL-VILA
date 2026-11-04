@@ -391,10 +391,8 @@
       if ((z - a + 1) % 2 === 1 && j === z) kinds[j] = 'solo';
     });
     gal.forEach(([s, w, h, vid], j) => {
-      // Si la pieza del deck era un vídeo y ya está subido, se reproduce; si no, se muestra su fotograma
-      const inner = vid
-        ? `<video muted loop playsinline autoplay preload="metadata" poster="${encodeURI(s)}" src="${encodeURI(vid)}" width="${w}" height="${h}"></video>`
-        : `<img src="${encodeURI(s)}" width="${w}" height="${h}" alt="${esc(p.name)}" loading="lazy" decoding="async">`;
+      // Piezas de vídeo del deck: se muestra el fotograma y, si el .mp4 está subido, se sustituye por el vídeo
+      const inner = `<img src="${encodeURI(s)}" width="${w}" height="${h}" alt="${esc(p.name)}" loading="lazy" decoding="async"${vid ? ` data-video="${encodeURI(vid)}"` : ''}>`;
       items.push(`<figure class="g g--${kinds[j]}" data-reveal>${inner}</figure>`);
     });
     if (!items.length && p.media && p.media.type === 'image') {
@@ -420,13 +418,22 @@
   }
 
   let sheetIO;
+  function tryVideo(fig) {
+    const img = fig.querySelector('img[data-video]'); if (!img) return;
+    const v = document.createElement('video');
+    Object.assign(v, { muted: true, loop: true, playsInline: true, autoplay: true, preload: 'auto', poster: img.src });
+    v.width = img.width; v.height = img.height;
+    v.addEventListener('loadeddata', () => { img.replaceWith(v); v.play().catch(() => {}); }, { once: true });
+    v.addEventListener('error', () => v.remove(), { once: true });
+    v.src = img.dataset.video;
+  }
   function fillSheet(i) {
     sheetBody.innerHTML = sheetHTML(i);
     sheet.scrollTop = 0;
     if (sheetIO) sheetIO.disconnect();
     const figs = sheetBody.querySelectorAll('[data-reveal]');
-    if (reduced || !('IntersectionObserver' in window)) { figs.forEach((f) => f.classList.add('is-in')); return; }
-    sheetIO = new IntersectionObserver((en) => en.forEach((x) => { if (x.isIntersecting) { x.target.classList.add('is-in'); sheetIO.unobserve(x.target); } }),
+    if (reduced || !('IntersectionObserver' in window)) { figs.forEach((f) => { f.classList.add('is-in'); tryVideo(f); }); return; }
+    sheetIO = new IntersectionObserver((en) => en.forEach((x) => { if (x.isIntersecting) { x.target.classList.add('is-in'); tryVideo(x.target); sheetIO.unobserve(x.target); } }),
       { root: sheet, rootMargin: '0px 0px -6% 0px', threshold: 0.08 });
     figs.forEach((f) => sheetIO.observe(f));
   }

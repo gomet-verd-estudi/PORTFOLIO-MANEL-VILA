@@ -1,10 +1,12 @@
-/* Generado a partir del deck de Figma "Portfolio GVE" (orden del deck). [ruta, ancho, alto, vídeo?] */
+/* Generado a partir del deck de Figma "Portfolio GVE", en el orden del deck.
+   [ruta, ancho, alto, vídeo?] — en las piezas de vídeo, la web intenta cargar el .mp4; si aún no está subido, muestra el fotograma. */
 window.GALLERY = {
  "vintage-palace": [
   [
    "content/uploads/figma/vintage-palace/01.jpg",
    609,
-   1080
+   1080,
+   "content/uploads/figma-video/vintage-palace/01.mp4"
   ],
   [
    "content/uploads/figma/vintage-palace/02.jpg",
@@ -23,8 +25,8 @@ window.GALLERY = {
   ],
   [
    "content/uploads/figma/vintage-palace/05.jpg",
-   1600,
-   900
+   1000,
+   563
   ],
   [
    "content/uploads/figma/vintage-palace/06.jpg",
@@ -33,33 +35,33 @@ window.GALLERY = {
   ],
   [
    "content/uploads/figma/vintage-palace/07.jpg",
+   1600,
+   900
+  ],
+  [
+   "content/uploads/figma/vintage-palace/08.jpg",
    1575,
    886
   ],
   [
-   "content/uploads/figma/vintage-palace/08.jpg",
+   "content/uploads/figma/vintage-palace/09.jpg",
    1444,
    852
   ],
   [
-   "content/uploads/figma/vintage-palace/09.jpg",
+   "content/uploads/figma/vintage-palace/10.jpg",
    1400,
    824
   ],
   [
-   "content/uploads/figma/vintage-palace/10.jpg",
+   "content/uploads/figma/vintage-palace/11.jpg",
    1400,
    825
   ],
   [
-   "content/uploads/figma/vintage-palace/11.jpg",
+   "content/uploads/figma/vintage-palace/12.jpg",
    1400,
    788
-  ],
-  [
-   "content/uploads/figma/vintage-palace/12.jpg",
-   1515,
-   852
   ],
   [
    "content/uploads/figma/vintage-palace/13.jpg",
@@ -68,33 +70,53 @@ window.GALLERY = {
   ],
   [
    "content/uploads/figma/vintage-palace/14.jpg",
-   1354,
-   852
-  ],
-  [
-   "content/uploads/figma/vintage-palace/15.jpg",
    1515,
    852
   ],
   [
+   "content/uploads/figma/vintage-palace/15.jpg",
+   1354,
+   852
+  ],
+  [
    "content/uploads/figma/vintage-palace/16.jpg",
+   1515,
+   852
+  ],
+  [
+   "content/uploads/figma/vintage-palace/17.jpg",
    1600,
    900
   ],
   [
-   "content/uploads/figma/vintage-palace/17.jpg",
+   "content/uploads/figma/vintage-palace/18.jpg",
    1200,
    828
   ],
   [
-   "content/uploads/figma/vintage-palace/18.jpg",
+   "content/uploads/figma/vintage-palace/19.jpg",
    852,
    852
   ],
   [
-   "content/uploads/figma/vintage-palace/19.jpg",
+   "content/uploads/figma/vintage-palace/20.jpg",
    1086,
    1077
+  ],
+  [
+   "content/uploads/figma/vintage-palace/21.jpg",
+   1000,
+   563
+  ],
+  [
+   "content/uploads/figma/vintage-palace/22.jpg",
+   569,
+   852
+  ],
+  [
+   "content/uploads/figma/vintage-palace/23.jpg",
+   567,
+   852
   ]
  ],
  "404-studio": [
@@ -105,28 +127,75 @@ window.GALLERY = {
   ],
   [
    "content/uploads/figma/404-studio/02.jpg",
+   854,
+   854,
+   "content/uploads/figma-video/404-studio/02.mp4"
+  ],
+  [
+   "content/uploads/figma/404-studio/03.jpg",
    852,
    852
   ],
   [
-   "content/uploads/figma/404-studio/03.jpg",
+   "content/uploads/figma/404-studio/04.jpg",
    618,
    852
   ],
   [
-   "content/uploads/figma/404-studio/04.jpg",
+   "content/uploads/figma/404-studio/05.jpg",
    1308,
    810
   ],
   [
-   "content/uploads/figma/404-studio/05.jpg",
+   "content/uploads/figma/404-studio/06.jpg",
+   722,
+   900,
+   "content/uploads/figma-video/404-studio/06.mp4"
+  ],
+  [
+   "content/uploads/figma/404-studio/07.jpg",
    1600,
    1050
   ],
   [
-   "content/uploads/figma/404-studio/06.jpg",
+   "content/uploads/figma/404-studio/08.jpg",
    1000,
    563
+  ],
+  [
+   "content/uploads/figma/404-studio/09.jpg",
+   1000,
+   631
+  ],
+  [
+   "content/uploads/figma/404-studio/10.jpg",
+   1000,
+   702
+  ],
+  [
+   "content/uploads/figma/404-studio/11.jpg",
+   682,
+   852
+  ],
+  [
+   "content/uploads/figma/404-studio/12.jpg",
+   678,
+   852
+  ],
+  [
+   "content/uploads/figma/404-studio/13.jpg",
+   684,
+   852
+  ],
+  [
+   "content/uploads/figma/404-studio/14.jpg",
+   680,
+   852
+  ],
+  [
+   "content/uploads/figma/404-studio/15.jpg",
+   852,
+   852
   ]
  ],
  "claur-tiles": [
@@ -137,20 +206,81 @@ window.GALLERY = {
   ],
   [
    "content/uploads/figma/claur-tiles/02.jpg",
+   1000,
+   563
+  ],
+  [
+   "content/uploads/figma/claur-tiles/03.jpg",
+   569,
+   852
+  ],
+  [
+   "content/uploads/figma/claur-tiles/04.jpg",
+   569,
+   852
+  ],
+  [
+   "content/uploads/figma/claur-tiles/05.jpg",
    1600,
    900
   ],
   [
-   "content/uploads/figma/claur-tiles/03.jpg",
+   "content/uploads/figma/claur-tiles/06.jpg",
+   1000,
+   613
+  ],
+  [
+   "content/uploads/figma/claur-tiles/07.jpg",
+   850,
+   852
+  ],
+  [
+   "content/uploads/figma/claur-tiles/08.jpg",
+   855,
+   852
+  ],
+  [
+   "content/uploads/figma/claur-tiles/09.jpg",
+   855,
+   852
+  ],
+  [
+   "content/uploads/figma/claur-tiles/10.jpg",
    1515,
    852
+  ],
+  [
+   "content/uploads/figma/claur-tiles/11.jpg",
+   853,
+   851
+  ],
+  [
+   "content/uploads/figma/claur-tiles/12.jpg",
+   853,
+   852
+  ],
+  [
+   "content/uploads/figma/claur-tiles/13.jpg",
+   1000,
+   563
+  ],
+  [
+   "content/uploads/figma/claur-tiles/14.jpg",
+   1000,
+   563
+  ],
+  [
+   "content/uploads/figma/claur-tiles/15.jpg",
+   1000,
+   563,
+   "content/uploads/figma-video/claur-tiles/15.mp4"
   ]
  ],
  "bernal-vida-y-milagros": [
   [
    "content/uploads/figma/bernal-vida-y-milagros/01.jpg",
-   1600,
-   900
+   838,
+   838
   ],
   [
    "content/uploads/figma/bernal-vida-y-milagros/02.jpg",
@@ -164,6 +294,36 @@ window.GALLERY = {
   ],
   [
    "content/uploads/figma/bernal-vida-y-milagros/04.jpg",
+   1600,
+   900
+  ],
+  [
+   "content/uploads/figma/bernal-vida-y-milagros/05.jpg",
+   900,
+   900
+  ],
+  [
+   "content/uploads/figma/bernal-vida-y-milagros/06.jpg",
+   900,
+   900
+  ],
+  [
+   "content/uploads/figma/bernal-vida-y-milagros/07.jpg",
+   900,
+   900
+  ],
+  [
+   "content/uploads/figma/bernal-vida-y-milagros/08.jpg",
+   846,
+   900
+  ],
+  [
+   "content/uploads/figma/bernal-vida-y-milagros/09.jpg",
+   835,
+   900
+  ],
+  [
+   "content/uploads/figma/bernal-vida-y-milagros/10.jpg",
    1015,
    1080
   ]
@@ -171,18 +331,49 @@ window.GALLERY = {
  "dmatinada": [
   [
    "content/uploads/figma/dmatinada/01.jpg",
+   900,
+   900,
+   "content/uploads/figma-video/dmatinada/01.mp4"
+  ],
+  [
+   "content/uploads/figma/dmatinada/02.jpg",
    852,
    852
   ],
   [
-   "content/uploads/figma/dmatinada/02.jpg",
+   "content/uploads/figma/dmatinada/03.jpg",
    1409,
    792
   ],
   [
-   "content/uploads/figma/dmatinada/03.jpg",
+   "content/uploads/figma/dmatinada/04.jpg",
+   479,
+   852
+  ],
+  [
+   "content/uploads/figma/dmatinada/05.jpg",
+   483,
+   483
+  ],
+  [
+   "content/uploads/figma/dmatinada/06.jpg",
+   483,
+   483
+  ],
+  [
+   "content/uploads/figma/dmatinada/07.jpg",
    1600,
    900
+  ],
+  [
+   "content/uploads/figma/dmatinada/08.jpg",
+   852,
+   852
+  ],
+  [
+   "content/uploads/figma/dmatinada/09.jpg",
+   852,
+   852
   ]
  ],
  "leo-rizzi": [
@@ -190,23 +381,130 @@ window.GALLERY = {
    "content/uploads/figma/leo-rizzi/01.jpg",
    1400,
    788
+  ],
+  [
+   "content/uploads/figma/leo-rizzi/02.jpg",
+   1000,
+   563
+  ],
+  [
+   "content/uploads/figma/leo-rizzi/03.jpg",
+   1000,
+   563
+  ],
+  [
+   "content/uploads/figma/leo-rizzi/04.jpg",
+   1000,
+   563
+  ],
+  [
+   "content/uploads/figma/leo-rizzi/05.jpg",
+   414,
+   414
+  ],
+  [
+   "content/uploads/figma/leo-rizzi/06.jpg",
+   414,
+   414
+  ],
+  [
+   "content/uploads/figma/leo-rizzi/07.jpg",
+   414,
+   414
+  ],
+  [
+   "content/uploads/figma/leo-rizzi/08.jpg",
+   414,
+   414
+  ],
+  [
+   "content/uploads/figma/leo-rizzi/09.jpg",
+   414,
+   414
+  ],
+  [
+   "content/uploads/figma/leo-rizzi/10.jpg",
+   359,
+   639
+  ],
+  [
+   "content/uploads/figma/leo-rizzi/11.jpg",
+   359,
+   639
+  ],
+  [
+   "content/uploads/figma/leo-rizzi/12.jpg",
+   359,
+   639
+  ],
+  [
+   "content/uploads/figma/leo-rizzi/13.jpg",
+   359,
+   639
+  ],
+  [
+   "content/uploads/figma/leo-rizzi/14.jpg",
+   359,
+   639
   ]
  ],
  "orbis-vacui": [
   [
    "content/uploads/figma/orbis-vacui/01.jpg",
+   1000,
+   562
+  ],
+  [
+   "content/uploads/figma/orbis-vacui/02.jpg",
    1600,
    900
   ],
   [
-   "content/uploads/figma/orbis-vacui/02.jpg",
+   "content/uploads/figma/orbis-vacui/03.jpg",
+   1000,
+   563
+  ],
+  [
+   "content/uploads/figma/orbis-vacui/04.jpg",
+   1000,
+   531
+  ],
+  [
+   "content/uploads/figma/orbis-vacui/05.jpg",
    1400,
    787
   ],
   [
-   "content/uploads/figma/orbis-vacui/03.jpg",
+   "content/uploads/figma/orbis-vacui/06.jpg",
+   1000,
+   563
+  ],
+  [
+   "content/uploads/figma/orbis-vacui/07.jpg",
+   1000,
+   563
+  ],
+  [
+   "content/uploads/figma/orbis-vacui/08.jpg",
    1400,
    1035
+  ],
+  [
+   "content/uploads/figma/orbis-vacui/09.jpg",
+   900,
+   900,
+   "content/uploads/figma-video/orbis-vacui/09.mp4"
+  ],
+  [
+   "content/uploads/figma/orbis-vacui/10.jpg",
+   1000,
+   800
+  ],
+  [
+   "content/uploads/figma/orbis-vacui/11.jpg",
+   1000,
+   563,
+   "content/uploads/figma-video/orbis-vacui/11.mp4"
   ]
  ],
  "kaniche": [
@@ -217,11 +515,31 @@ window.GALLERY = {
   ],
   [
    "content/uploads/figma/kaniche/02.jpg",
+   1000,
+   742
+  ],
+  [
+   "content/uploads/figma/kaniche/03.jpg",
+   1000,
+   626
+  ],
+  [
+   "content/uploads/figma/kaniche/04.jpg",
    972,
    852
   ],
   [
-   "content/uploads/figma/kaniche/03.jpg",
+   "content/uploads/figma/kaniche/05.jpg",
+   852,
+   852
+  ],
+  [
+   "content/uploads/figma/kaniche/06.jpg",
+   816,
+   844
+  ],
+  [
+   "content/uploads/figma/kaniche/07.jpg",
    1600,
    896
   ]
@@ -234,7 +552,27 @@ window.GALLERY = {
   ],
   [
    "content/uploads/figma/bernal/02.jpg",
+   682,
+   852
+  ],
+  [
+   "content/uploads/figma/bernal/03.jpg",
+   1000,
+   563
+  ],
+  [
+   "content/uploads/figma/bernal/04.jpg",
+   1000,
+   563
+  ],
+  [
+   "content/uploads/figma/bernal/05.jpg",
    1350,
+   852
+  ],
+  [
+   "content/uploads/figma/bernal/06.jpg",
+   688,
    852
   ]
  ],
@@ -253,6 +591,36 @@ window.GALLERY = {
    "content/uploads/figma/cisma/03.jpg",
    1268,
    852
+  ],
+  [
+   "content/uploads/figma/cisma/04.jpg",
+   1000,
+   695
+  ],
+  [
+   "content/uploads/figma/cisma/05.jpg",
+   1000,
+   600
+  ],
+  [
+   "content/uploads/figma/cisma/06.jpg",
+   1000,
+   587
+  ],
+  [
+   "content/uploads/figma/cisma/07.jpg",
+   1000,
+   587
+  ],
+  [
+   "content/uploads/figma/cisma/08.jpg",
+   1000,
+   670
+  ],
+  [
+   "content/uploads/figma/cisma/09.jpg",
+   1000,
+   587
   ]
  ]
 };
