@@ -616,8 +616,8 @@ window.GALLERY = {
   ],
   [
    "content/uploads/figma/cisma/08.jpg",
-   1000,
-   670
+   1273,
+   852
   ],
   [
    "content/uploads/figma/cisma/09.jpg",

@@ -98,7 +98,7 @@
     const vr = window.innerWidth / window.innerHeight;
     slides.forEach((s) => {
       const m = projects[+s.dataset.real].media;
-      const ar = m && m.type === 'video' && m.ar && !(mq.matches && m.mobile) ? m.ar : 0;
+      const ar = m && m.type === 'video' && m.ar && !(mq.matches && (m.mobile || m.fillMobile)) ? m.ar : 0;
       s.classList.toggle('is-contain', !!ar && Math.max(ar / vr, vr / ar) > 1.4);
     });
   }

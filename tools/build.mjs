@@ -315,7 +315,7 @@ function galleryKinds(gal) {
 function heroHTML(R, p) {
   const m = p.media;
   if (!m) return '';
-  const ar = m.ar || 16 / 9;
+  const ar = m.ar || (m.type === 'image' ? dims(m.src)[0] / dims(m.src)[1] : 16 / 9);
   const tall = ar < 1.2;
   const style = ` style="--bg:${m.bg || '#000'};--ar:${ar.toFixed(4)};--ar-m:${(m.mobile && m.arMobile ? m.arMobile : ar).toFixed(4)}"`;
   if (m.type === 'video') {

@@ -6,6 +6,8 @@
  *     ar  → proporción del vídeo. Si no encaja con la pantalla (vertical o cuadrado en escritorio),
  *           el vídeo se muestra entero, centrado, sobre el color bg (el fondo del propio vídeo).
  *     arMobile → proporción del vídeo de móvil, si tiene uno distinto.
+ *     fillMobile → en móvil ocupa toda la pantalla (se recorta por los lados, sin deformarse)
+ *                  en vez de mostrarse entero sobre el color de fondo.
  *     deck → si el vídeo de portada es también una pieza de la galería del deck, su ruta allí (para no repetirlo).
  *   - { type: 'image', src: '...', mobile: '...' (opcional) }
  *   - null  → se muestra una portada tipográfica hasta que se añada el material.
@@ -53,7 +55,7 @@ window.PROJECTS = [
     long: 'Diseño de la nueva identidad de Claur Tiles, un taller de fabricación de azulejos realizados a mano para cada cliente, especializado en proyectos de interiorismo y arquitectura.',
     services: ['Identidad corporativa', 'Packaging', 'Dirección de arte'],
     team: 'Fotografía de @mmariavaroo.',
-    media: { type: 'video', src: M + 'claur-tiles.mp4', poster: P + 'claur.jpg', ar: 1, bg: '#000' }
+    media: { type: 'video', src: M + 'claur-tiles.mp4', poster: P + 'claur.jpg', ar: 1, bg: '#000', fillMobile: true }
   },
   {
     slug: 'bernal-vida-y-milagros',
@@ -86,7 +88,7 @@ window.PROJECTS = [
     long: 'Identidad corporativa para la promotora sociocultural Orbis Vacui. Una imagen fresca, coherente, atractiva y flexible: estas son algunas de las características que se intentaron plasmar en su diseño.',
     services: ['Identidad', 'Web (WIP)'],
     team: '',
-    media: { type: 'video', src: FV + 'orbis-vacui/09.mp4', poster: P + 'orbis-vacui.jpg', ar: 1, bg: '#000' }
+    media: { type: 'video', src: FV + 'orbis-vacui/09.mp4', poster: P + 'orbis-vacui.jpg', ar: 1, bg: '#000', fillMobile: true }
   },
   {
     slug: 'leo-rizzi',
@@ -131,7 +133,7 @@ window.PROJECTS = [
     long: 'Fotolibro documental sobre el cambio estético urbano que ha vivido la ciudad de Alzira, desde la década de 1920 hasta la actualidad.',
     services: ['Editorial', 'Tipografía (WIP)'],
     team: '',
-    media: null
+    media: { type: 'image', src: 'content/uploads/figma/cisma/08.jpg' }
   },
 
   /* — Otros trabajos (material ya publicado en la web anterior) — */
