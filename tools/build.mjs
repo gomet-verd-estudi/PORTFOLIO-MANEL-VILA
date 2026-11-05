@@ -487,7 +487,7 @@ function about() {
 <body class="about">
 ${franja(R, 'about')}
 
-  <a class="grid-btn" href="${R}?grid" aria-label="Ver todos los proyectos">
+  <a class="grid-btn" href="${R}" data-back aria-label="Cerrar About y volver">
     <span class="grid-btn__icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
     <span class="grid-btn__count">Proyectos</span>
   </a>

@@ -82,19 +82,23 @@
   const wait = (ms) => new Promise((r) => setTimeout(r, reduced ? 0 : ms));
   const queue = (fn) => (busy = busy.then(fn, fn));
 
+  /* Botón de la esquina → X mientras se está en el About (panel de la home o página About) */
+  const backBtn = document.querySelector('.grid-btn[data-back]');
+  const syncX = () => document.body.classList.toggle('is-x', !!backBtn || state.panel === 'about');
+
   function showPanel(name) {
     const p = panels[name]; if (!p) return;
     p.hidden = false;
     requestAnimationFrame(() => requestAnimationFrame(() => p.classList.add('is-open')));
     franja.querySelectorAll('[data-panel]').forEach((b) => b.classList.toggle('is-active', b.dataset.panel === name));
-    state.panel = name; emit();
+    state.panel = name; syncX(); emit();
   }
   async function hidePanel() {
     const name = state.panel; if (!name) return;
     const p = panels[name];
     p.classList.remove('is-open');
     franja.querySelectorAll('[data-panel]').forEach((b) => b.classList.remove('is-active'));
-    state.panel = null; emit();
+    state.panel = null; syncX(); emit();
     await wait(PANEL_MS);
     if (!p.classList.contains('is-open')) p.hidden = true;
   }
@@ -147,6 +151,29 @@
     // Enlaces internos de los paneles (ej. #contacto en about)
     document.querySelectorAll('[data-close-nav]').forEach((a) => a.addEventListener('click', () => queue(closeNav)));
   }
+
+  /* Página About: la X vuelve exactamente a donde estabas (home en carrusel o grid,
+     o el proyecto), con el morph de vuelta a los cuadrados antes de salir. */
+  if (backBtn) {
+    const morphIn = () => { document.body.classList.remove('is-x'); requestAnimationFrame(() => requestAnimationFrame(syncX)); };
+    morphIn();
+    backBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.body.classList.remove('is-x');
+      let ref = null;
+      try { ref = document.referrer ? new URL(document.referrer) : null; } catch (er) { ref = null; }
+      const fromSite = ref && ref.origin === location.origin && !/\/about\/?$/.test(ref.pathname) && history.length > 1;
+      setTimeout(() => { fromSite ? history.back() : (location.href = backBtn.href); }, reduced ? 0 : 420);
+    });
+    addEventListener('pageshow', (e) => { if (e.persisted) morphIn(); });
+  }
+  // Transiciones entre páginas: si el navegador las anula (p. ej. porque la barra de direcciones del
+  // móvil cambia el alto de pantalla), la navegación sigue igual; solo se evita el aviso en consola.
+  const quiet = (e) => { const vt = e.viewTransition; if (vt) { vt.ready.catch(() => {}); vt.finished.catch(() => {}); } };
+  addEventListener('pageswap', quiet);
+  addEventListener('pagereveal', quiet);
+  // Al volver con "atrás" a una página que tenía el menú abierto, se deja como estaba antes de abrirlo
+  addEventListener('pageshow', (e) => { if (e.persisted && (state.navOpen || state.panel)) queue(closeNav); });
 
   /* ------------------------------------------------------------------
      Lista de proyectos del panel + previsualización que sigue al cursor
