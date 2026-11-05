@@ -164,11 +164,17 @@ picture { display: contents; }
   transition: all .5s var(--ease);
 }
 .grid-btn__icon i:nth-child(1) { left: 0; top: 0; }
-.grid-btn__icon i:nth-child(2) { right: 0; top: 0; }
-.grid-btn__icon i:nth-child(3) { left: 0; bottom: 0; }
-.grid-btn__icon i:nth-child(4) { right: 0; bottom: 0; }
-.is-grid .grid-btn__icon i { left: 1px; top: 1px; width: 14px; height: 14px; right: auto; bottom: auto; }
+.grid-btn__icon i:nth-child(2) { left: 9px; top: 0; }
+.grid-btn__icon i:nth-child(3) { left: 0; top: 9px; }
+.grid-btn__icon i:nth-child(4) { left: 9px; top: 9px; }
+.is-grid .grid-btn__icon i { left: 1px; top: 1px; width: 14px; height: 14px; }
 .is-grid .grid-btn__icon i:nth-child(n+2) { opacity: 0; }
+/* En el About el botón se convierte en una X: los cuatro cuadrados se aplanan y giran */
+.is-x .grid-btn__icon i:nth-child(n) { left: -2.6px; top: 7.2px; width: 21.2px; height: 0; border-width: 1.6px 0 0; opacity: 1; }
+.is-x .grid-btn__icon i:nth-child(1), .is-x .grid-btn__icon i:nth-child(4) { transform: rotate(45deg); }
+.is-x .grid-btn__icon i:nth-child(2), .is-x .grid-btn__icon i:nth-child(3) { transform: rotate(-45deg); }
+.is-x .grid-btn__count { max-width: 0; opacity: 0; }
+.is-x .grid-btn { gap: 0; }
 .grid-btn__count { overflow: hidden; max-width: 6em; transition: max-width .5s var(--ease), opacity .3s ease; }
 .is-nav-open .grid-btn { right: calc(25% - var(--bar-h)); height: var(--bar-h); min-width: var(--bar-h); padding: 0 11px; gap: 0; }
 .is-nav-open .grid-btn__count { max-width: 0; opacity: 0; }
@@ -248,6 +254,7 @@ picture { display: contents; }
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   overscroll-behavior-x: contain;
+  touch-action: pan-x;              /* en vertical el gesto lo gestiona la web: pasa de proyecto */
   cursor: none;
 }
 @media (hover: none), (pointer: coarse) { .track { cursor: auto; } }

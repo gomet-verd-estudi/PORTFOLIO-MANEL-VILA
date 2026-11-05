@@ -237,8 +237,12 @@
     d > 0 ? next() : prev();
   }, { passive: false });
 
-  // Arrastre con ratón + mantener pulsado para pausar (también táctil)
+  // Arrastre con ratón, mantener pulsado para pausar y, en táctil, deslizar en vertical
+  // también pasa de proyecto (arriba = siguiente, abajo = anterior), igual que la rueda.
   let down = null;
+  let suppressUntil = 0;                       // evita que el gesto acabe abriendo el proyecto
+  const suppress = () => { suppressUntil = performance.now() + 450; };
+  const endHold = () => { clearTimeout(holdTimer); flags.hold = false; document.body.classList.remove('is-holding'); };
   track.addEventListener('pointerdown', (e) => {
     if (e.button !== 0) return;
     down = { x: e.clientX, y: e.clientY, sl: track.scrollLeft, t: performance.now(), type: e.pointerType, moved: false };
@@ -247,8 +251,8 @@
   let holdTimer;
   window.addEventListener('pointermove', (e) => {
     if (!down) return;
-    const dx = e.clientX - down.x;
-    if (!down.moved && Math.abs(dx) > 6) { down.moved = true; clearTimeout(holdTimer); }
+    const dx = e.clientX - down.x, dy = e.clientY - down.y;
+    if (!down.moved && (Math.abs(dx) > 6 || Math.abs(dy) > 6)) { down.moved = true; clearTimeout(holdTimer); }
     if (down.type === 'mouse' && down.moved) {
       if (!flags.drag) { flags.drag = true; track.classList.add('is-dragging'); }
       programmatic = true;
@@ -261,6 +265,15 @@
     const d = down; down = null;
     const wasHold = flags.hold;
     flags.hold = false; document.body.classList.remove('is-holding');
+    if (d.type !== 'mouse') {
+      const dx = e.clientX - d.x, dy = e.clientY - d.y;
+      const v = dy / Math.max(1, performance.now() - d.t);
+      if (Math.abs(dy) > Math.abs(dx) * 1.2 && (Math.abs(dy) > 40 || Math.abs(v) > 0.45)) {
+        dy < 0 ? next() : prev();
+        suppress();
+        return;
+      }
+    }
     if (flags.drag) {
       flags.drag = false;
       track.classList.remove('is-dragging');
@@ -269,14 +282,15 @@
       if (dx < -W * 0.12 || v < -0.5) next();
       else if (dx > W * 0.12 || v > 0.5) prev();
       else goTo(cur, { dir: 0 });
-      suppressClick = true;
+      suppress();
       return;
     }
-    if (wasHold) suppressClick = true;
+    if (wasHold) suppress();
   });
-  let suppressClick = false;
+  // Si el navegador toma el gesto (deslizar en horizontal), se cancela la pulsación
+  window.addEventListener('pointercancel', () => { if (!down) return; down = null; endHold(); });
   track.addEventListener('click', (e) => {
-    if (suppressClick) { suppressClick = false; return; }
+    if (performance.now() < suppressUntil) return;
     if (e.target.closest('.slide')) openProject(cur);
   });
 
@@ -357,30 +371,55 @@
     document.body.classList.toggle('is-grid', on);
     gridBtn.setAttribute('aria-pressed', String(on));
     gridBtn.querySelector('.sr-only').textContent = on ? 'Volver al carrusel' : 'Ver todos los proyectos';
-    if (on) grid.scrollTop = 0;
+    if (on) grid.scrollTop = restoreY != null ? restoreY : 0;
+    restoreY = null;
+    // La vista queda en la dirección (?grid) para poder volver exactamente a ella
+    history.replaceState(history.state, '', location.pathname + (on ? '?grid' : '') + location.hash);
     syncVideos();
+    syncTiles();
   }
-  gridBtn.addEventListener('click', () => setGrid(!flags.grid));
+  gridBtn.addEventListener('click', () => {
+    if (UI.state.panel === 'about' && UI.closeNav) { UI.closeNav(); return; }   // en el About, el botón es una X
+    setGrid(!flags.grid);
+  });
+  // Posición del índice: se guarda para recuperarla al volver (desde el About o un proyecto)
+  let restoreY = null;
+  try { const y = sessionStorage.getItem('mv-grid-y'); if (y && location.search.includes('grid')) restoreY = +y; } catch (e) { /* sin storage */ }
+  let gridSaveT;
+  grid.addEventListener('scroll', () => {
+    clearTimeout(gridSaveT);
+    gridSaveT = setTimeout(() => { try { sessionStorage.setItem('mv-grid-y', String(grid.scrollTop)); } catch (e) { /* sin storage */ } }, 150);
+  }, { passive: true });
 
-  // Vídeo al pasar el ratón por un tile
-  grid.addEventListener('pointerover', (e) => {
-    if (e.pointerType !== 'mouse') return;
-    const t = e.target.closest('.tile'); if (!t || t._v) return;
+  // Vídeos del índice: cada pieza reproduce su vídeo cuando está en pantalla (también en móvil)
+  // y lo pausa al salir. Se crean al verse por primera vez, para no descargar todo de golpe.
+  const tiles = Array.from(grid.querySelectorAll('.tile'));
+  function tilePlay(t) {
     const m = projects[+t.dataset.index].media;
-    if (!m || m.type !== 'video') return;
-    const v = document.createElement('video');
-    Object.assign(v, { muted: true, loop: true, playsInline: true, src: encodeURI(best(m.src)) });
-    v.className = 'tile__video';
-    t.querySelector('.tile__media').appendChild(v);
-    t._v = v;
-    v.addEventListener('playing', () => v.classList.add('is-on'), { once: true });
-    v.play().catch(() => {});
-  });
-  grid.addEventListener('pointerout', (e) => {
-    const t = e.target.closest('.tile'); if (!t || !t._v || t.contains(e.relatedTarget)) return;
-    const v = t._v; t._v = null; v.classList.remove('is-on');
-    setTimeout(() => { v.pause(); v.remove(); }, 350);
-  });
+    if (!m || m.type !== 'video' || saveData) return;
+    let v = t._v;
+    if (!v) {
+      v = document.createElement('video');
+      Object.assign(v, { muted: true, loop: true, playsInline: true, preload: 'auto' });
+      v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
+      v.className = 'tile__video';
+      v.setAttribute('aria-hidden', 'true');
+      v.addEventListener('playing', () => v.classList.add('is-on'));
+      v.src = encodeURI(best(m.src));
+      t.querySelector('.tile__media').appendChild(v);
+      t._v = v;
+    }
+    const pr = v.play(); if (pr && pr.catch) pr.catch(() => {});
+  }
+  const tilePause = (t) => { if (t._v && !t._v.paused) t._v.pause(); };
+  function syncTiles() { tiles.forEach((t) => (flags.grid && t._vis ? tilePlay(t) : tilePause(t))); }
+  if ('IntersectionObserver' in window) {
+    const tio = new IntersectionObserver((entries) => entries.forEach((en) => {
+      en.target._vis = en.isIntersecting;
+      if (flags.grid) en.isIntersecting ? tilePlay(en.target) : tilePause(en.target);
+    }), { root: grid, threshold: 0.35 });
+    tiles.forEach((t) => tio.observe(t));
+  }
 
   grid.addEventListener('click', (e) => {
     const t = e.target.closest('.tile'); if (!t) return;
@@ -437,6 +476,7 @@
   // Desplegables excluyentes: abrir un panel del menú recoge el +info (y al revés), para que nunca se pisen
   UI.onChange((s) => {
     document.body.classList.toggle('is-panel', !!s.panel);
+    gridBtn.querySelector('.sr-only').textContent = s.panel === 'about' ? 'Cerrar About' : flags.grid ? 'Volver al carrusel' : 'Ver todos los proyectos';
     if (s.panel && flags.more) closeMore();
   });
 
