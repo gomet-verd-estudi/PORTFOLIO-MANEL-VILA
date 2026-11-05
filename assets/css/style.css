@@ -45,6 +45,9 @@ html, body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
+/* Nada puede ensanchar la página: si algo sobresale, el móvil desplaza la vista y descoloca el menú fijo */
+html { overflow-x: hidden; }
+@supports (overflow: clip) { html, body { overflow-x: clip; } }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; text-align: inherit; }
 img, video { display: block; }
@@ -536,7 +539,7 @@ picture { display: contents; }
 }
 .g, .g[data-reveal] { margin: 0; min-width: 0; opacity: 1; transform: none; }
 /* Revelado tipo cortina: la imagen se descubre de arriba abajo mientras se asienta */
-.g .g__open { clip-path: inset(0 0 100% 0); transition: clip-path 1.15s var(--ease-out); }
+.g .g__open { overflow: hidden; clip-path: inset(0 0 100% 0); transition: clip-path 1.15s var(--ease-out); }  /* overflow: el zoom de entrada no ensancha la página */
 .g.is-in .g__open { clip-path: inset(0 0 0 0); }
 .g .g__open img, .g .g__open video { transform: scale(1.07); transition: transform 1.7s var(--ease-out); }
 .g.is-in .g__open img, .g.is-in .g__open video { transform: none; }
