@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Manel Vila — Página no encontrada</title>
+  <title>Manel Vila — Page not found</title>
   <meta name="robots" content="noindex">
   <meta name="theme-color" content="#0600FF">
   <link rel="icon" href="/content/uploads/monograma/mv_monograma.svg" type="image/svg+xml">
@@ -21,13 +21,18 @@
     .r { border-radius: 999px; }
     h1 { margin: 0; font-weight: 400; font-size: clamp(56px, 11vw, 220px); line-height: .9; letter-spacing: -.035em; }
     a { color: inherit; display: inline-block; margin-top: 2rem; font-size: clamp(20px, 2.4vw, 36px); text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 6px; }
+    .links { display: flex; flex-wrap: wrap; gap: 0 2.2rem; }
+    .es { opacity: .75; }
   </style>
 </head>
 <body>
-  <div class="top"><span class="chip">404</span><span class="chip r">Página no encontrada</span></div>
+  <div class="top"><span class="chip">404</span><span class="chip r">Page not found</span><span class="chip r" lang="es">Página no encontrada</span></div>
   <div>
-    <h1>[Aquí no hay nada]</h1>
-    <a href="/">Volver a los proyectos →</a>
+    <h1>[Nothing here]</h1>
+    <div class="links">
+      <a href="/">Back to the projects →</a>
+      <a class="es" href="/es/" lang="es">Volver a los proyectos →</a>
+    </div>
   </div>
 </body>
 </html>

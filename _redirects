@@ -1,6 +1,12 @@
-# Redirecciones para Cloudflare Pages (GitHub Pages ignora este archivo)
-/about.html        /about/      301
-/proyectos         /?grid       302
-/proyectos/        /?grid       302
-/proyectos/colapso/  /?grid       301
-/proyectos/way/      /?grid       301
+# Redirecciones para Cloudflare (GitHub Pages ignora este archivo)
+# La web arranca en inglés; el español vive en /es/. Las direcciones antiguas eran en español.
+/about.html            /es/about/             301
+/proyectos             /es/?grid              302
+/proyectos/            /es/?grid              302
+/proyectos/colapso/    /es/?grid              301
+/proyectos/way/        /es/?grid              301
+/proyectos/*           /es/proyectos/:splat   301
+/projects              /?grid                 302
+/projects/             /?grid                 302
+/es/proyectos          /es/?grid              302
+/es/proyectos/         /es/?grid              302

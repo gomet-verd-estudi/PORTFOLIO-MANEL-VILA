@@ -196,3 +196,82 @@ window.PROJECTS = [
     }
   });
 })();
+
+/*
+ * INGLÉS — la web arranca en inglés (raíz) y el español vive en /es/.
+ * Cada proyecto puede sobrescribir aquí sus textos: name, tag, short, long, services, team.
+ * Lo que no se escriba se queda como en español.
+ */
+(function () {
+  const STUDIO = 'Created at T.O.T Studio.';
+  const EN = {
+    'vintage-palace': {
+      short: 'Brand identity for Vintage Palace.',
+      long: 'We created the identity for Vintage Palace by capturing the bold, urban spirit of the ’80s, ’90s and 2000s, bringing in exclusive, eye-catching elements built around the idea of “Palace” while keeping the brand’s roots as the foundation of the design.',
+      services: ['Brand identity', 'Social media', 'Packaging', '3D', 'Art direction'],
+      team: 'With @albaocanya. Photography by @thisisart.'
+    },
+    '404-studio': {
+      short: 'Identity and runway graphics for 080 Barcelona Fashion Week.',
+      long: 'A new identity for fashion studio 404 Studio and the graphics for its latest collection, “No me quedan lágrimas” (I have no tears left), inspired by 1980s Spanish quinqui cinema and presented at 080 Barcelona Fashion Week.',
+      services: ['Brand identity', 'Graphics for the 080 runway show', 'T-shirt typography in collaboration with Adidas']
+    },
+    'claur-tiles': {
+      short: 'A new identity for Claur Tiles.',
+      long: 'A new identity for Claur Tiles, a workshop that makes handmade tiles for each client, specialising in interior design and architecture projects.',
+      services: ['Brand identity', 'Packaging', 'Art direction'],
+      team: 'Photography by @mmariavaroo.'
+    },
+    'bernal-vida-y-milagros': {
+      short: 'A visual world for Bernal’s second album.',
+      long: 'For Vida y Milagros, Bernal’s second album, we built a visual world inspired by movement, landscapes and the nostalgia that creeps in while life keeps moving forward. Through the graphic concept, branding, vinyl design, stickers, titles and credits, we shaped a visual identity that travels with the record and ties all its pieces together under one way of seeing.',
+      services: ['Graphic concept', 'Branding and visual identity', 'Vinyl design', 'Sticker design', 'Titles and credits', 'Merchandising'],
+      team: 'With @d.matinada.'
+    },
+    dmatinada: {
+      short: 'Identity for the creative studio D’Matinada.',
+      long: 'Creative studio D’Matinada asked us to design their identity, capturing the soul they put into every project and the duality of creative work: the warm, handmade side of the process, together with the technique and rigour it takes to get a great result.',
+      services: ['Brand identity', 'Social media', 'Website (WIP)']
+    },
+    'orbis-vacui': {
+      short: 'Identity for the cultural promoter Orbis Vacui.',
+      long: 'Brand identity for Orbis Vacui, a social and cultural events promoter. Fresh, coherent, attractive and flexible: these are some of the qualities we set out to capture in the design.',
+      services: ['Identity', 'Website (WIP)']
+    },
+    'leo-rizzi': {
+      name: 'Leo Rizzi · 2022 Tour',
+      tag: 'Lettering + Posters',
+      short: 'Poster for the “Bailando alrededor del río” tour.',
+      long: 'Singer Leo Rizzi asked us for the poster for his tour, “Bailando alrededor del río” (Dancing around the river), and its adaptation to Instagram formats. Starting from his music and the tour’s title, the concept became the plants that grow along the river and the way they dance when the wind moves them.',
+      services: ['Lettering', 'Posters'],
+      team: 'Photography by @stteveenn.'
+    },
+    bernal: {
+      short: 'Titles for the “Parques” music video and a handmade vinyl sleeve.',
+      long: 'Title and credits design for “Parques”, a music video by Bernal that explores childhood nostalgia. In the same graphic language we created the sleeve for their vinyl “¿Qué tal todo allí fuera?”, a special edition of fifty handmade copies.',
+      services: ['Credits', 'Lettering', 'Vinyl sleeves'],
+      team: 'With @d.matinada.'
+    },
+    kaniche: {
+      tag: 'Artwork + Art direction',
+      short: 'In-store posters somewhere between punk attitude and high society.',
+      long: 'Design and art direction of the in-store posters for Kaniche Pedigree Hot Dogs: one-off posters that blend punk aesthetics and attitude with the atmosphere and personality of high society.',
+      services: ['In-store posters', 'Art direction'],
+      team: '3D by @pablopolar. Photography by @carlottakunst.'
+    },
+    cisma: {
+      short: 'A documentary photobook about Alzira.',
+      long: 'A documentary photobook about the urban and aesthetic transformation of the city of Alzira, from the 1920s to the present day.',
+      services: ['Editorial', 'Typography (WIP)']
+    },
+    'zelandia-walk': { short: 'Branding and editorial design for Zelandia Walk.' },
+    'sun-and-snow': { short: STUDIO },
+    delta: { tag: 'Motion Graphics + AI', short: STUDIO, services: ['Motion Graphics', 'AI'] },
+    pontevecchio: { short: STUDIO }
+  };
+  window.PROJECTS.forEach((p) => { p.en = EN[p.slug] || {}; });
+  // En el navegador, las páginas en inglés usan estos textos (el carrusel y el +info los leen de aquí)
+  if (typeof document !== 'undefined' && document.documentElement.lang === 'en') {
+    window.PROJECTS.forEach((p) => Object.assign(p, p.en));
+  }
+})();

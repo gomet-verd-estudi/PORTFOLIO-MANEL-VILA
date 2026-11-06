@@ -13,6 +13,23 @@
   const emit = () => listeners.forEach((fn) => fn(state));
   const state = { navOpen: false, panel: null };
 
+  /* Textos que escribe el JavaScript, en el idioma de la página (inglés por defecto; español en /es/) */
+  const LANG = document.documentElement.lang === 'es' ? 'es' : 'en';
+  const t = {
+    es: {
+      openMenu: 'Abrir menú', closeMenu: 'Cerrar menú', copied: 'Copiado ✓',
+      services: 'Servicios', team: 'Equipo', seeFull: 'Ver proyecto completo →',
+      seeAll: 'Ver todos los proyectos', backCarousel: 'Volver al carrusel', closeAbout: 'Cerrar About',
+      pause: 'Pausar pase automático', resume: 'Reanudar pase automático', goTo: 'Ir a'
+    },
+    en: {
+      openMenu: 'Open menu', closeMenu: 'Close menu', copied: 'Copied ✓',
+      services: 'Services', team: 'Team', seeFull: 'See full project →',
+      seeAll: 'See all projects', backCarousel: 'Back to carousel', closeAbout: 'Close About',
+      pause: 'Pause slideshow', resume: 'Resume slideshow', goTo: 'Go to'
+    }
+  }[LANG];
+
   /* ------------------------------------------------------------------
      Monograma: 4 barras descritas por centro, longitud y ángulo.
      MV (estado inicial) → X (estado final), mismas barras que el SVG original.
@@ -118,7 +135,7 @@
     state.navOpen = true;
     document.body.classList.add('is-nav-open');
     markBtn.setAttribute('aria-expanded', 'true');
-    markBtn.setAttribute('aria-label', 'Cerrar menú');
+    markBtn.setAttribute('aria-label', t.closeMenu);
     morph(markSvg, 1);
     emit();
     await wait(380);
@@ -129,7 +146,7 @@
     state.navOpen = false;
     document.body.classList.remove('is-nav-open');
     markBtn.setAttribute('aria-expanded', 'false');
-    markBtn.setAttribute('aria-label', 'Abrir menú');
+    markBtn.setAttribute('aria-label', t.openMenu);
     morph(markSvg, 0);
     emit();
   }
@@ -259,12 +276,12 @@
     const text = b.dataset.copy;
     try { await navigator.clipboard.writeText(text); }
     catch (err) {
-      const t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select();
+      const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select();
       try { document.execCommand('copy'); } catch (er) { /* sin portapapeles */ }
-      t.remove();
+      ta.remove();
     }
     const label = b.textContent;
-    b.textContent = 'Copiado ✓'; b.classList.add('is-done');
+    b.textContent = t.copied; b.classList.add('is-done');
     setTimeout(() => { b.textContent = label; b.classList.remove('is-done'); }, 1800);
   });
 
@@ -301,6 +318,8 @@
 
   window.UI = {
     state,
+    lang: LANG,
+    t,
     SMOOTH,
     scroller,
     onChange: (fn) => listeners.push(fn),
