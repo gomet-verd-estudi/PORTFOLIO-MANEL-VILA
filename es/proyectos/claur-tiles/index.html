@@ -141,10 +141,13 @@
 
   <main id="contenido" class="pj">
     <article>
-      <figure class="pj__hero is-fill-m is-screen-m" style="--bg:#000;--ar:1.0000;--ar-m:1.0000">
-      <video muted loop playsinline autoplay preload="metadata" poster="../../../content/posters/claur.jpg" aria-label="Claur Tiles — vídeo de portada">
-        <source src="../../../content/media/claur-tiles.av1.mp4" type='video/mp4; codecs="av01.0.08M.10"'><source src="../../../content/media/claur-tiles.hevc.mp4" type='video/mp4; codecs="hvc1.1.6.L120.90"'><source src="../../../content/media/claur-tiles.mp4" type='video/mp4'>
-      </video>
+      <figure class="pj__hero" style="--bg:#000;--ar:1.0000;--ar-m:1.0000">
+      <div class="pj__media">
+        <picture><source type="image/avif" srcset="../../../content/posters/claur-800.avif 800w, ../../../content/posters/claur.avif 1080w" sizes="(max-width: 923px) 100vw, 34vw"><img class="pj__poster" src="../../../content/posters/claur.jpg" srcset="../../../content/posters/claur-800.jpg 800w, ../../../content/posters/claur.jpg 1080w" sizes="(max-width: 923px) 100vw, 34vw" width="1080" height="1080" alt="" decoding="async"></picture>
+        <video muted loop playsinline autoplay preload="metadata" poster="../../../content/posters/claur.jpg" aria-label="Claur Tiles — vídeo de portada">
+          <source src="../../../content/media/claur-tiles.av1.mp4" type='video/mp4; codecs="av01.0.08M.10"'><source src="../../../content/media/claur-tiles.hevc.mp4" type='video/mp4; codecs="hvc1.1.6.L120.90"'><source src="../../../content/media/claur-tiles.mp4" type='video/mp4'>
+        </video>
+      </div>
     </figure>
 
       <header class="pj__head sheet">

@@ -141,10 +141,13 @@
 
   <main id="contenido" class="pj">
     <article>
-      <figure class="pj__hero is-fill-m is-screen-m" style="--bg:#000;--ar:1.0000;--ar-m:1.0000">
-      <video muted loop playsinline autoplay preload="metadata" poster="../../content/posters/orbis-vacui.jpg" aria-label="Orbis Vacui — cover video">
-        <source src="../../content/media/g-orbis-vacui-09.hevc.mp4" type='video/mp4; codecs="hvc1.1.6.L120.90"'><source src="../../content/media/g-orbis-vacui-09.av1.mp4" type='video/mp4; codecs="av01.0.08M.10"'><source src="../../content/uploads/figma-video/orbis-vacui/09.mp4" type='video/mp4'>
-      </video>
+      <figure class="pj__hero" style="--bg:#000;--ar:1.0000;--ar-m:1.0000">
+      <div class="pj__media">
+        <picture><source type="image/avif" srcset="../../content/posters/orbis-vacui.avif"><img class="pj__poster" src="../../content/posters/orbis-vacui.jpg" width="720" height="720" alt="" decoding="async"></picture>
+        <video muted loop playsinline autoplay preload="metadata" poster="../../content/posters/orbis-vacui.jpg" aria-label="Orbis Vacui — cover video">
+          <source src="../../content/media/g-orbis-vacui-09.hevc.mp4" type='video/mp4; codecs="hvc1.1.6.L120.90"'><source src="../../content/media/g-orbis-vacui-09.av1.mp4" type='video/mp4; codecs="av01.0.08M.10"'><source src="../../content/uploads/figma-video/orbis-vacui/09.mp4" type='video/mp4'>
+        </video>
+      </div>
     </figure>
 
       <header class="pj__head sheet">

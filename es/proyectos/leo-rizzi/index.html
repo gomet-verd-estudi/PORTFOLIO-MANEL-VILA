@@ -141,10 +141,13 @@
 
   <main id="contenido" class="pj">
     <article>
-      <figure class="pj__hero is-screen-m" style="--bg:#000;--ar:0.5625;--ar-m:0.5625">
-      <video muted loop playsinline autoplay preload="metadata" poster="../../../content/posters/leo-rizzi.jpg" aria-label="Leo Rizzi · Gira 2022 — vídeo de portada">
-        <source src="../../../content/media/leo-rizzi.hevc.mp4" type='video/mp4; codecs="hvc1.1.6.L120.90"'><source src="../../../content/media/leo-rizzi.mp4" type='video/mp4'>
-      </video>
+      <figure class="pj__hero" style="--bg:#000;--ar:0.5625;--ar-m:0.5625">
+      <div class="pj__media">
+        <picture><source type="image/avif" srcset="../../../content/posters/leo-rizzi.avif"><img class="pj__poster" src="../../../content/posters/leo-rizzi.jpg" width="720" height="1280" alt="" decoding="async"></picture>
+        <video muted loop playsinline autoplay preload="metadata" poster="../../../content/posters/leo-rizzi.jpg" aria-label="Leo Rizzi · Gira 2022 — vídeo de portada">
+          <source src="../../../content/media/leo-rizzi.hevc.mp4" type='video/mp4; codecs="hvc1.1.6.L120.90"'><source src="../../../content/media/leo-rizzi.mp4" type='video/mp4'>
+        </video>
+      </div>
     </figure>
 
       <header class="pj__head sheet">

@@ -142,9 +142,12 @@
   <main id="contenido" class="pj">
     <article>
       <figure class="pj__hero" style="--bg:#7e95cb;--ar:1.0000;--ar-m:1.0000">
-      <video muted loop playsinline autoplay preload="metadata" poster="../../../content/posters/dmatinada.jpg" aria-label="D’Matinada — vídeo de portada">
-        <source src="../../../content/media/g-dmatinada-01.hevc.mp4" type='video/mp4; codecs="hvc1.1.6.L120.90"'><source src="../../../content/media/g-dmatinada-01.av1.mp4" type='video/mp4; codecs="av01.0.08M.10"'><source src="../../../content/uploads/figma-video/dmatinada/01.mp4" type='video/mp4'>
-      </video>
+      <div class="pj__media">
+        <picture><source type="image/avif" srcset="../../../content/posters/dmatinada.avif"><img class="pj__poster" src="../../../content/posters/dmatinada.jpg" width="720" height="720" alt="" decoding="async"></picture>
+        <video muted loop playsinline autoplay preload="metadata" poster="../../../content/posters/dmatinada.jpg" aria-label="D’Matinada — vídeo de portada">
+          <source src="../../../content/media/g-dmatinada-01.hevc.mp4" type='video/mp4; codecs="hvc1.1.6.L120.90"'><source src="../../../content/media/g-dmatinada-01.av1.mp4" type='video/mp4; codecs="av01.0.08M.10"'><source src="../../../content/uploads/figma-video/dmatinada/01.mp4" type='video/mp4'>
+        </video>
+      </div>
     </figure>
 
       <header class="pj__head sheet">

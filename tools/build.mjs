@@ -229,6 +229,8 @@ function img(R, src, { alt = '', sizes = '100vw', lazy = true, cls = '', extra =
 }
 
 const MARK = '<svg data-mark aria-hidden="true"></svg>';
+/** Tamaños de las miniaturas del índice (la portada del proyecto los repite para reutilizar el mismo archivo). */
+const TILE_SIZES = '(max-width: 923px) 100vw, 34vw';
 
 /**
  * Contexto de una página: idioma, su ruta, la raíz del sitio (R) y su equivalente en el otro idioma.
@@ -469,7 +471,7 @@ function home(lang) {
   const tiles = P.map((p, i) => {
     const th = thumbOf(p);
     const vis = th
-      ? img(R, th, { alt: '', sizes: '(max-width: 923px) 100vw, 34vw' })
+      ? img(R, th, { alt: '', sizes: TILE_SIZES })
       : `<span class="cover"><span class="cover__title">[${esc(p.name)}]</span></span>`;
     return `
       <a class="tile" href="${C.pj(p)}" data-index="${i}" style="--i:${i}">
@@ -571,18 +573,23 @@ function heroHTML(C, p) {
   const m = heroOf(p);
   if (!m) return '';
   const ar = m.ar || (m.type === 'image' ? dims(m.src)[0] / dims(m.src)[1] : 16 / 9);
-  // Móvil: a pantalla completa si hay versión vertical, si se pidió llenar o si la pieza es vertical
-  const fillM = !!(m.mobile || m.fillMobile);
-  const cls = `pj__hero${fillM ? ' is-fill-m' : ''}${fillM || ar < 0.9 ? ' is-screen-m' : ''}`;
+  // La portada se ve entera, tan grande como quepa en la pantalla, sin recortes ni deformaciones
+  // (en móvil con la proporción de su versión vertical, si la tiene)
+  const cls = 'pj__hero';
   const style = ` style="--bg:${m.bg || (m.type === 'image' ? 'var(--paper)' : '#000')};--ar:${ar.toFixed(4)};--ar-m:${(m.mobile && m.arMobile ? m.arMobile : ar).toFixed(4)}"`;
+  // .pj__media es la caja que viaja entre páginas. Bajo el vídeo va la misma imagen que mostraba la
+  // miniatura del índice (mismo archivo, ya en caché): así la portada se ve desde el primer instante.
   if (m.type === 'video') {
     return `<figure class="${cls}"${style}>
-      <video muted loop playsinline autoplay preload="metadata" poster="${R}${url(m.poster || '')}" aria-label="${esc(p.name)} — ${t.pj.coverVideo}">
-        ${m.mobile ? sources(R, m.mobile, '(max-width: 923px)') : ''}${sources(R, m.src)}
-      </video>
+      <div class="pj__media">
+        ${m.poster ? img(R, m.poster, { alt: '', sizes: TILE_SIZES, lazy: false, cls: 'pj__poster' }) : ''}
+        <video muted loop playsinline autoplay preload="metadata" poster="${R}${url(m.poster || '')}" aria-label="${esc(p.name)} — ${t.pj.coverVideo}">
+          ${m.mobile ? sources(R, m.mobile, '(max-width: 923px)') : ''}${sources(R, m.src)}
+        </video>
+      </div>
     </figure>`;
   }
-  return `<figure class="${cls}"${style}>${img(R, m.src, { alt: `${p.name} — ${t.pj.cover}`, lazy: false, priority: true })}</figure>`;
+  return `<figure class="${cls}"${style}><div class="pj__media">${img(R, m.src, { alt: `${p.name} — ${t.pj.cover}`, lazy: false, priority: true })}</div></figure>`;
 }
 
 function videoData(R, vid) {
