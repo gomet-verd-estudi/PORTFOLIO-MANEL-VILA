@@ -107,9 +107,10 @@ html.vt-back::view-transition-new(hero):only-child { animation-name: vt-pop-new;
 @keyframes vt-info-in { from { transform: translateY(110%); } }
 /* Carrusel ↔ índice (dentro de la página): la diapositiva se reduce hasta su miniatura y el resto
    del índice se funde y se coloca alrededor; al volver, la miniatura crece hasta llenar la pantalla */
-html.vt-grid::view-transition-old(root), html.vt-grid::view-transition-new(root) { mix-blend-mode: plus-lighter; animation-duration: .5s; animation-timing-function: ease; }
-html.vt-grid::view-transition-old(root) { animation-name: vt-fade-out; }
-html.vt-grid::view-transition-new(root) { animation-name: vt-fade-in; }
+/* La vista nueva aparece sobre la anterior (que se queda quieta debajo): un fundido sencillo,
+   mucho más ligero que mezclar dos capas a pantalla completa */
+html.vt-grid::view-transition-old(root) { animation: none; }
+html.vt-grid::view-transition-new(root) { mix-blend-mode: normal; animation: vt-fade-in .5s ease both; }
 ::view-transition-group(morph) { animation-duration: .75s; }
 /* La imagen que viaja llena siempre su marco (recortada como la miniatura), sin dos proporciones a la vez */
 ::view-transition-old(morph), ::view-transition-new(morph),
@@ -256,7 +257,8 @@ html.is-unveil.veil-back body::after { animation-name: veil-out-back; }
 .grid-btn__icon i {
   position: absolute; width: 7px; height: 7px;
   border: 1.2px solid currentColor;
-  transition: all .5s var(--ease);
+  transition: left .5s var(--ease), top .5s var(--ease), width .5s var(--ease), height .5s var(--ease),
+              border-width .5s var(--ease), transform .5s var(--ease), opacity .5s var(--ease);
 }
 .grid-btn__icon i:nth-child(1) { left: 0; top: 0; }
 .grid-btn__icon i:nth-child(2) { left: 9px; top: 0; }
@@ -662,6 +664,7 @@ html.is-unveil.veil-back body::after { animation-name: veil-out-back; }
   border-top: 1px solid currentColor; border-bottom: 1px solid currentColor;
 }
 .marquee__track { display: inline-flex; animation: marquee 42s linear infinite; will-change: transform; }
+.marquee.is-idle .marquee__track { animation-play-state: paused; }
 .marquee__track span { padding-right: .35em; font-size: clamp(30px, 4.4vw, 72px); line-height: 1; letter-spacing: -.025em; }
 @keyframes marquee { to { transform: translateX(-50%); } }
 
@@ -752,6 +755,7 @@ html.is-unveil.veil-back body::after { animation-name: veil-out-back; }
   transition: opacity .32s ease;
 }
 .lightbox.is-on { opacity: 1; }
+.lightbox[open] { will-change: opacity; }
 .lightbox::backdrop { background: transparent; }
 .lightbox[open] { display: grid; grid-template-rows: minmax(0, 1fr) auto; }
 .lightbox__stage { display: grid; place-items: center; min-height: 0; padding: calc(var(--top) + 1rem) 3vw 0; }

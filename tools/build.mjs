@@ -200,7 +200,13 @@ const VMAN = exists('content/media/manifest.json') ? JSON.parse(fs.readFileSync(
 const vOf = (p) => VMAN[p] || { h264: p };
 const TYPES = { av1: `video/mp4; codecs="av01.0.08M.10"`, hevc: `video/mp4; codecs="hvc1.1.6.L120.90"`, h264: 'video/mp4' };
 /** Variantes de un vídeo de la más ligera a la más pesada; H.264 siempre al final como respaldo. */
-const ranked = (v) => ['av1', 'hevc'].filter((k) => v[k]).sort((a, b) => (v.bytes || {})[a] - (v.bytes || {})[b]).concat('h264');
+/*
+ * Orden de los vídeos en las páginas: primero HEVC (los navegadores solo lo aceptan si el chip del
+ * aparato lo decodifica: va fluido y gasta poca batería) y si no H.264 (lo decodifica el chip de
+ * cualquier aparato). AV1 pesa menos, pero muchos móviles lo decodifican con el procesador y eso da
+ * tirones; en el carrusel se usa solo donde el aparato lo decodifica bien (main.js).
+ */
+const ranked = (v) => (v.hevc ? ['hevc'] : []).concat('h264');
 function sources(R, p, media = '') {
   const v = vOf(p);
   const mq = media ? ` media="${media}"` : '';
@@ -830,6 +836,8 @@ write('about.html', redirect('', PAGE.about('es'), `About — ${PERSON.name}`));
 BASE.forEach((p) => write(`proyectos/${p.slug}/index.html`, redirect(`proyectos/${p.slug}/`, PAGE.project('es', p), `${p.name} — ${PERSON.name}`)));
 write('sitemap.xml', sitemap);
 
+// Vídeos ligeros de las miniaturas del índice (tools/tiles.py): 640×800, ya recortados a 4:5, H.264
+const TILEV = Object.fromEntries(BASE.map((p) => [p.slug, `content/media/tiles/${p.slug}.mp4`]).filter(([, f]) => exists(f)));
 // Mapa de medios para el navegador: variantes de vídeo y AVIF de las portadas/imágenes usadas por JS
 const imgs = {};
 for (const p of BASE) {
@@ -841,7 +849,7 @@ for (const p of BASE) {
   }
 }
 write('assets/js/media.js', `/* Generado por tools/build.mjs: variantes AV1/HEVC/H.264 y AVIF. No editar a mano. */
-window.MEDIA = ${JSON.stringify({ video: Object.fromEntries(Object.entries(VMAN).filter(([k]) => !k.startsWith('_'))), img: imgs })};
+window.MEDIA = ${JSON.stringify({ video: Object.fromEntries(Object.entries(VMAN).filter(([k]) => !k.startsWith('_'))), img: imgs, tile: TILEV })};
 `);
 
 // Avisa de rutas que no existen (fotos o vídeos que faltan) y de textos sin traducir

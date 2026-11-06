@@ -351,6 +351,12 @@
   // Al volver con el botón atrás (bfcache) la posición la restaura el navegador: se sincroniza
   if (scroller) addEventListener('pageshow', (e) => { if (e.persisted) { scroller.resize(); scroller.reset(); } });
 
+  // La cinta del footer solo se mueve cuando se ve (ahorra trabajo y batería al resto de la página)
+  if ('IntersectionObserver' in window) {
+    const mio = new IntersectionObserver((en) => en.forEach((x) => x.target.classList.toggle('is-idle', !x.isIntersecting)));
+    document.querySelectorAll('.marquee').forEach((m) => mio.observe(m));
+  }
+
   /* ------------------------------------------------------------------
      Footer: hora de Valencia en directo y "volver arriba"
      ------------------------------------------------------------------ */
