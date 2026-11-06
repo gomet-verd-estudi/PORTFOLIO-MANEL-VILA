@@ -212,6 +212,21 @@
   }
 
   /* ------------------------------------------------------------------
+     Footer: hora de Valencia en directo y "volver arriba"
+     ------------------------------------------------------------------ */
+  const clocks = document.querySelectorAll('[data-clock]');
+  if (clocks.length) {
+    const fmt = new Intl.DateTimeFormat('es-ES', { timeZone: 'Europe/Madrid', hour: '2-digit', minute: '2-digit' });
+    const tick = () => { const t = fmt.format(new Date()); clocks.forEach((c) => (c.textContent = t)); };
+    tick(); setInterval(tick, 20000);
+  }
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-top]'); if (!b) return;
+    const box = b.closest('.grid');                     // en el índice, el scroll es del propio índice
+    (box || window).scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
+  });
+
+  /* ------------------------------------------------------------------
      Copiar el email con un clic
      ------------------------------------------------------------------ */
   document.addEventListener('click', async (e) => {

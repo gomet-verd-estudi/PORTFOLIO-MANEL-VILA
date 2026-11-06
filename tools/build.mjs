@@ -224,6 +224,53 @@ const websiteLD = () => ({ '@type': 'WebSite', '@id': `${SITE}/#web`, url: `${SI
 const marquee = (text = 'Always WIPing · Working In Play · Branding · Lettering · Dirección de arte · ') =>
   `<div class="marquee" aria-hidden="true"><div class="marquee__track">${('<span>' + esc(text) + '</span>').repeat(4)}</div></div>`;
 
+/**
+ * Footer editorial (común a proyectos, About y el final del índice):
+ * cinta · llamada a contactar (opcional) · columnas numeradas · nombre a sangre · colofón.
+ */
+function footer(R, { cta = true, here = '' } = {}) {
+  const year = TODAY.slice(0, 4);
+  return `
+  <footer class="ft" aria-label="Pie de página">
+    ${marquee()}
+    ${cta ? `<div class="ft__cta">
+      <p class="chips ft__chips"><span class="chip chip--num">✶</span><span class="chip">Contacto</span><span class="chip chip--round">Nuevos proyectos</span></p>
+      <h2 class="ft__title" data-reveal><span class="mask"><span>¿Tienes un proyecto</span></span><span class="mask"><span>en mente?</span></span></h2>
+      <a class="ft__mail" href="mailto:${PERSON.email}"><span>${PERSON.email}</span><span aria-hidden="true">↗</span></a>
+    </div>` : ''}
+    <div class="ft__cols">
+      <section class="ft__col">
+        <h2 class="ft__label">(01) Contacto</h2>
+        <span class="copyable"><a href="mailto:${PERSON.email}">${PERSON.email}</a><button class="copy" data-copy="${PERSON.email}" aria-label="Copiar email">Copiar</button></span>
+        <a href="tel:${PERSON.phoneHref}">${PERSON.phone}</a>
+      </section>
+      <section class="ft__col">
+        <h2 class="ft__label">(02) Redes</h2>
+        <a href="${PERSON.instagram}" target="_blank" rel="noopener">Instagram <span aria-hidden="true">↗</span></a>
+        <span class="ft__muted">${PERSON.instagramLabel}</span>
+      </section>
+      <section class="ft__col">
+        <h2 class="ft__label">(03) Base</h2>
+        <span>Valencia · Barcelona</span>
+        <span class="ft__muted">Valencia <time class="ft__clock" data-clock>CET</time></span>
+      </section>
+      <section class="ft__col">
+        <h2 class="ft__label">(04) Índice</h2>
+        <a href="${R}?grid"${here === 'grid' ? ' aria-current="page"' : ''}>Proyectos <sup>${pad(N)}</sup></a>
+        <a href="${R}about/"${here === 'about' ? ' aria-current="page"' : ''}>About</a>
+        <button class="ft__top" data-top>Volver arriba <span aria-hidden="true">↑</span></button>
+      </section>
+    </div>
+    <p class="ft__name" data-reveal aria-hidden="true"><span class="mask"><span>[Manel Vila]</span></span></p>
+    <div class="ft__legal">
+      <span>© ${year} ${PERSON.name}</span>
+      <span>Miembro de ${PERSON.studio}</span>
+      <span>Tipografía: KMR Waldenburg</span>
+      <span>Always WIPing [Working In Play]</span>
+    </div>
+  </footer>`;
+}
+
 const scripts = (R, list) => list.map((s) => `  <script src="${R}assets/js/${s}.js"></script>`).join('\n');
 
 /* ---------- HOME ---------- */
@@ -273,6 +320,7 @@ ${panels(R, 'home')}
         <h2 class="grid__title">[Proyectos]</h2>
         <p class="grid__meta"><span>${pad(N)} trabajos</span><span>Branding · Lettering · Editorial · Motion</span></p>
       </header>${tiles}
+      ${footer('', { here: 'grid' })}
     </nav>
   </main>
 
@@ -448,11 +496,7 @@ ${panels(R, 'project', i)}
     </nav>
   </main>
 
-  ${marquee()}
-  <footer class="site-foot">
-    ${contactLinks('site-foot__links')}
-    <span>${PERSON.name} · Valencia · Barcelona</span>
-  </footer>
+${footer(R)}
 
   <dialog class="lightbox" aria-label="Galería ampliada">
     <div class="lightbox__stage"></div>
@@ -545,7 +589,6 @@ ${panels(R, 'about')}
       </div>
     </section>
 
-    ${marquee()}
     <section class="contact" id="contacto" aria-labelledby="contact-title">
       <div class="chips">
         <span class="chip chip--num">✶</span>
@@ -560,13 +603,9 @@ ${panels(R, 'about')}
         <a href="${PERSON.instagram}" target="_blank" rel="noopener">${PERSON.instagramLabel}</a>
       </div>
 
-      <footer class="foot">
-        <span>Always WIPing [Working In Play]</span>
-        <span>Valencia · Barcelona</span>
-        <span>© ${TODAY.slice(0, 4)} ${PERSON.name}</span>
-      </footer>
     </section>
   </main>
+${footer(R, { cta: false, here: 'about' })}
 
 ${scripts(R, ['ui'])}
 </body>
