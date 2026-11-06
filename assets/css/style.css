@@ -100,6 +100,27 @@ html.vt-back::view-transition-new(root) { animation-name: vt-pop-new; }
 html.vt-back::view-transition-old(hero):only-child { animation-name: vt-pop-old; }
 html.vt-back::view-transition-new(hero):only-child { animation-name: vt-pop-new; }
 ::view-transition-group(hero) { animation-duration: calc(var(--vt) + .1s); }
+/* La barra de info del carrusel baja al salir de la home y sube al volver */
+::view-transition-old(info):only-child { animation: vt-info-out .55s var(--vt-ease) both; }
+::view-transition-new(info):only-child { animation: vt-info-in .7s var(--vt-ease) .3s both; }
+@keyframes vt-info-out { to { transform: translateY(110%); } }
+@keyframes vt-info-in { from { transform: translateY(110%); } }
+/* Carrusel ↔ índice (dentro de la página): la diapositiva se reduce hasta su miniatura y el resto
+   del índice se funde y se coloca alrededor; al volver, la miniatura crece hasta llenar la pantalla */
+html.vt-grid::view-transition-old(root), html.vt-grid::view-transition-new(root) { mix-blend-mode: plus-lighter; animation-duration: .5s; animation-timing-function: ease; }
+html.vt-grid::view-transition-old(root) { animation-name: vt-fade-out; }
+html.vt-grid::view-transition-new(root) { animation-name: vt-fade-in; }
+::view-transition-group(morph) { animation-duration: .75s; }
+/* La imagen que viaja llena siempre su marco (recortada como la miniatura), sin dos proporciones a la vez */
+::view-transition-old(morph), ::view-transition-new(morph),
+::view-transition-old(hero), ::view-transition-new(hero) { inline-size: 100%; block-size: 100%; object-fit: cover; }
+/* El cambio de imagen dura poco: casi todo el recorrido se ve una sola imagen que crece o se reduce */
+::view-transition-old(morph), ::view-transition-old(hero) { animation: vt-fade-out .3s ease both; }
+::view-transition-new(morph), ::view-transition-new(hero) { animation: vt-fade-in .3s ease both; }
+@keyframes vt-fade-out { to { opacity: 0; } }
+@keyframes vt-fade-in { from { opacity: 0; } }
+.vt-grid .grid { transition: none; }
+.tile.is-morph { opacity: 1; transform: none; transition: none; }
 @keyframes vt-push-old { to { transform: translateY(-22vh); filter: brightness(.8); } }
 @keyframes vt-push-new { from { transform: translateY(100vh); } }
 @keyframes vt-pop-old  { to { transform: translateY(100vh); } }
@@ -427,7 +448,8 @@ html.is-unveil.veil-back body::after { animation-name: veil-out-back; }
   transition: transform .6s var(--ease), opacity .4s ease;
 }
 .info > * { pointer-events: auto; }
-.is-grid .info, .is-sheet .info { transform: translateY(110%); opacity: 0; }
+.is-grid .info, .is-sheet .info,
+.home[data-panel="about"] .info, .home[data-panel="contact"] .info { transform: translateY(110%); opacity: 0; }
 
 .more {
   width: 50%;
