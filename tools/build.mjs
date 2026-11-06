@@ -246,6 +246,18 @@ function page(lang, here, alt) {
   };
 }
 
+/*
+ * Páginas preparadas antes del clic (Chrome, Edge): al pasar el ratón por un enlace o al empezar a
+ * tocarlo, el navegador carga la página de destino en segundo plano. Al hacer clic aparece al momento
+ * y la transición arranca sin esperas y con la portada ya cargada.
+ */
+const SPECULATION = JSON.stringify({
+  prerender: [{
+    where: { and: [{ href_matches: '/*' }, { not: { selector_matches: '[target], [download], [href^="mailto:"], [href^="tel:"]' } }] },
+    eagerness: 'moderate'
+  }]
+});
+
 /* ---------- piezas compartidas ---------- */
 function head(C, { title, description, image = 'content/posters/og.jpg', type = 'website', jsonld = [], extra = '' }) {
   const { R, L, lang, here, alt } = C;
@@ -255,7 +267,8 @@ function head(C, { title, description, image = 'content/posters/og.jpg', type = 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <script>/* Transición de llegada sin View Transitions: la hoja de papel ya cubre la página al pintarse */try{var v=sessionStorage.getItem('mv-veil');if(v&&!('CSSViewTransitionRule' in window)){document.documentElement.classList.add('is-veiled');if(v==='back')document.documentElement.classList.add('veil-back')}}catch(e){}</script>
+  <script>/* Llegada con la hoja de papel (si la página anterior salió con ella): ya cubre la página al pintarse */try{var v=sessionStorage.getItem('mv-veil');if(v){document.documentElement.classList.add('is-veiled');if(v==='back')document.documentElement.classList.add('veil-back')}}catch(e){}</script>
+  <script type="speculationrules">${SPECULATION}</script>
   <title>${esc(title)}</title>
   <meta name="description" content="${esc(description)}">
   <meta name="author" content="${PERSON.name}">
@@ -613,11 +626,13 @@ function project(lang, i) {
   // Esquina inferior izquierda: el proyecto y la pieza que se está viendo (la actualiza project.js)
   const info = `<p class="corner corner--l corner--info" aria-hidden="true"><span class="corner__name">${esc(p.name)}</span><span data-count>${total ? t.pj.pieces(pad(total)) : esc(p.tag)}</span></p>`;
 
+  const heroPoster = m.type === 'video' ? m.poster : null;
   return `${head(C, {
     title: `${p.name} — ${p.tag} · ${PERSON.name}`,
     description: desc,
     image: thumbOf(p) || 'content/posters/og.jpg',
     type: 'article',
+    extra: heroPoster ? `  <link rel="preload" as="image" href="${R}${url(heroPoster)}" fetchpriority="high">\n` : '',
     jsonld: [{ '@context': 'https://schema.org', '@graph': [
       {
         '@type': 'CreativeWork',

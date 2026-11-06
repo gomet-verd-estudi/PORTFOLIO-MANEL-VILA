@@ -451,6 +451,20 @@
     if (UI.markDir) UI.markDir(false);
     (UI.leave || ((go) => go()))(() => { location.href = pageOf(i); }, false);
   }
+  // Al empezar a tocar (o pulsar) una diapositiva, su proyecto se prepara en segundo plano:
+  // así se abre al momento y la transición arranca con la portada ya cargada (Chrome, Edge)
+  const ready = new Set();
+  function prepare(i) {
+    const href = new URL(pageOf(i), location.href).href;
+    if (ready.has(href) || !(HTMLScriptElement.supports && HTMLScriptElement.supports('speculationrules'))) return;
+    ready.add(href);
+    const sr = document.createElement('script');
+    sr.type = 'speculationrules';
+    sr.textContent = JSON.stringify({ prerender: [{ urls: [href] }] });
+    document.head.appendChild(sr);
+  }
+  track.addEventListener('pointerdown', () => { if (!flags.grid) prepare(cur); }, { passive: true });
+  if (fine.matches) track.addEventListener('pointerenter', () => { clearTimeout(track._pt); track._pt = setTimeout(() => !flags.grid && prepare(cur), 400); });
   const clearHero = () => {
     slides.forEach((s) => { const m = s.querySelector('.slide__media'); if (m) m.style.viewTransitionName = ''; });
     grid.querySelectorAll('.tile__media').forEach((b) => (b.style.viewTransitionName = ''));
