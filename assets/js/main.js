@@ -99,6 +99,40 @@
   /* Encaje de las portadas de vídeo: si la proporción del vídeo no encaja con la pantalla
      (un vídeo vertical o cuadrado en escritorio), se muestra entero sobre su color de fondo
      en vez de recortarlo y ampliarlo. */
+  /* La dirección refleja lo que se ve (#proyecto, ?grid). En una página preparada en segundo plano
+     (prerender) se espera a que se muestre para tocar el historial. */
+  let pendingUrl = null;
+  function setUrl(u) {
+    if (document.prerendering) {
+      if (pendingUrl == null) document.addEventListener('prerenderingchange', () => { try { history.replaceState(history.state, '', pendingUrl); } catch (e) { /* nada */ } }, { once: true });
+      pendingUrl = u; return;
+    }
+    try { history.replaceState(history.state, '', u); } catch (e) { /* nada */ }
+  }
+
+  /* Diapositiva con la portada entera sobre su fondo: antes de viajar al proyecto, su caja se ajusta
+     exactamente a la imagen visible (misma imagen, mismo sitio), así el paso a la portada del proyecto
+     es solo un cambio de tamaño, sin recortes ni deformaciones. */
+  const fitted = new Map();
+  function fitToContent(media) {
+    const slide = media && media.closest('.slide');
+    if (!slide || !slide.classList.contains('is-contain')) return;
+    const m = projects[+slide.dataset.real].media || {};
+    const ar = media.videoWidth ? media.videoWidth / media.videoHeight : (mq.matches && m.mobile && m.arMobile) || m.ar;
+    if (!ar) return;
+    const cs = getComputedStyle(media), r = media.getBoundingClientRect(), sr = slide.getBoundingClientRect();
+    const pl = parseFloat(cs.paddingLeft), pr = parseFloat(cs.paddingRight), pt = parseFloat(cs.paddingTop), pb = parseFloat(cs.paddingBottom);
+    const aw = r.width - pl - pr, ah = r.height - pt - pb;
+    const w = Math.min(aw, ah * ar), h = w / ar;
+    if (!fitted.has(media)) fitted.set(media, media.getAttribute('style') || '');
+    Object.assign(media.style, {
+      position: 'absolute', padding: '0', objectFit: 'cover',
+      left: `${r.left - sr.left + pl + (aw - w) / 2}px`, top: `${r.top - sr.top + pt + (ah - h) / 2}px`,
+      width: `${w}px`, height: `${h}px`
+    });
+  }
+  function unfit() { fitted.forEach((st, el) => el.setAttribute('style', st)); fitted.clear(); }
+
   function fitCovers() {
     const vr = window.innerWidth / window.innerHeight;
     slides.forEach((s) => {
@@ -179,7 +213,7 @@
     if (!first) closeMore();
     resetTimer();
     syncVideos();
-    history.replaceState(null, '', '#' + p.slug);
+    setUrl('#' + p.slug);
   }
 
   /* ================================================================
@@ -391,7 +425,7 @@
     }
     restoreY = null;
     // La vista queda en la dirección (?grid) para poder volver exactamente a ella
-    history.replaceState(history.state, '', location.pathname + (on ? '?grid' : '') + location.hash);
+    setUrl(location.pathname + (on ? '?grid' : '') + location.hash);
     syncVideos();
     syncTiles();
   }
@@ -478,7 +512,7 @@
      ================================================================ */
   function openProject(i) {
     const media = slides[pos] && slides[pos].querySelector('.slide__media');
-    if (media) media.style.viewTransitionName = 'hero';
+    if (media) { fitToContent(media); media.style.viewTransitionName = 'hero'; }
     closeMore();
     nameInfo();
     if (UI.markDir) UI.markDir(false);
@@ -520,6 +554,7 @@
   addEventListener('pageshow', (e) => {
     if (!e.persisted) return;
     clearHero();
+    unfit();
     last = performance.now(); syncVideos();
   });
   // Al volver de un proyecto, su portada regresa a su sitio: la diapositiva del carrusel o su miniatura del índice
@@ -535,8 +570,9 @@
     const r = el.getBoundingClientRect();
     if (r.bottom <= 0 || r.top >= innerHeight) return;
     clearHero();
+    if (!flags.grid) fitToContent(el);
     el.style.viewTransitionName = 'hero';
-    vt.finished.finally(() => { el.style.viewTransitionName = ''; });
+    vt.finished.finally(() => { el.style.viewTransitionName = ''; unfit(); });
   });
   window.addEventListener('hashchange', () => {
     const [slug, view] = location.hash.slice(1).split('/');

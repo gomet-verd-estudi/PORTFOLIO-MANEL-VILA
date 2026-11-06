@@ -141,10 +141,13 @@
 
   <main id="contenido" class="pj">
     <article>
-      <figure class="pj__hero is-fill-m is-screen-m" style="--bg:#fff;--ar:1.7778;--ar-m:0.5607">
-      <video muted loop playsinline autoplay preload="metadata" poster="../../content/posters/zelandia.jpg" aria-label="Zelandia Walk — cover video">
-        <source src="../../content/media/zelandia-walk-movil.mp4" type='video/mp4' media="(max-width: 923px)"><source src="../../content/media/zelandia-walk.mp4" type='video/mp4'>
-      </video>
+      <figure class="pj__hero" style="--bg:#fff;--ar:1.7778;--ar-m:0.5607">
+      <div class="pj__media">
+        <picture><source type="image/avif" srcset="../../content/posters/zelandia-800.avif 800w, ../../content/posters/zelandia.avif 1200w" sizes="(max-width: 923px) 100vw, 34vw"><img class="pj__poster" src="../../content/posters/zelandia.jpg" srcset="../../content/posters/zelandia-800.jpg 800w, ../../content/posters/zelandia.jpg 1200w" sizes="(max-width: 923px) 100vw, 34vw" width="1200" height="676" alt="" decoding="async"></picture>
+        <video muted loop playsinline autoplay preload="metadata" poster="../../content/posters/zelandia.jpg" aria-label="Zelandia Walk — cover video">
+          <source src="../../content/media/zelandia-walk-movil.mp4" type='video/mp4' media="(max-width: 923px)"><source src="../../content/media/zelandia-walk.mp4" type='video/mp4'>
+        </video>
+      </div>
     </figure>
 
       <header class="pj__head sheet">

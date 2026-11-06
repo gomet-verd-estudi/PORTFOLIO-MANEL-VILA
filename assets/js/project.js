@@ -141,7 +141,7 @@
   /* ---------- transiciones: la portada viaja entre páginas ---------- */
   // Al salir: si se va al siguiente proyecto, su imagen se convierte en la portada de la página nueva;
   // si no, la portada solo viaja cuando se ve (si estás abajo del todo, sale con la página).
-  const heroEl = $('.pj__hero');
+  const heroEl = $('.pj__media');   // la caja de la portada (es la que viaja)
   const nextBox = $('.pj__next-img');
   let prepared = false;
   function prepLeave(toNext) {
