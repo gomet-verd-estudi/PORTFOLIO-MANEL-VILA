@@ -41,5 +41,6 @@ Ver [PUBLICAR.md](PUBLICAR.md).
 
 - Cada página lleva título, descripción, `hreflang` (inglés/español) y datos estructurados (schema.org): quién es Manel (oficio, ciudades, estudio, formación, especialidades) y cada proyecto como obra suya.
 - `llms.txt` y `llms-full.txt` (se generan): resumen y texto completo de la web para asistentes con IA (ChatGPT, Claude, Perplexity…).
+- Cada vez que se publica en `main`, una acción de GitHub (`.github/workflows/indexnow.yml`) avisa por IndexNow a Bing (del que tira la búsqueda de ChatGPT y Copilot), Yandex, Seznam y Naver de todas las páginas. La clave es el archivo `5c9588674bb110511b98c213eae2f6d0.txt` de la raíz: no lo borres.
 - `robots.txt` deja entrar a buscadores y rastreadores de IA. Revisa también en Cloudflare que no los bloquee (AI Crawl Control).
 - Perfiles de Manel en otras webs (LinkedIn, Behance, Instagram personal…): añádelos en `PROFILES` de `tools/build.mjs`; así Google y las IA saben que son la misma persona.

@@ -1,0 +1,42 @@
+# Avisa a los buscadores de que la web ha cambiado (IndexNow: Bing —del que tira la búsqueda de
+# ChatGPT y Copilot—, Yandex, Seznam, Naver…). Se ejecuta solo cada vez que se publica en main,
+# y también se puede lanzar a mano desde la pestaña Actions de GitHub.
+# Google no usa IndexNow: para Google, Search Console.
+name: Avisar a los buscadores (IndexNow)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  indexnow:
+    runs-on: ubuntu-latest
+    env:
+      SITE: https://manelvila.com
+      HOST: manelvila.com
+      KEY: 5c9588674bb110511b98c213eae2f6d0   # pública a propósito: está publicada en la raíz de la web
+    steps:
+      - name: Esperar a que Cloudflare publique la nueva versión
+        run: |
+          for i in $(seq 1 30); do
+            if curl -fsS "$SITE/$KEY.txt" 2>/dev/null | grep -q "$KEY"; then echo "Clave publicada"; exit 0; fi
+            sleep 20
+          done
+          echo "::error::La clave $KEY.txt no está publicada en $SITE"; exit 1
+
+      - name: Enviar todas las direcciones del sitemap
+        run: |
+          sleep 60   # margen para que Cloudflare termine de repartir la versión nueva
+          curl -fsS "$SITE/sitemap.xml" | grep -o '<loc>[^<]*</loc>' | sed -e 's#<loc>##' -e 's#</loc>##' > urls.txt
+          printf '%s\n' "$SITE/llms.txt" "$SITE/llms-full.txt" >> urls.txt
+          echo "$(wc -l < urls.txt) direcciones"
+          jq -n --arg host "$HOST" --arg key "$KEY" --arg loc "$SITE/$KEY.txt" --rawfile urls urls.txt \
+            '{host: $host, key: $key, keyLocation: $loc, urlList: ($urls | split("\n") | map(select(length > 0)))}' > body.json
+          code=$(curl -sS -o resp.txt -w '%{http_code}' -X POST 'https://api.indexnow.org/indexnow' \
+            -H 'Content-Type: application/json; charset=utf-8' --data @body.json)
+          echo "IndexNow respondió $code"; cat resp.txt || true
+          case "$code" in 200|202) echo "Aviso enviado";; *) echo "::error::IndexNow respondió $code"; exit 1;; esac
