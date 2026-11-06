@@ -68,8 +68,56 @@ html.lenis, html.lenis body { height: auto; }
 .lenis [data-lenis-prevent] { overscroll-behavior: contain; }
 .lenis.lenis-smooth iframe { pointer-events: none; }
 
+/* --------------------------------------------------------------------------
+   TRANSICIONES ENTRE PÁGINAS — nunca un corte
+   · Con View Transitions (Chrome, Edge, Safari 18.2+): la página nueva sube como una hoja sobre
+     la anterior, que se aparta hacia arriba y se oscurece un poco; al volver, al revés.
+     El menú, el botón grid y las esquinas no se mueven; la portada viaja de la miniatura al proyecto.
+   · Sin ellas (Firefox…): una hoja de papel cubre la página al salir y se retira al llegar (ui.js).
+   -------------------------------------------------------------------------- */
 @view-transition { navigation: auto; }
-::view-transition-old(root), ::view-transition-new(root) { animation-duration: .45s; animation-timing-function: var(--ease); }
+:root { --vt: .8s; --vt-ease: cubic-bezier(.76, 0, .24, 1); }
+.franja { view-transition-name: franja; }
+.grid-btn { view-transition-name: grid-btn; }
+.corner--l { view-transition-name: corner-l; }
+.corner--r { view-transition-name: corner-r; }
+::view-transition-group(*) { animation-duration: var(--vt); animation-timing-function: var(--vt-ease); }
+/* Las píldoras fijas cambian de contenido (MV ↔ barra, 01/14 ↔ X, Email ↔ proyecto): se funden a su
+   tamaño natural, ancladas a su esquina, en vez de estirarse mientras cambian de medida */
+::view-transition-old(franja), ::view-transition-new(franja),
+::view-transition-old(corner-l), ::view-transition-new(corner-l) { block-size: 100%; inline-size: auto; inset-inline: 0 auto; }
+::view-transition-old(grid-btn), ::view-transition-new(grid-btn),
+::view-transition-old(corner-r), ::view-transition-new(corner-r) { block-size: 100%; inline-size: auto; inset-inline: auto 0; }
+::view-transition-old(root), ::view-transition-new(root) { mix-blend-mode: normal; animation: var(--vt) var(--vt-ease) both; }
+::view-transition-old(root) { animation-name: vt-push-old; }
+::view-transition-new(root) { animation-name: vt-push-new; }
+html.vt-back::view-transition-old(root) { z-index: 1; animation-name: vt-pop-old; }
+html.vt-back::view-transition-new(root) { animation-name: vt-pop-new; }
+/* La portada que no tiene pareja en la otra página se mueve con su página */
+::view-transition-old(hero):only-child, ::view-transition-new(hero):only-child { mix-blend-mode: normal; animation: var(--vt) var(--vt-ease) both; }
+::view-transition-old(hero):only-child { animation-name: vt-push-old; }
+::view-transition-new(hero):only-child { animation-name: vt-push-new; }
+html.vt-back::view-transition-old(hero):only-child { animation-name: vt-pop-old; }
+html.vt-back::view-transition-new(hero):only-child { animation-name: vt-pop-new; }
+::view-transition-group(hero) { animation-duration: calc(var(--vt) + .1s); }
+@keyframes vt-push-old { to { transform: translateY(-22vh); filter: brightness(.8); } }
+@keyframes vt-push-new { from { transform: translateY(100vh); } }
+@keyframes vt-pop-old  { to { transform: translateY(100vh); } }
+@keyframes vt-pop-new  { from { transform: translateY(-22vh); filter: brightness(.8); } }
+
+/* Respaldo sin View Transitions: hoja de papel (por debajo del menú, que no desaparece nunca) */
+html.is-veiled body::after, html.is-leaving body::after {
+  content: ''; position: fixed; inset: 0; z-index: 58; pointer-events: none;
+  background: var(--paper);
+}
+html.is-leaving body::after { animation: veil-in .5s var(--vt-ease) both; }
+html.is-leaving.veil-back body::after { animation-name: veil-in-back; }
+html.is-unveil body::after { animation: veil-out .8s var(--vt-ease) both; }
+html.is-unveil.veil-back body::after { animation-name: veil-out-back; }
+@keyframes veil-in { from { transform: translateY(100%); } }
+@keyframes veil-in-back { from { transform: translateY(-100%); } }
+@keyframes veil-out { to { transform: translateY(-100%); } }
+@keyframes veil-out-back { to { transform: translateY(100%); } }
 
 /* --------------------------------------------------------------------------
    Intro — el monograma se construye y la cortina sube
@@ -684,7 +732,6 @@ html.lenis, html.lenis body { height: auto; }
 .lightbox :focus-visible { outline-color: var(--blue); }
 html.is-lightbox { overflow: hidden; }
 
-::view-transition-group(hero) { animation-duration: .7s; animation-timing-function: cubic-bezier(.65, 0, .35, 1); }
 
 /* Accesos y pequeños detalles */
 .skip {
@@ -843,4 +890,5 @@ body:not(.home) { --panel-bottom: calc(30px + var(--gut) * 2 + env(safe-area-ins
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 0s !important; animation-duration: 0s !important; scroll-behavior: auto !important; }
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
 }

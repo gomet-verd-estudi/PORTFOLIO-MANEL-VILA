@@ -437,8 +437,8 @@
 
   grid.addEventListener('click', (e) => {
     const t = e.target.closest('.tile'); if (!t) return;
-    const im = t.querySelector('img');
-    if (im) im.style.viewTransitionName = 'hero';   // la miniatura "viaja" a la portada del proyecto
+    const box = t.querySelector('.tile__media');
+    if (box) box.style.viewTransitionName = 'hero';   // la miniatura "viaja" a la portada del proyecto
   });
 
   /* ================================================================
@@ -448,13 +448,34 @@
     const media = slides[pos] && slides[pos].querySelector('.slide__media');
     if (media) media.style.viewTransitionName = 'hero';
     closeMore();
-    location.href = pageOf(i);
+    if (UI.markDir) UI.markDir(false);
+    (UI.leave || ((go) => go()))(() => { location.href = pageOf(i); }, false);
   }
+  const clearHero = () => {
+    slides.forEach((s) => { const m = s.querySelector('.slide__media'); if (m) m.style.viewTransitionName = ''; });
+    grid.querySelectorAll('.tile__media').forEach((b) => (b.style.viewTransitionName = ''));
+  };
   // Al volver con el botón atrás (bfcache), limpiar la transición y retomar el vídeo
   addEventListener('pageshow', (e) => {
-    slides.forEach((s) => { const m = s.querySelector('.slide__media'); if (m) m.style.viewTransitionName = ''; });
-    grid.querySelectorAll('img').forEach((im) => (im.style.viewTransitionName = ''));
-    if (e.persisted) { last = performance.now(); syncVideos(); }
+    if (!e.persisted) return;
+    clearHero();
+    last = performance.now(); syncVideos();
+  });
+  // Al volver de un proyecto, su portada regresa a su sitio: la diapositiva del carrusel o su miniatura del índice
+  addEventListener('pagereveal', (e) => {
+    const vt = e.viewTransition, slug = UI.fromSlug;
+    if (!vt || !slug) return;
+    const i = projects.findIndex((p) => p.slug === slug);
+    if (i < 0) return;
+    const el = flags.grid
+      ? tiles[i] && tiles[i].querySelector('.tile__media')
+      : cur === i && slides[pos] && slides[pos].querySelector('.slide__media');
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    if (r.bottom <= 0 || r.top >= innerHeight) return;
+    clearHero();
+    el.style.viewTransitionName = 'hero';
+    vt.finished.finally(() => { el.style.viewTransitionName = ''; });
   });
   window.addEventListener('hashchange', () => {
     const [slug, view] = location.hash.slice(1).split('/');

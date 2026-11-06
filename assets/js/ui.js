@@ -181,15 +181,71 @@
       let ref = null;
       try { ref = document.referrer ? new URL(document.referrer) : null; } catch (er) { ref = null; }
       const fromSite = ref && ref.origin === location.origin && !/\/about\/?$/.test(ref.pathname) && history.length > 1;
-      setTimeout(() => { fromSite ? history.back() : (location.href = backBtn.href); }, reduced ? 0 : 420);
+      markDir(true);
+      setTimeout(() => leave(() => (fromSite ? history.back() : (location.href = backBtn.href)), true), reduced ? 0 : 420);
     });
     addEventListener('pageshow', (e) => { if (e.persisted) morphIn(); });
   }
-  // Transiciones entre páginas: si el navegador las anula (p. ej. porque la barra de direcciones del
-  // móvil cambia el alto de pantalla), la navegación sigue igual; solo se evita el aviso en consola.
-  const quiet = (e) => { const vt = e.viewTransition; if (vt) { vt.ready.catch(() => {}); vt.finished.catch(() => {}); } };
-  addEventListener('pageswap', quiet);
-  addEventListener('pagereveal', quiet);
+  /* ------------------------------------------------------------------
+     Transiciones entre páginas: nunca un corte.
+     · Con View Transitions (Chrome, Edge, Safari 18.2+) el navegador funde las dos páginas;
+       aquí solo se decide la dirección: hacia dentro (la nueva sube) o de vuelta (la vieja baja).
+     · Sin ellas, una hoja de papel cubre la página al salir y se retira al llegar.
+     ------------------------------------------------------------------ */
+  const html = document.documentElement;
+  const VT = 'CSSViewTransitionRule' in window;
+  const homePath = new URL(html.dataset.home || './', location.href).pathname;
+  const level = (u) => (u.pathname === homePath || u.pathname === homePath + 'index.html' ? 0 : 1);
+  function markDir(back) {
+    try { back ? sessionStorage.setItem('mv-dir', 'back') : sessionStorage.removeItem('mv-dir'); } catch (e) { /* sin storage */ }
+  }
+  /** Sale de la página con transición y luego ejecuta go() (navegar). */
+  function leave(go, back) {
+    if (VT || reduced) { go(); return; }
+    html.classList.toggle('veil-back', !!back);
+    html.classList.add('is-leaving');
+    try { sessionStorage.setItem('mv-veil', back ? 'back' : 'fwd'); } catch (e) { /* sin storage */ }
+    setTimeout(go, 480);
+  }
+  function unveil() {
+    if (!html.classList.contains('is-veiled') && !html.classList.contains('is-leaving')) return;
+    try { sessionStorage.removeItem('mv-veil'); } catch (e) { /* sin storage */ }
+    html.classList.remove('is-leaving');
+    html.classList.add('is-veiled');
+    requestAnimationFrame(() => requestAnimationFrame(() => html.classList.add('is-unveil')));
+    setTimeout(() => html.classList.remove('is-veiled', 'is-unveil', 'veil-back'), 900);
+  }
+  // Enlaces internos: dirección de la transición y, si hace falta, la hoja de papel
+  const internal = (a, e) => a && a.href && !a.target && !a.hasAttribute('download') && a.origin === location.origin &&
+    !(a.pathname === location.pathname && a.hash) && e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey;
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a');
+    if (!internal(a, e)) return;
+    const back = a.rel === 'prev' || a.hasAttribute('data-back') || level(new URL(a.href)) < level(location);
+    markDir(back);
+    if (e.defaultPrevented || VT || reduced) return;      // otro script se encarga, o lo hace el navegador
+    e.preventDefault();
+    leave(() => { location.href = a.href; }, back);
+  });
+  unveil();
+  addEventListener('pageshow', (e) => { if (e.persisted) unveil(); });
+  // Llegada con View Transitions: dirección según de dónde se viene (y "atrás" del navegador)
+  addEventListener('pagereveal', (e) => {
+    const vt = e.viewTransition;
+    let back = false, from = null;
+    try {
+      back = sessionStorage.getItem('mv-dir') === 'back'; sessionStorage.removeItem('mv-dir');
+      from = sessionStorage.getItem('mv-from'); sessionStorage.removeItem('mv-from');
+    } catch (er) { /* sin storage */ }
+    window.UI.fromSlug = from;                           // la home la usa para devolver la portada a su sitio
+    if (!vt) return;
+    vt.ready.catch(() => {}); vt.finished.catch(() => {});
+    const nav = window.navigation && window.navigation.activation;
+    if (nav && nav.navigationType === 'traverse' && nav.from && nav.entry) back = nav.from.index > nav.entry.index;
+    html.classList.toggle('vt-back', back);
+    vt.finished.finally(() => html.classList.remove('vt-back'));
+  });
+  addEventListener('pageswap', (e) => { const vt = e.viewTransition; if (vt) { vt.ready.catch(() => {}); vt.finished.catch(() => {}); } });
   // Al volver con "atrás" a una página que tenía el menú abierto, se deja como estaba antes de abrirlo
   addEventListener('pageshow', (e) => { if (e.persisted && (state.navOpen || state.panel)) queue(closeNav); });
 
@@ -318,6 +374,8 @@
 
   window.UI = {
     state,
+    leave,
+    markDir,
     lang: LANG,
     t,
     SMOOTH,

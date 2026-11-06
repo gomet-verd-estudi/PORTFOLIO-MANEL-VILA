@@ -251,10 +251,11 @@ function head(C, { title, description, image = 'content/posters/og.jpg', type = 
   const { R, L, lang, here, alt } = C;
   const other = LANGS.filter((l) => l !== lang);
   return `<!DOCTYPE html>
-<html lang="${lang}" data-root="${R}" data-pj="${L.pj}/">
+<html lang="${lang}" data-root="${R}" data-home="${C.home}" data-pj="${L.pj}/">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <script>/* Transición de llegada sin View Transitions: la hoja de papel ya cubre la página al pintarse */try{var v=sessionStorage.getItem('mv-veil');if(v&&!('CSSViewTransitionRule' in window)){document.documentElement.classList.add('is-veiled');if(v==='back')document.documentElement.classList.add('veil-back')}}catch(e){}</script>
   <title>${esc(title)}</title>
   <meta name="description" content="${esc(description)}">
   <meta name="author" content="${PERSON.name}">
