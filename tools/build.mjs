@@ -523,10 +523,10 @@ function home(lang) {
   const tiles = P.map((p, i) => {
     const th = thumbOf(p);
     const vis = th
-      ? img(R, th, { alt: '', sizes: TILE_SIZES })
+      ? img(R, th, { alt: `${p.name} — ${p.tag}`, sizes: TILE_SIZES })
       : `<span class="cover"><span class="cover__title">[${esc(p.name)}]</span></span>`;
     return `
-      <a class="tile" href="${C.pj(p)}" data-index="${i}" style="--i:${i}">
+      <a class="tile" href="${C.pj(p)}" data-index="${i}" style="--i:${i}" aria-label="${esc(`${pad(i + 1)} ${p.name} — ${p.tag}`)}">
         <span class="tile__media"${p.media && p.media.bg ? ` style="--bg:${p.media.bg}"` : ''}>${vis}</span>
         <span class="tile__cap"><span class="tile__num">${pad(i + 1)}</span><span class="tile__name">${esc(p.name)}</span><span class="tile__tag">${esc(p.tag)}</span></span>
       </a>`;
@@ -634,7 +634,7 @@ function heroHTML(C, p) {
   if (m.type === 'video') {
     return `<figure class="${cls}"${style}>
       <div class="pj__media">
-        ${m.poster ? img(R, m.poster, { alt: '', sizes: TILE_SIZES, lazy: false, cls: 'pj__poster' }) : ''}
+        ${m.poster ? img(R, m.poster, { alt: `${p.name} — ${t.pj.cover}`, sizes: TILE_SIZES, lazy: false, cls: 'pj__poster', extra: ' aria-hidden="true"' }) : ''}
         <video muted loop playsinline autoplay preload="metadata" poster="${R}${url(m.poster || '')}" aria-label="${esc(p.name)} — ${t.pj.coverVideo}">
           ${m.mobile ? sources(R, m.mobile, '(max-width: 923px)') : ''}${sources(R, m.src)}
         </video>
@@ -753,7 +753,7 @@ ${panels(C, 'project', i)}
 
     <nav class="pj__nav" aria-label="${t.pj.more}">
       <a class="pj__next" href="${C.pj(nx)}" rel="next">
-        ${nxThumb ? `<span class="pj__next-img"${nx.media && nx.media.bg ? ` style="--bg:${nx.media.bg}"` : ''}>${img(R, nxThumb, { alt: '', sizes: '100vw' })}</span>` : ''}
+        ${nxThumb ? `<span class="pj__next-img"${nx.media && nx.media.bg ? ` style="--bg:${nx.media.bg}"` : ''}>${img(R, nxThumb, { alt: `${nx.name} — ${nx.tag}`, sizes: '100vw' })}</span>` : ''}
         <span class="pj__next-cap"><span>${t.pj.next} · ${pad(((i + 1) % N) + 1)}</span><span class="pj__next-title">${esc(nx.name)} <span aria-hidden="true">→</span></span></span>
       </a>
       <div class="pj__pn">
