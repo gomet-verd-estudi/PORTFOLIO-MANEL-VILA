@@ -280,7 +280,7 @@ function head(C, { title, description, image = 'content/posters/og.jpg', type = 
   <title>${esc(title)}</title>
   <meta name="description" content="${esc(description)}">
   <meta name="author" content="${PERSON.name}">
-  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">${VERIFY.bing ? `\n  <meta name="msvalidate.01" content="${VERIFY.bing}">` : ''}${VERIFY.google ? `\n  <meta name="google-site-verification" content="${VERIFY.google}">` : ''}
   <meta name="theme-color" content="#0600FF">
   <link rel="canonical" href="${SITE}/${here}">
 ${LANGS.map((l) => `  <link rel="alternate" hreflang="${l}" href="${SITE}/${alt[l]}">`).join('\n')}
@@ -377,6 +377,13 @@ function panels(C, kind, current = -1) {
  * IA a saber que todos son la misma persona. Añade aquí la dirección completa de cada uno.
  */
 const PROFILES = [];
+
+/* Verificación de propiedad en las herramientas para webmasters (el código va publicado en la web,
+   no es secreto). Bing Webmaster Tools → "HTML Meta Tag"; Google Search Console → "Etiqueta HTML". */
+const VERIFY = {
+  bing: '2474821E95140008A4A1800498597282',
+  google: ''
+};
 
 /* Datos estructurados (schema.org): quién es Manel, qué hace, dónde y con quién. Los leen Google
    (panel de conocimiento, resultados enriquecidos) y los buscadores con IA. */
