@@ -227,6 +227,15 @@
   });
 
   /* ------------------------------------------------------------------
+     Esquinas (Email / IG): se apartan cuando llega el footer, que ya tiene el contacto
+     ------------------------------------------------------------------ */
+  const ft = document.querySelector('.ft');
+  if (ft && document.querySelector('.corners') && 'IntersectionObserver' in window) {
+    new IntersectionObserver(([en]) => document.body.classList.toggle('is-ft', en.isIntersecting), { rootMargin: '0px 0px -48px 0px' })
+      .observe(ft);
+  }
+
+  /* ------------------------------------------------------------------
      Copiar el email con un clic
      ------------------------------------------------------------------ */
   document.addEventListener('click', async (e) => {

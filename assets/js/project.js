@@ -3,6 +3,7 @@
  * - Barra de lectura (progreso de scroll)
  * - Piezas de vídeo del deck: el fotograma se cambia por el vídeo al entrar en pantalla
  * - Visor a pantalla completa (lightbox) con teclado, flechas y gesto de deslizar
+ * - Esquina inferior: el proyecto y la pieza que se está viendo (03 / 12)
  * - Atajos: ← / → proyecto anterior / siguiente, Esc vuelve a los proyectos
  * - Transición entre páginas: la portada "viaja" de la home al proyecto (View Transitions)
  */
@@ -26,13 +27,6 @@
   };
   addEventListener('scroll', onScroll, { passive: true });
   onScroll();
-
-  /* ---------- título compacto cuando el grande sale de pantalla ---------- */
-  const title = $('.pj__title');
-  if (title && 'IntersectionObserver' in window) {
-    new IntersectionObserver(([en]) => document.body.classList.toggle('is-past-title', !en.isIntersecting && en.boundingClientRect.top < 0))
-      .observe(title);
-  }
 
   /* ---------- vídeos del deck ---------- */
   function tryVideo(fig) {
@@ -70,10 +64,24 @@
     const hero = $('.pj__hero'); if (hero) vio.observe(hero);
   } else figs.forEach(tryVideo);
 
+  /* ---------- esquina: qué pieza cruza el centro de la pantalla ---------- */
+  const count = $('[data-count]');
+  if (count && figs.length && 'IntersectionObserver' in window) {
+    const idle = count.textContent;
+    const live = new Set();
+    const pad = (n) => String(n).padStart(2, '0');
+    const cio = new IntersectionObserver((en) => {
+      en.forEach((x) => (x.isIntersecting ? live.add(x.target) : live.delete(x.target)));
+      const cur = figs.filter((f) => live.has(f)).pop();
+      count.textContent = cur ? `${pad(figs.indexOf(cur) + 1)} / ${pad(figs.length)}` : idle;
+    }, { rootMargin: '-50% 0px -50% 0px' });
+    figs.forEach((f) => cio.observe(f));
+  }
+
   /* ---------- visor ---------- */
   const lb = $('.lightbox');
   const stage = lb && $('.lightbox__stage', lb);
-  const count = lb && $('.lightbox__count', lb);
+  const lbCount = lb && $('.lightbox__count', lb);
   let at = -1;
 
   function show(n) {
@@ -94,7 +102,7 @@
     }
     stage.replaceChildren(el);
     if (!reduced && el.animate) el.animate([{ opacity: 0, transform: 'scale(.985)' }, { opacity: 1, transform: 'none' }], { duration: 380, easing: 'cubic-bezier(.16,1,.3,1)' });
-    count.textContent = `${String(at + 1).padStart(2, '0')} — ${String(figs.length).padStart(2, '0')}`;
+    lbCount.textContent = `${String(at + 1).padStart(2, '0')} — ${String(figs.length).padStart(2, '0')}`;
   }
   // El visor aparece y desaparece con un fundido (el fondo es cristal esmerilado, como el panel del About)
   let closing = 0;
@@ -146,14 +154,4 @@
     if (e.key === 'Escape' && back) back.click();
   });
 
-  /* ---------- siguiente proyecto: la imagen sigue al cursor ---------- */
-  const nx = $('.pj__next');
-  const nxImg = nx && $('.pj__next-img', nx);
-  if (nx && nxImg && window.matchMedia('(hover: hover) and (pointer: fine)').matches && !reduced) {
-    nx.addEventListener('pointermove', (e) => {
-      const r = nx.getBoundingClientRect();
-      nxImg.style.setProperty('--x', `${e.clientX - r.left}px`);
-      nxImg.style.setProperty('--y', `${e.clientY - r.top}px`);
-    });
-  }
 })();
