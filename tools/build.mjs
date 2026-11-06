@@ -180,7 +180,7 @@ function contactLinks(cls = 'contact-list') {
 
 function panels(R, here, current = -1) {
   const aboutPanel = here === 'home' ? `
-  <section class="panel" data-panel="about" hidden aria-label="About">
+  <section class="panel" data-panel="about" hidden aria-label="About" data-lenis-prevent>
     <div class="panel__inner"><div class="panel__pad">
       <p>Soy Manel Vila, diseñador gráfico y director de arte, graduado por la EASD de Valencia y miembro de Gomet Verd Estudi. Me he especializado en branding y lettering.</p>
       <p>He colaborado con estudios como Jotateam Studio, Socis Club, T.O.T Studio y Domingo Studio.</p>
@@ -188,14 +188,14 @@ function panels(R, here, current = -1) {
     </div></div>
   </section>` : '';
   const contactPanel = here === 'about' ? '' : `
-  <section class="panel" data-panel="contact" hidden aria-label="Contacto">
+  <section class="panel" data-panel="contact" hidden aria-label="Contacto" data-lenis-prevent>
     <div class="panel__inner"><div class="panel__pad">
       ${contactLinks()}
       <div class="panel__foot"><span>Valencia · Barcelona</span><button class="panel__close" aria-label="Cerrar">(X)</button></div>
     </div></div>
   </section>`;
   return `
-  <section class="panel" data-panel="projects" hidden aria-label="Proyectos">
+  <section class="panel" data-panel="projects" hidden aria-label="Proyectos" data-lenis-prevent>
     <div class="panel__inner"><div class="panel__pad">
       <div class="plist">${projectList(R, current)}
       </div>
@@ -265,7 +265,6 @@ function footer(R, { cta = true, here = '' } = {}) {
     <div class="ft__legal">
       <span>© ${year} ${PERSON.name}</span>
       <span>Miembro de ${PERSON.studio}</span>
-      <span>Tipografía: KMR Waldenburg</span>
       <span>Always WIPing [Working In Play]</span>
     </div>
   </footer>`;
@@ -360,7 +359,7 @@ ${corners()}
     </div>
   </div>
 
-${scripts(R, ['gallery', 'projects', 'media', 'ui', 'main'])}
+${scripts(R, ['gallery', 'projects', 'media', 'vendor/lenis.min', 'ui', 'main'])}
 </body>
 </html>
 `;
@@ -537,7 +536,7 @@ ${corners(info)}
     </div>
   </dialog>
 
-${scripts(R, ['ui', 'project'])}
+${scripts(R, ['vendor/lenis.min', 'ui', 'project'])}
 </body>
 </html>
 `;
@@ -601,7 +600,7 @@ ${panels(R, 'about')}
 ${footer(R, { cta: false, here: 'about' })}
 ${corners()}
 
-${scripts(R, ['ui'])}
+${scripts(R, ['vendor/lenis.min', 'ui'])}
 </body>
 </html>
 `;

@@ -112,6 +112,7 @@
     show(n);
     if (!lb.open) lb.showModal();
     document.documentElement.classList.add('is-lightbox');
+    if (UI.scroller) UI.scroller.stop();               // la página no se mueve debajo del visor
     requestAnimationFrame(() => requestAnimationFrame(() => lb.classList.add('is-on')));
   }
   function close() {
@@ -121,7 +122,7 @@
   }
   if (lb) {
     lb.addEventListener('cancel', (e) => { e.preventDefault(); close(); });   // Esc también con fundido
-    lb.addEventListener('close', () => { document.documentElement.classList.remove('is-lightbox'); stage.replaceChildren(); figs[at] && figs[at].querySelector('.g__open').focus({ preventScroll: true }); });
+    lb.addEventListener('close', () => { document.documentElement.classList.remove('is-lightbox'); if (UI.scroller) UI.scroller.start(); stage.replaceChildren(); figs[at] && figs[at].querySelector('.g__open').focus({ preventScroll: true }); });
     figs.forEach((f, n) => f.querySelector('.g__open').addEventListener('click', () => open(n)));
     lb.addEventListener('click', (e) => {
       const b = e.target.closest('[data-lb]');
