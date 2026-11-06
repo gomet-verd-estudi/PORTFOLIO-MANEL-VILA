@@ -8,3 +8,11 @@
 # Si sustituyes un archivo por otro con el mismo nombre, puede tardar en verse: cambia el nombre.
 /content/*
   Cache-Control: public, max-age=2592000
+
+# Resúmenes para modelos de lenguaje: texto con tildes bien leídas
+/llms.txt
+  Content-Type: text/plain; charset=utf-8
+/llms-full.txt
+  Content-Type: text/plain; charset=utf-8
+/robots.txt
+  Content-Type: text/plain; charset=utf-8
