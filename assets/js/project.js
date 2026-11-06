@@ -95,20 +95,24 @@
     stage.replaceChildren(el);
     if (!reduced && el.animate) el.animate([{ opacity: 0, transform: 'scale(.985)' }, { opacity: 1, transform: 'none' }], { duration: 380, easing: 'cubic-bezier(.16,1,.3,1)' });
     count.textContent = `${String(at + 1).padStart(2, '0')} — ${String(figs.length).padStart(2, '0')}`;
-    // precarga la siguiente
-
   }
+  // El visor aparece y desaparece con un fundido (el fondo es cristal esmerilado, como el panel del About)
+  let closing = 0;
   function open(n) {
     if (!lb || typeof lb.showModal !== 'function') return;
+    clearTimeout(closing);
     show(n);
-    lb.showModal();
+    if (!lb.open) lb.showModal();
     document.documentElement.classList.add('is-lightbox');
+    requestAnimationFrame(() => requestAnimationFrame(() => lb.classList.add('is-on')));
   }
   function close() {
     if (!lb || !lb.open) return;
-    lb.close();
+    lb.classList.remove('is-on');
+    closing = setTimeout(() => lb.close(), reduced ? 0 : 320);
   }
   if (lb) {
+    lb.addEventListener('cancel', (e) => { e.preventDefault(); close(); });   // Esc también con fundido
     lb.addEventListener('close', () => { document.documentElement.classList.remove('is-lightbox'); stage.replaceChildren(); figs[at] && figs[at].querySelector('.g__open').focus({ preventScroll: true }); });
     figs.forEach((f, n) => f.querySelector('.g__open').addEventListener('click', () => open(n)));
     lb.addEventListener('click', (e) => {

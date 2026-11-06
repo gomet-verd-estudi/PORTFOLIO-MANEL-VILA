@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-  <url><loc>https://manelvila.com/</loc><lastmod>2026-11-05</lastmod><priority>1.0</priority></url>
-  <url><loc>https://manelvila.com/about/</loc><lastmod>2026-11-05</lastmod><priority>0.7</priority></url>
-  <url><loc>https://manelvila.com/proyectos/vintage-palace/</loc><lastmod>2026-11-05</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/</loc><lastmod>2026-11-06</lastmod><priority>1.0</priority></url>
+  <url><loc>https://manelvila.com/about/</loc><lastmod>2026-11-06</lastmod><priority>0.7</priority></url>
+  <url><loc>https://manelvila.com/proyectos/vintage-palace/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
     <image:image><image:loc>https://manelvila.com/content/posters/vintage-palace.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/vintage-palace/01.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/vintage-palace/02.jpg</image:loc></image:image>
@@ -28,7 +28,7 @@
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/vintage-palace/22.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/vintage-palace/23.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/proyectos/404-studio/</loc><lastmod>2026-11-05</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/proyectos/404-studio/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
     <image:image><image:loc>https://manelvila.com/content/posters/404.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/404-studio/01.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/404-studio/02.jpg</image:loc></image:image>
@@ -46,7 +46,7 @@
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/404-studio/14.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/404-studio/15.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/proyectos/claur-tiles/</loc><lastmod>2026-11-05</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/proyectos/claur-tiles/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
     <image:image><image:loc>https://manelvila.com/content/posters/claur.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/claur-tiles/01.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/claur-tiles/02.jpg</image:loc></image:image>
@@ -64,7 +64,7 @@
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/claur-tiles/14.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/claur-tiles/15.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/proyectos/bernal-vida-y-milagros/</loc><lastmod>2026-11-05</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/proyectos/bernal-vida-y-milagros/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
     <image:image><image:loc>https://manelvila.com/content/posters/bernal-vida-y-milagros.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/bernal-vida-y-milagros/01.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/bernal-vida-y-milagros/02.jpg</image:loc></image:image>
@@ -77,7 +77,7 @@
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/bernal-vida-y-milagros/09.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/bernal-vida-y-milagros/10.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/proyectos/dmatinada/</loc><lastmod>2026-11-05</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/proyectos/dmatinada/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
     <image:image><image:loc>https://manelvila.com/content/posters/dmatinada.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/dmatinada/01.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/dmatinada/02.jpg</image:loc></image:image>
@@ -89,7 +89,7 @@
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/dmatinada/08.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/dmatinada/09.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/proyectos/orbis-vacui/</loc><lastmod>2026-11-05</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/proyectos/orbis-vacui/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
     <image:image><image:loc>https://manelvila.com/content/posters/orbis-vacui.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/orbis-vacui/01.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/orbis-vacui/02.jpg</image:loc></image:image>
@@ -103,7 +103,7 @@
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/orbis-vacui/10.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/orbis-vacui/11.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/proyectos/leo-rizzi/</loc><lastmod>2026-11-05</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/proyectos/leo-rizzi/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
     <image:image><image:loc>https://manelvila.com/content/posters/leo-rizzi.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/leo-rizzi/01.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/leo-rizzi/02.jpg</image:loc></image:image>
@@ -120,7 +120,7 @@
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/leo-rizzi/13.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/leo-rizzi/14.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/proyectos/bernal/</loc><lastmod>2026-11-05</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/proyectos/bernal/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
     <image:image><image:loc>https://manelvila.com/content/posters/bernal-parques.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/bernal/01.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/bernal/02.jpg</image:loc></image:image>
@@ -129,7 +129,7 @@
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/bernal/05.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/bernal/06.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/proyectos/kaniche/</loc><lastmod>2026-11-05</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/proyectos/kaniche/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/kaniche/01.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/kaniche/01.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/kaniche/02.jpg</image:loc></image:image>
@@ -139,7 +139,7 @@
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/kaniche/06.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/kaniche/07.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/proyectos/cisma/</loc><lastmod>2026-11-05</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/proyectos/cisma/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/cisma/08.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/cisma/01.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/cisma/02.jpg</image:loc></image:image>
@@ -151,16 +151,16 @@
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/cisma/08.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/cisma/09.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/proyectos/zelandia-walk/</loc><lastmod>2026-11-05</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/proyectos/zelandia-walk/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
     <image:image><image:loc>https://manelvila.com/content/posters/zelandia.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/proyectos/sun-and-snow/</loc><lastmod>2026-11-05</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/proyectos/sun-and-snow/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
     <image:image><image:loc>https://manelvila.com/content/posters/sunsnow.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/proyectos/delta/</loc><lastmod>2026-11-05</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/proyectos/delta/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
     <image:image><image:loc>https://manelvila.com/content/posters/delta.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/proyectos/pontevecchio/</loc><lastmod>2026-11-05</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/proyectos/pontevecchio/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
     <image:image><image:loc>https://manelvila.com/content/posters/pontevecchio.jpg</image:loc></image:image>
   </url>
 </urlset>
