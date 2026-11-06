@@ -138,6 +138,33 @@
     });
   }
 
+  /* ---------- transiciones: la portada viaja entre páginas ---------- */
+  // Al salir: si se va al siguiente proyecto, su imagen se convierte en la portada de la página nueva;
+  // si no, la portada solo viaja cuando se ve (si estás abajo del todo, sale con la página).
+  const heroEl = $('.pj__hero');
+  const nextBox = $('.pj__next-img');
+  let prepared = false;
+  function prepLeave(toNext) {
+    prepared = true;
+    try { sessionStorage.setItem('mv-from', document.body.dataset.slug); } catch (e) { /* sin storage */ }
+    if (nextBox) nextBox.style.viewTransitionName = '';
+    if (!heroEl) return;
+    if (toNext && nextBox) { heroEl.style.viewTransitionName = 'none'; nextBox.style.viewTransitionName = 'hero'; return; }
+    const r = heroEl.getBoundingClientRect();
+    heroEl.style.viewTransitionName = r.bottom > 0 && r.top < innerHeight ? '' : 'none';
+  }
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a');
+    if (a && a.href && !a.target && a.origin === location.origin && !(a.pathname === location.pathname && a.hash)) prepLeave(!!a.closest('.pj__next'));
+  }, true);
+  addEventListener('pageswap', () => { if (!prepared) prepLeave(false); });   // "atrás" del navegador
+  addEventListener('pageshow', (e) => {
+    if (!e.persisted) return;
+    prepared = false;
+    if (heroEl) heroEl.style.viewTransitionName = '';
+    if (nextBox) nextBox.style.viewTransitionName = '';
+  });
+
   /* ---------- teclado ---------- */
   const next = $('a[rel="next"]');
   const prev = $('a[rel="prev"]');
