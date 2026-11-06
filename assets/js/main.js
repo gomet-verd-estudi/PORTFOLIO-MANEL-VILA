@@ -364,6 +364,12 @@
   /* ================================================================
      Vista grid
      ================================================================ */
+  // Scroll suave del índice (rueda y trackpad); el carrusel conserva su gesto propio
+  const gridScroller = window.Lenis && UI.SMOOTH
+    ? new window.Lenis({ ...UI.SMOOTH, wrapper: grid, content: grid, eventsTarget: grid, naiveDimensions: true })
+    : null;
+  UI.gridScroller = gridScroller;
+
   function setGrid(on) {
     if (on === flags.grid) return;
     flags.grid = on;
@@ -371,7 +377,10 @@
     document.body.classList.toggle('is-grid', on);
     gridBtn.setAttribute('aria-pressed', String(on));
     gridBtn.querySelector('.sr-only').textContent = on ? 'Volver al carrusel' : 'Ver todos los proyectos';
-    if (on) grid.scrollTop = restoreY != null ? restoreY : 0;
+    if (on) {
+      grid.scrollTop = restoreY != null ? restoreY : 0;
+      if (gridScroller) { gridScroller.resize(); gridScroller.reset(); }   // el scroll suave parte de aquí
+    }
     restoreY = null;
     // La vista queda en la dirección (?grid) para poder volver exactamente a ella
     history.replaceState(history.state, '', location.pathname + (on ? '?grid' : '') + location.hash);

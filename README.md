@@ -11,6 +11,7 @@ Portfolio de Manel Vila, diseñador gráfico y director de arte. Es una web est�
 | `about/` | About y contacto |
 | `assets/js/projects.js` | **Contenido**: textos, servicios, equipo, estudio y portada de cada proyecto |
 | `assets/js/gallery.js` | Galería de cada proyecto, extraída del deck de Figma *Portfolio GVE* |
+| `assets/js/vendor/lenis.min.js` | Scroll suave con rueda y trackpad en About, proyectos e índice ([Lenis](https://github.com/darkroomengineering/lenis) 1.3.27, licencia MIT). En móvil el scroll es el nativo |
 | `content/media/` | Vídeos optimizados para la web, en AV1, HEVC y H.264 |
 | `content/uploads/` | Material original (fotos y vídeos) |
 

@@ -48,7 +48,7 @@
     <span class="sr-only">Ver todos los proyectos</span>
   </button>
 
-  <section class="panel" data-panel="projects" hidden aria-label="Proyectos">
+  <section class="panel" data-panel="projects" hidden aria-label="Proyectos" data-lenis-prevent>
     <div class="panel__inner"><div class="panel__pad">
       <div class="plist">
         <a class="plist__row" href="proyectos/vintage-palace/" data-index="0" data-thumb="content/posters/vintage-palace.jpg">
@@ -125,14 +125,14 @@
       <div class="panel__foot"><span>Índice · 14 proyectos</span><button class="panel__close" aria-label="Cerrar">(X)</button></div>
     </div></div>
   </section>
-  <section class="panel" data-panel="about" hidden aria-label="About">
+  <section class="panel" data-panel="about" hidden aria-label="About" data-lenis-prevent>
     <div class="panel__inner"><div class="panel__pad">
       <p>Soy Manel Vila, diseñador gráfico y director de arte, graduado por la EASD de Valencia y miembro de Gomet Verd Estudi. Me he especializado en branding y lettering.</p>
       <p>He colaborado con estudios como Jotateam Studio, Socis Club, T.O.T Studio y Domingo Studio.</p>
       <div class="panel__foot"><a class="panel__link" href="about/">About completo →</a><button class="panel__close" aria-label="Cerrar">(X)</button></div>
     </div></div>
   </section>
-  <section class="panel" data-panel="contact" hidden aria-label="Contacto">
+  <section class="panel" data-panel="contact" hidden aria-label="Contacto" data-lenis-prevent>
     <div class="panel__inner"><div class="panel__pad">
       <div class="contact-list">
         <span class="copyable"><a href="mailto:gometverdestudi@gmail.com">gometverdestudi@gmail.com</a><button class="copy" data-copy="gometverdestudi@gmail.com" aria-label="Copiar email">Copiar</button></span>
@@ -243,7 +243,6 @@
     <div class="ft__legal">
       <span>© 2026 Manel Vila</span>
       <span>Miembro de Gomet Verd Estudi</span>
-      <span>Tipografía: KMR Waldenburg</span>
       <span>Always WIPing [Working In Play]</span>
     </div>
   </footer>
@@ -275,6 +274,7 @@
   <script src="assets/js/gallery.js"></script>
   <script src="assets/js/projects.js"></script>
   <script src="assets/js/media.js"></script>
+  <script src="assets/js/vendor/lenis.min.js"></script>
   <script src="assets/js/ui.js"></script>
   <script src="assets/js/main.js"></script>
 </body>

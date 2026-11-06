@@ -4,6 +4,7 @@
  * - La "franja": píldora que se despliega en barra centrada con los enlaces escalonados
  * - Paneles de cristal (Proyectos / About / Contacto) que se abren y cierran en secuencia
  * - Intro de carga con el monograma
+ * - Scroll suave (Lenis) en About y proyectos; la home lo aplica a su índice (main.js)
  */
 (function () {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -212,6 +213,18 @@
   }
 
   /* ------------------------------------------------------------------
+     Scroll suave: la rueda y el trackpad se deslizan con inercia (Lenis).
+     En pantallas táctiles el desplazamiento sigue siendo el nativo del móvil, que ya es fluido.
+     El carrusel de la home no se toca: tiene su propio gesto.
+     ------------------------------------------------------------------ */
+  const SMOOTH = { lerp: 0.085, wheelMultiplier: 0.9, autoRaf: true, allowNestedScroll: true, stopInertiaOnNavigate: true };
+  const scroller = window.Lenis && !document.body.classList.contains('home')
+    ? new window.Lenis({ ...SMOOTH, anchors: true })
+    : null;
+  // Al volver con el botón atrás (bfcache) la posición la restaura el navegador: se sincroniza
+  if (scroller) addEventListener('pageshow', (e) => { if (e.persisted) { scroller.resize(); scroller.reset(); } });
+
+  /* ------------------------------------------------------------------
      Footer: hora de Valencia en directo y "volver arriba"
      ------------------------------------------------------------------ */
   const clocks = document.querySelectorAll('[data-clock]');
@@ -223,7 +236,9 @@
   document.addEventListener('click', (e) => {
     const b = e.target.closest('[data-top]'); if (!b) return;
     const box = b.closest('.grid');                     // en el índice, el scroll es del propio índice
-    (box || window).scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
+    const lenis = box ? window.UI.gridScroller : scroller;
+    if (lenis) lenis.scrollTo(0, { duration: 1.6, easing: (t) => 1 - Math.pow(1 - t, 4) });
+    else (box || window).scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
   });
 
   /* ------------------------------------------------------------------
@@ -286,6 +301,8 @@
 
   window.UI = {
     state,
+    SMOOTH,
+    scroller,
     onChange: (fn) => listeners.push(fn),
     closeNav: () => queue(closeNav),
     hidePanel: () => queue(hidePanel),
