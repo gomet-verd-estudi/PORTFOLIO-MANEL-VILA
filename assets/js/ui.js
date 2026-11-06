@@ -175,14 +175,28 @@
   if (backBtn) {
     const morphIn = () => { document.body.classList.remove('is-x'); requestAnimationFrame(() => requestAnimationFrame(syncX)); };
     morphIn();
-    backBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      document.body.classList.remove('is-x');
+    // Vuelve a la página de la que se vino de verdad, aunque por el camino haya entradas del mismo
+    // About en el historial; si se entró directamente, va a la home.
+    function goBackOut() {
+      const nav = window.navigation;
+      if (nav && nav.entries && nav.currentEntry) {
+        const list = nav.entries();
+        for (let k = nav.currentEntry.index - 1; k >= 0; k--) {
+          const u = new URL(list[k].url);
+          if (u.origin === location.origin && u.pathname !== location.pathname) { nav.traverseTo(list[k].key); return; }
+        }
+        location.href = backBtn.href; return;
+      }
       let ref = null;
       try { ref = document.referrer ? new URL(document.referrer) : null; } catch (er) { ref = null; }
-      const fromSite = ref && ref.origin === location.origin && !/\/about\/?$/.test(ref.pathname) && history.length > 1;
+      const fromSite = ref && ref.origin === location.origin && ref.pathname !== location.pathname && history.length > 1;
+      fromSite ? history.back() : (location.href = backBtn.href);
+    }
+    backBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.body.classList.remove('is-x');            // la X vuelve a cuadrados mientras la página cambia
       markDir(true);
-      setTimeout(() => leave(() => (fromSite ? history.back() : (location.href = backBtn.href)), true), reduced ? 0 : 420);
+      leave(goBackOut, true);
     });
     addEventListener('pageshow', (e) => { if (e.persisted) morphIn(); });
   }
@@ -237,6 +251,17 @@
     e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey;
   document.addEventListener('click', (e) => {
     const a = e.target.closest('a');
+    // Anclas de la misma página (#contacto): se desliza hasta ellas sin dejar rastro en el historial,
+    // así la X del About sigue llevando a la página anterior
+    if (a && !e.defaultPrevented && a.origin === location.origin && a.pathname === location.pathname && a.search === location.search && a.hash) {
+      const target = document.getElementById(decodeURIComponent(a.hash.slice(1)));
+      if (target) {
+        e.preventDefault();
+        const lenis = window.UI && window.UI.scroller;
+        lenis ? lenis.scrollTo(target, { duration: 1.4 }) : target.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' });
+      }
+      return;
+    }
     if (!internal(a, e)) return;
     const back = a.rel === 'prev' || a.hasAttribute('data-back') || level(new URL(a.href)) < level(location);
     markDir(back);
@@ -321,7 +346,7 @@
      ------------------------------------------------------------------ */
   const SMOOTH = { lerp: 0.085, wheelMultiplier: 0.9, autoRaf: true, allowNestedScroll: true, stopInertiaOnNavigate: true };
   const scroller = window.Lenis && !document.body.classList.contains('home')
-    ? new window.Lenis({ ...SMOOTH, anchors: true })
+    ? new window.Lenis(SMOOTH)
     : null;
   // Al volver con el botón atrás (bfcache) la posición la restaura el navegador: se sincroniza
   if (scroller) addEventListener('pageshow', (e) => { if (e.persisted) { scroller.resize(); scroller.reset(); } });

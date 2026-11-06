@@ -303,13 +303,13 @@
   document.addEventListener('keydown', (e) => {
     if (e.target.closest('input, textarea')) return;
     if (UI.state.panel || UI.state.navOpen) return; // los gestiona ui.js
-    if (flags.grid) { if (e.key === 'Escape' || e.key === 'g') setGrid(false); return; }
+    if (flags.grid) { if (e.key === 'Escape' || e.key === 'g') toggleGrid(false); return; }
     switch (e.key) {
       case 'ArrowRight': case 'ArrowDown': e.preventDefault(); next(); break;
       case 'ArrowLeft': case 'ArrowUp': e.preventDefault(); prev(); break;
       case ' ': e.preventDefault(); togglePause(); break;
       case 'i': flags.more ? closeMore() : openMore(); break;
-      case 'g': setGrid(true); break;
+      case 'g': toggleGrid(true); break;
       case 'Enter': if (e.target === document.body) openProject(cur); break;
       case 'Escape': closeMore(); break;
     }
@@ -375,7 +375,7 @@
     : null;
   UI.gridScroller = gridScroller;
 
-  function setGrid(on) {
+  function setGrid(on, { center = false } = {}) {
     if (on === flags.grid) return;
     flags.grid = on;
     if (on) closeMore();
@@ -383,7 +383,10 @@
     gridBtn.setAttribute('aria-pressed', String(on));
     gridBtn.querySelector('.sr-only').textContent = on ? t.backCarousel : t.seeAll;
     if (on) {
-      grid.scrollTop = restoreY != null ? restoreY : 0;
+      // Al pasar del carrusel al índice, la miniatura del proyecto que se estaba viendo queda a la vista
+      const tile = center && restoreY == null && tiles[cur];
+      grid.scrollTop = restoreY != null ? restoreY
+        : tile ? Math.max(0, tile.offsetTop - (grid.clientHeight - tile.offsetHeight) / 2) : 0;
       if (gridScroller) { gridScroller.resize(); gridScroller.reset(); }   // el scroll suave parte de aquí
     }
     restoreY = null;
@@ -392,9 +395,38 @@
     syncVideos();
     syncTiles();
   }
+  /*
+   * Carrusel ↔ índice con transición: la diapositiva actual se reduce hasta su miniatura y el resto
+   * de proyectos se colocan a su alrededor; al volver, la miniatura crece hasta llenar la pantalla.
+   * (View Transitions dentro de la página; sin ellas, el fundido de siempre.)
+   */
+  const html = document.documentElement;
+  function toggleGrid(on) {
+    if (on === flags.grid) return;
+    const slide = slides[pos];
+    const box = tiles[cur] && tiles[cur].querySelector('.tile__media');
+    if (!document.startViewTransition || reduced || !slide || !box) { setGrid(on, { center: true }); return; }
+    let from = on ? slide : box;
+    if (!on) { const r = box.getBoundingClientRect(); if (r.bottom <= 0 || r.top >= innerHeight) from = null; }  // la miniatura no se ve: solo fundido
+    clearHero();
+    if (from) from.style.viewTransitionName = 'morph';
+    html.classList.add('vt-grid');
+    tiles[cur].classList.add('is-morph');
+    const vt = document.startViewTransition(() => {
+      if (from) from.style.viewTransitionName = '';
+      setGrid(on, { center: true });
+      if (from) (on ? box : slide).style.viewTransitionName = 'morph';
+    });
+    vt.ready.catch(() => {});
+    vt.finished.catch(() => {}).finally(() => {
+      slide.style.viewTransitionName = ''; box.style.viewTransitionName = '';
+      html.classList.remove('vt-grid');
+      tiles[cur] && tiles[cur].classList.remove('is-morph');
+    });
+  }
   gridBtn.addEventListener('click', () => {
     if (UI.state.panel === 'about' && UI.closeNav) { UI.closeNav(); return; }   // en el About, el botón es una X
-    setGrid(!flags.grid);
+    toggleGrid(!flags.grid);
   });
   // Posición del índice: se guarda para recuperarla al volver (desde el About o un proyecto)
   let restoreY = null;
@@ -448,6 +480,7 @@
     const media = slides[pos] && slides[pos].querySelector('.slide__media');
     if (media) media.style.viewTransitionName = 'hero';
     closeMore();
+    nameInfo();
     if (UI.markDir) UI.markDir(false);
     (UI.leave || ((go) => go()))(() => { location.href = pageOf(i); }, false);
   }
@@ -465,6 +498,20 @@
   }
   track.addEventListener('pointerdown', () => { if (!flags.grid) prepare(cur); }, { passive: true });
   if (fine.matches) track.addEventListener('pointerenter', () => { clearTimeout(track._pt); track._pt = setTimeout(() => !flags.grid && prepare(cur), 400); });
+  // La barra de info del carrusel baja al salir de la home (a un proyecto, al About…) y sube al volver
+  const info = $('.info');
+  const nameInfo = () => { if (!flags.grid && info) info.style.viewTransitionName = 'info'; };
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a');
+    if (a && a.href && !a.target && a.origin === location.origin && !(a.pathname === location.pathname && a.search === location.search && a.hash)) nameInfo();
+  }, true);
+  addEventListener('pageswap', nameInfo);
+  addEventListener('pagereveal', (e) => {
+    if (!e.viewTransition || flags.grid || !info) return;
+    info.style.viewTransitionName = 'info';
+    e.viewTransition.finished.finally(() => { info.style.viewTransitionName = ''; });
+  });
+  addEventListener('pageshow', (e) => { if (e.persisted && info) info.style.viewTransitionName = ''; });
   const clearHero = () => {
     slides.forEach((s) => { const m = s.querySelector('.slide__media'); if (m) m.style.viewTransitionName = ''; });
     grid.querySelectorAll('.tile__media').forEach((b) => (b.style.viewTransitionName = ''));
@@ -525,6 +572,7 @@
   // Desplegables excluyentes: abrir un panel del menú recoge el +info (y al revés), para que nunca se pisen
   UI.onChange((s) => {
     document.body.classList.toggle('is-panel', !!s.panel);
+    document.body.dataset.panel = s.panel || '';   // con el About o el Contacto abiertos, la barra de info baja
     gridBtn.querySelector('.sr-only').textContent = s.panel === 'about' ? t.closeAbout : flags.grid ? t.backCarousel : t.seeAll;
     if (s.panel && flags.more) closeMore();
   });
