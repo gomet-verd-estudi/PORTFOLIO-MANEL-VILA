@@ -73,8 +73,8 @@ const T = {
     top: 'Back to top', member: `Member of ${PERSON.studio}`, footer: 'Footer', language: 'Language',
     igLabel: `Instagram (${PERSON.instagramLabel})`,
     home: {
-      title: 'Manel Vila — Graphic design and art direction',
-      desc: 'Portfolio of Manel Vila, graphic designer and art director. Branding, art direction and editorial design for Vintage Palace, 404 Studio, Claur Tiles, Bernal and more.',
+      title: 'Manel Vila — Graphic designer and art director in Valencia | Branding',
+      desc: 'Manel Vila, graphic designer and art director in Valencia and Barcelona. Branding and brand identity, art direction, lettering and editorial design.',
       h1: 'Manel Vila — graphic designer and art director. Projects',
       featured: 'Featured projects', carousel: 'carousel', all: 'All projects', seeAll: 'See all projects',
       intro: 'Branding first; also art direction, lettering, editorial and motion graphics.', view: 'View project', pause: 'Pause slideshow'
@@ -85,12 +85,12 @@ const T = {
       services: 'Services', discipline: 'Discipline', studio: 'Studio', team: 'Team', year: 'Year', design: 'Design',
       pieces: (n) => `${n} pieces`, back: 'Back to projects', aboutPj: 'About the project',
       gallery: (n) => `Gallery · ${n} pieces`, more: 'More projects', next: 'Next project', all: 'All projects',
-      lightbox: 'Enlarged gallery', prev: 'Previous', nextImg: 'Next',
+      lightbox: 'Enlarged gallery', prev: 'Previous', nextImg: 'Next', by: 'Manel Vila, graphic designer',
       desc: (p) => `${p.name}: ${p.tag}. ${p.short} A project by Manel Vila, graphic designer and art director.`
     },
     ab: {
-      title: 'About and contact — Manel Vila',
-      desc: 'Manel Vila, graphic designer and art director specialising in branding. Member of Gomet Verd Estudi. Valencia · Barcelona.',
+      title: 'About Manel Vila — Graphic designer and art director in Valencia',
+      desc: 'Manel Vila is a graphic designer and art director in Valencia and Barcelona, specialising in branding. Member of Gomet Verd Estudi. Services, clients and contact.',
       close: 'Close About and go back',
       tagline: 'Graphic designer and art director. I work between Valencia and Barcelona and I’m part of Gomet Verd Estudi.',
       bio: [
@@ -121,8 +121,8 @@ const T = {
     top: 'Volver arriba', member: `Miembro de ${PERSON.studio}`, footer: 'Pie de página', language: 'Idioma',
     igLabel: `Instagram (${PERSON.instagramLabel})`,
     home: {
-      title: 'Manel Vila — Diseño gráfico y dirección de arte',
-      desc: 'Portfolio de Manel Vila, diseñador gráfico y director de arte. Branding, dirección de arte y editorial para Vintage Palace, 404 Studio, Claur Tiles, Bernal y más.',
+      title: 'Manel Vila — Diseñador gráfico y director de arte en Valencia | Branding',
+      desc: 'Manel Vila, diseñador gráfico y director de arte en Valencia y Barcelona. Branding e identidad corporativa, dirección de arte, lettering y diseño editorial.',
       h1: 'Manel Vila — diseñador gráfico y director de arte. Proyectos',
       featured: 'Proyectos destacados', carousel: 'carrusel', all: 'Todos los proyectos', seeAll: 'Ver todos los proyectos',
       intro: 'Branding ante todo; también dirección de arte, lettering, editorial y motion graphics.', view: 'Ver proyecto', pause: 'Pausar pase automático'
@@ -133,12 +133,12 @@ const T = {
       services: 'Servicios', discipline: 'Disciplina', studio: 'Estudio', team: 'Equipo', year: 'Año', design: 'Diseño',
       pieces: (n) => `${n} piezas`, back: 'Volver a los proyectos', aboutPj: 'Sobre el proyecto',
       gallery: (n) => `Galería · ${n} piezas`, more: 'Más proyectos', next: 'Siguiente proyecto', all: 'Todos los proyectos',
-      lightbox: 'Galería ampliada', prev: 'Anterior', nextImg: 'Siguiente',
+      lightbox: 'Galería ampliada', prev: 'Anterior', nextImg: 'Siguiente', by: 'Manel Vila, diseñador gráfico',
       desc: (p) => `${p.name}: ${p.tag}. ${p.short} Proyecto de Manel Vila, diseñador gráfico y director de arte.`
     },
     ab: {
-      title: 'About y contacto — Manel Vila',
-      desc: 'Manel Vila, diseñador gráfico y director de arte especializado en branding. Miembro de Gomet Verd Estudi. Valencia · Barcelona.',
+      title: 'Manel Vila — Diseñador gráfico y director de arte en Valencia | About',
+      desc: 'Manel Vila es diseñador gráfico y director de arte en Valencia y Barcelona, especializado en branding. Miembro de Gomet Verd Estudi. Servicios, clientes y contacto.',
       close: 'Cerrar About y volver',
       tagline: 'Diseñador gráfico y director de arte. Trabajo entre Valencia y Barcelona y formo parte de Gomet Verd Estudi.',
       bio: [
@@ -280,6 +280,7 @@ function head(C, { title, description, image = 'content/posters/og.jpg', type = 
   <title>${esc(title)}</title>
   <meta name="description" content="${esc(description)}">
   <meta name="author" content="${PERSON.name}">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <meta name="theme-color" content="#0600FF">
   <link rel="canonical" href="${SITE}/${here}">
 ${LANGS.map((l) => `  <link rel="alternate" hreflang="${l}" href="${SITE}/${alt[l]}">`).join('\n')}
@@ -371,23 +372,60 @@ function panels(C, kind, current = -1) {
   </section>${aboutPanel}${contactPanel}`;
 }
 
-const personLD = (lang) => ({
-  '@type': 'Person',
-  '@id': `${SITE}/#manel-vila`,
-  name: PERSON.name,
-  jobTitle: T[lang].job,
-  url: `${SITE}/`,
-  email: `mailto:${PERSON.email}`,
-  telephone: PERSON.phoneHref,
-  image: abs('content/posters/og.jpg'),
+/*
+ * Perfiles de Manel en otras webs (LinkedIn, Behance, Instagram personal…). Ayudan a Google y a las
+ * IA a saber que todos son la misma persona. Añade aquí la dirección completa de cada uno.
+ */
+const PROFILES = [];
+
+/* Datos estructurados (schema.org): quién es Manel, qué hace, dónde y con quién. Los leen Google
+   (panel de conocimiento, resultados enriquecidos) y los buscadores con IA. */
+const STUDIO_ID = `${SITE}/#gomet-verd-estudi`;
+const studioLD = () => ({
+  '@type': 'Organization',
+  '@id': STUDIO_ID,
+  name: PERSON.studio,
+  description: 'Estudio creativo independiente de branding y dirección de arte en Valencia y Barcelona.',
   address: { '@type': 'PostalAddress', addressLocality: 'Valencia', addressCountry: 'ES' },
-  alumniOf: { '@type': 'CollegeOrUniversity', name: 'Escuela de Arte Superior de Diseño de Valencia (EASD)' },
-  memberOf: { '@type': 'Organization', name: PERSON.studio, sameAs: [PERSON.instagram] },
-  knowsAbout: lang === 'en'
-    ? ['Branding', 'Art direction', 'Lettering', 'Editorial design', 'Typography', 'Motion graphics']
-    : ['Branding', 'Dirección de arte', 'Lettering', 'Diseño editorial', 'Tipografía', 'Motion graphics']
+  sameAs: [PERSON.instagram],
+  member: { '@id': `${SITE}/#manel-vila` }
 });
-const websiteLD = (lang) => ({ '@type': 'WebSite', '@id': `${SITE}/#web`, url: `${SITE}/`, name: PERSON.name, inLanguage: ['en', 'es'], author: { '@id': `${SITE}/#manel-vila` } });
+const personLD = (lang) => {
+  const en = lang === 'en';
+  const city = (name) => ({ '@type': 'City', name, containedInPlace: { '@type': 'Country', name: en ? 'Spain' : 'España' } });
+  return {
+    '@type': 'Person',
+    '@id': `${SITE}/#manel-vila`,
+    name: PERSON.name,
+    givenName: 'Manel',
+    familyName: 'Vila',
+    jobTitle: T[lang].job,
+    description: T[lang].ab.tagline,
+    url: `${SITE}/${LANG[lang].dir}`,
+    email: `mailto:${PERSON.email}`,
+    telephone: PERSON.phoneHref,
+    image: abs('content/posters/og.jpg'),
+    address: { '@type': 'PostalAddress', addressLocality: 'Valencia', addressRegion: en ? 'Valencian Community' : 'Comunitat Valenciana', addressCountry: 'ES' },
+    workLocation: [city('Valencia'), city('Barcelona')],
+    hasOccupation: [
+      { '@type': 'Occupation', name: en ? 'Graphic designer' : 'Diseñador gráfico', occupationLocation: [city('Valencia'), city('Barcelona')],
+        skills: en ? 'Branding, brand identity, lettering, typography, editorial design, packaging' : 'Branding, identidad corporativa, lettering, tipografía, diseño editorial, packaging' },
+      { '@type': 'Occupation', name: en ? 'Art director' : 'Director de arte', occupationLocation: [city('Valencia'), city('Barcelona')] }
+    ],
+    alumniOf: { '@type': 'CollegeOrUniversity', name: 'Escuela de Arte Superior de Diseño de Valencia (EASD)', address: { '@type': 'PostalAddress', addressLocality: 'Valencia', addressCountry: 'ES' } },
+    memberOf: { '@id': STUDIO_ID },
+    knowsAbout: en
+      ? ['Branding', 'Brand identity', 'Graphic design', 'Art direction', 'Lettering', 'Typography', 'Editorial design', 'Packaging', 'Motion graphics']
+      : ['Branding', 'Identidad corporativa', 'Diseño gráfico', 'Dirección de arte', 'Lettering', 'Tipografía', 'Diseño editorial', 'Packaging', 'Motion graphics'],
+    ...(PROFILES.length ? { sameAs: PROFILES } : {})
+  };
+};
+const websiteLD = (lang) => ({
+  '@type': 'WebSite', '@id': `${SITE}/#web`, url: `${SITE}/`, name: PERSON.name,
+  alternateName: lang === 'en' ? 'Manel Vila — Graphic designer and art director' : 'Manel Vila — Diseñador gráfico y director de arte',
+  description: T[lang].home.desc, inLanguage: ['en', 'es'],
+  author: { '@id': `${SITE}/#manel-vila` }, publisher: { '@id': `${SITE}/#manel-vila` }
+});
 
 /** Cinta que corre (la frase del estudio, repetida). */
 const marquee = (text) =>
@@ -490,7 +528,7 @@ function home(lang) {
   return `${head(C, {
     title: t.home.title,
     description: t.home.desc,
-    jsonld: [{ '@context': 'https://schema.org', '@graph': [websiteLD(lang), personLD(lang), {
+    jsonld: [{ '@context': 'https://schema.org', '@graph': [websiteLD(lang), personLD(lang), studioLD(), {
       '@type': 'ItemList', name: t.projects, itemListElement: P.map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: `${SITE}/${PAGE.project(lang, p)}`, name: p.name }))
     }] }],
     extra: `  <link rel="preload" as="image" href="${R}${url(lcp)}" fetchpriority="high">
@@ -515,7 +553,7 @@ ${panels(C, 'home')}
       <header class="grid__intro">
         <h2 class="grid__title"><span>${t.projects}</span><span>(${pad(N)})</span></h2>
         <p>${t.home.intro}</p>
-        <p class="grid__by">${PERSON.name} — ${t.job}</p>
+        <p class="grid__by">${PERSON.name} — ${t.job}. Valencia · Barcelona</p>
       </header>${tiles}
       ${footer(C, { kind: 'grid' })}
     </nav>
@@ -617,7 +655,7 @@ function project(lang, i) {
   const { kinds, flush } = galleryKinds(gal);
   const total = gal.length;
   const figs = gal.map(([src, w, h, vid], j) => {
-    const alt = `${p.name} — ${t.pj.image(j + 1, total)}`;
+    const alt = `${p.name} (${p.tag}) — ${t.pj.image(j + 1, total)}`;
     const sizes = kinds[j] === 'full' ? '100vw' : '(max-width: 923px) 100vw, 50vw';
     return `
       <figure class="g g--${kinds[j]}${flush[j] ? ' g--flush' : ''}" data-reveal data-n="${j}">
@@ -641,7 +679,7 @@ function project(lang, i) {
 
   const heroPoster = m.type === 'video' ? m.poster : null;
   return `${head(C, {
-    title: `${p.name} — ${p.tag} · ${PERSON.name}`,
+    title: [`${p.name} — ${p.tag} · ${t.pj.by}`, `${p.name} · ${t.pj.by}`, `${p.name} · ${PERSON.name}`].find((x) => x.length <= 72) || `${p.name} · ${PERSON.name}`,   // Google corta hacia los 70 caracteres
     description: desc,
     image: thumbOf(p) || 'content/posters/og.jpg',
     type: 'article',
@@ -653,8 +691,11 @@ function project(lang, i) {
         name: p.name,
         headline: p.name,
         description: plain(p.long || p.short),
+        abstract: p.short,
         genre: p.tag,
-        keywords: p.services.join(', '),
+        keywords: [p.tag, ...p.services].join(', '),
+        thumbnailUrl: abs(thumbOf(p) || 'content/posters/og.jpg'),
+        author: { '@id': `${SITE}/#manel-vila` },
         url: `${SITE}/${C.here}`,
         image: imgs.map(abs),
         inLanguage: lang,
@@ -663,7 +704,8 @@ function project(lang, i) {
         ...(p.year ? { dateCreated: String(p.year) } : {}),
         isPartOf: { '@id': `${SITE}/#web` }
       },
-      { ...personLD(lang) },
+      personLD(lang),
+      studioLD(),
       {
         '@type': 'BreadcrumbList',
         itemListElement: [
@@ -755,8 +797,14 @@ function about(lang) {
     description: a.desc,
     type: 'profile',
     jsonld: [{ '@context': 'https://schema.org', '@graph': [
-      { '@type': 'ProfilePage', url: `${SITE}/${C.here}`, name: a.title, inLanguage: lang, mainEntity: { '@id': `${SITE}/#manel-vila` } },
-      personLD(lang)
+      { '@type': 'ProfilePage', '@id': `${SITE}/${C.here}#page`, url: `${SITE}/${C.here}`, name: a.title, description: a.desc, inLanguage: lang,
+        mainEntity: { '@id': `${SITE}/#manel-vila` }, isPartOf: { '@id': `${SITE}/#web` },
+        breadcrumb: { '@type': 'BreadcrumbList', itemListElement: [
+          { '@type': 'ListItem', position: 1, name: PERSON.name, item: `${SITE}/${PAGE.home(lang)}` },
+          { '@type': 'ListItem', position: 2, name: t.about, item: `${SITE}/${C.here}` }
+        ] } },
+      personLD(lang),
+      studioLD()
     ] }]
   })}
 <body class="about">
@@ -825,6 +873,90 @@ ${BASE.map((p) => sitemapEntry({ en: PAGE.project('en', p), es: PAGE.project('es
 </urlset>
 `;
 
+/* ---------- llms.txt: resumen de la web para modelos de lenguaje (ChatGPT, Claude, Perplexity…) ----------
+   Formato propuesto en llmstxt.org: Markdown con quién es Manel, qué hace y enlaces a cada página.
+   llms-full.txt lleva además los textos completos (About y proyectos, en inglés y en español). */
+const strip = (h) => String(h).replace(/<[^>]+>/g, '');
+const pjLine = (lang, p) => {
+  const meta = [p.tag, p.studio, p.year].filter(Boolean).join(' · ');
+  return `- [${p.name}](${SITE}/${PAGE.project(lang, p)}): ${plain(p.short)} (${meta})`;
+};
+const facts = (lang) => {
+  const a = T[lang].ab, en = lang === 'en';
+  return [
+    `- ${en ? 'Role' : 'Oficio'}: ${T[lang].job}`,
+    `- ${en ? 'Based in' : 'Base'}: Valencia · Barcelona (${en ? 'Spain' : 'España'})`,
+    `- ${en ? 'Studio' : 'Estudio'}: ${en ? 'member of' : 'miembro de'} ${PERSON.studio}`,
+    `- ${a.labels.education}: ${a.education}`,
+    `- ${a.labels.services}: ${a.services.join(', ')}`,
+    `- ${a.labels.collabs}: ${COLLABS.join(', ')}`,
+    `- ${a.labels.clients}: ${CLIENTS.join(', ')}`,
+    `- ${a.labels.contact}: ${PERSON.email} · ${PERSON.phone} · Instagram ${PERSON.instagramLabel} (${PERSON.instagram})`
+  ].join('\n');
+};
+const llms = `# Manel Vila
+
+> Manel Vila is a graphic designer and art director based in Valencia and Barcelona (Spain), focused on branding and brand identity. He is a member of the independent studio ${PERSON.studio} and studied at EASD Valencia (School of Art and Design). This site is his portfolio, in English (${SITE}/) and Spanish (${SITE}/es/).
+>
+> Manel Vila es diseñador gráfico y director de arte en Valencia y Barcelona, especializado en branding e identidad corporativa. Es miembro del estudio ${PERSON.studio} y estudió en la EASD de Valencia.
+
+${facts('en')}
+
+## About
+
+- [About Manel Vila](${SITE}/${PAGE.about('en')}): profile, services, studio, collaborations, clients and contact
+- [Sobre Manel Vila (español)](${SITE}/${PAGE.about('es')}): perfil, servicios, estudio, colaboraciones, clientes y contacto
+
+## Projects
+
+${PROJ.en.map((p) => pjLine('en', p)).join('\n')}
+
+## Proyectos (español)
+
+${PROJ.es.map((p) => pjLine('es', p)).join('\n')}
+
+## Optional
+
+- [Full text of the site](${SITE}/llms-full.txt): About and every project, in English and Spanish
+- [Sitemap](${SITE}/sitemap.xml)
+`;
+const fullProject = (lang, p) => {
+  const t = T[lang];
+  return [`### ${p.name}`, '', `${SITE}/${PAGE.project(lang, p)}`, '', plain(p.long || p.short), '',
+    `- ${t.pj.discipline}: ${p.tag}`,
+    p.services.length ? `- ${t.pj.services}: ${p.services.join(', ')}` : '',
+    p.studio ? `- ${t.pj.studio}: ${p.studio}` : '',
+    p.team ? `- ${t.pj.team}: ${p.team}` : '',
+    p.year ? `- ${t.pj.year}: ${p.year}` : '',
+    `- ${t.pj.design}: ${PERSON.name}`].filter((x) => x !== '').join('\n');
+};
+const fullLang = (lang) => {
+  const a = T[lang].ab, en = lang === 'en';
+  return `## ${en ? 'About Manel Vila' : 'Sobre Manel Vila'}
+
+${SITE}/${PAGE.about(lang)}
+
+${a.tagline}
+
+${a.bio.map(strip).join('\n\n')}
+
+${facts(lang)}
+
+## ${en ? 'Projects' : 'Proyectos'}
+
+${PROJ[lang].map((p) => fullProject(lang, p)).join('\n\n')}`;
+};
+const llmsFull = `# Manel Vila — ${T.en.job} / ${T.es.job}
+
+> Full text of manelvila.com for language models: the About page and every project, first in English and then in Spanish. Summary and links: ${SITE}/llms.txt
+
+${fullLang('en')}
+
+---
+
+${fullLang('es')}
+`;
+
 /* ---------- escribir ---------- */
 for (const lang of LANGS) {
   write(`${PAGE.home(lang)}index.html`, home(lang));
@@ -835,6 +967,8 @@ for (const lang of LANGS) {
 write('about.html', redirect('', PAGE.about('es'), `About — ${PERSON.name}`));
 BASE.forEach((p) => write(`proyectos/${p.slug}/index.html`, redirect(`proyectos/${p.slug}/`, PAGE.project('es', p), `${p.name} — ${PERSON.name}`)));
 write('sitemap.xml', sitemap);
+write('llms.txt', llms);
+write('llms-full.txt', llmsFull);
 
 // Vídeos ligeros de las miniaturas del índice (tools/tiles.py): 640×800, ya recortados a 4:5, H.264
 const TILEV = Object.fromEntries(BASE.map((p) => [p.slug, `content/media/tiles/${p.slug}.mp4`]).filter(([, f]) => exists(f)));

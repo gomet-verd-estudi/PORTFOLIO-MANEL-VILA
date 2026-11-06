@@ -36,3 +36,10 @@ El selector EN | ES del footer lleva a la misma página en el otro idioma. Cada 
 ## Publicación
 
 Ver [PUBLICAR.md](PUBLICAR.md).
+
+## Buscadores e IA
+
+- Cada página lleva título, descripción, `hreflang` (inglés/español) y datos estructurados (schema.org): quién es Manel (oficio, ciudades, estudio, formación, especialidades) y cada proyecto como obra suya.
+- `llms.txt` y `llms-full.txt` (se generan): resumen y texto completo de la web para asistentes con IA (ChatGPT, Claude, Perplexity…).
+- `robots.txt` deja entrar a buscadores y rastreadores de IA. Revisa también en Cloudflare que no los bloquee (AI Crawl Control).
+- Perfiles de Manel en otras webs (LinkedIn, Behance, Instagram personal…): añádelos en `PROFILES` de `tools/build.mjs`; así Google y las IA saben que son la misma persona.
