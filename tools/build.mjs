@@ -74,7 +74,7 @@ const T = {
     top: 'Back to top', member: `Member of ${PERSON.studio}`, footer: 'Footer', language: 'Language',
     igLabel: `Instagram (${PERSON.instagramLabel})`,
     home: {
-      title: 'Manel Vila — Graphic designer and art director in Valencia | Branding',
+      title: 'Manel Vila — Graphic designer & art director, Valencia',
       desc: 'Manel Vila, graphic designer and art director in Valencia and Barcelona. Branding and brand identity, art direction, lettering and editorial design.',
       h1: 'Manel Vila — graphic designer and art director. Projects',
       featured: 'Featured projects', carousel: 'carousel', all: 'All projects', seeAll: 'See all projects',
@@ -90,7 +90,7 @@ const T = {
       desc: (p) => `${p.name}: ${p.tag}. ${p.short} A project by Manel Vila, graphic designer and art director.`
     },
     ab: {
-      title: 'About Manel Vila — Graphic designer and art director in Valencia',
+      title: 'About · Manel Vila, graphic designer and art director',
       desc: 'Manel Vila is a graphic designer and art director in Valencia and Barcelona, specialising in branding. Member of Gomet Verd Estudi. Services, clients and contact.',
       close: 'Close About and go back',
       tagline: 'Graphic designer and art director. I work between Valencia and Barcelona and I’m part of Gomet Verd Estudi.',
@@ -122,7 +122,7 @@ const T = {
     top: 'Volver arriba', member: `Miembro de ${PERSON.studio}`, footer: 'Pie de página', language: 'Idioma',
     igLabel: `Instagram (${PERSON.instagramLabel})`,
     home: {
-      title: 'Manel Vila — Diseñador gráfico y director de arte en Valencia | Branding',
+      title: 'Manel Vila — Diseñador gráfico y director de arte, Valencia',
       desc: 'Manel Vila, diseñador gráfico y director de arte en Valencia y Barcelona. Branding e identidad corporativa, dirección de arte, lettering y diseño editorial.',
       h1: 'Manel Vila — diseñador gráfico y director de arte. Proyectos',
       featured: 'Proyectos destacados', carousel: 'carrusel', all: 'Todos los proyectos', seeAll: 'Ver todos los proyectos',
@@ -138,7 +138,7 @@ const T = {
       desc: (p) => `${p.name}: ${p.tag}. ${p.short} Proyecto de Manel Vila, diseñador gráfico y director de arte.`
     },
     ab: {
-      title: 'Manel Vila — Diseñador gráfico y director de arte en Valencia | About',
+      title: 'About · Manel Vila, diseñador gráfico y director de arte',
       desc: 'Manel Vila es diseñador gráfico y director de arte en Valencia y Barcelona, especializado en branding. Miembro de Gomet Verd Estudi. Servicios, clientes y contacto.',
       close: 'Cerrar About y volver',
       tagline: 'Diseñador gráfico y director de arte. Trabajo entre Valencia y Barcelona y formo parte de Gomet Verd Estudi.',
@@ -687,7 +687,8 @@ function project(lang, i) {
 
   const heroPoster = m.type === 'video' ? m.poster : null;
   return `${head(C, {
-    title: [`${p.name} — ${p.tag} · ${t.pj.by}`, `${p.name} · ${t.pj.by}`, `${p.name} · ${PERSON.name}`].find((x) => x.length <= 72) || `${p.name} · ${PERSON.name}`,   // Google corta hacia los 70 caracteres
+    // Bing marca como error los títulos largos y Google los corta: como mucho 60 caracteres
+    title: [`${p.name} — ${p.tag} · ${t.pj.by}`, `${p.name} — ${p.tag} · ${PERSON.name}`, `${p.name} · ${t.pj.by}`, `${p.name} · ${PERSON.name}`].find((x) => x.length <= 60) || `${p.name} · ${PERSON.name}`,
     description: desc,
     image: thumbOf(p) || 'content/posters/og.jpg',
     type: 'article',
