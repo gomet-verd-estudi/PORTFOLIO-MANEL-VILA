@@ -1,0 +1,39 @@
+# Diagnóstico manual: qué responde manelvila.com a cada buscador y asistente con IA.
+# Se lanza a mano desde la pestaña Actions (Run workflow). No cambia nada en la web.
+# Ojo: Cloudflare puede tratar distinto a un bot de verdad (desde sus propias IP) que a esta prueba.
+name: Diagnóstico de acceso de buscadores e IA
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  acceso:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pedir la home con distintos agentes
+        run: |
+          SITE=https://manelvila.com/
+          while IFS='|' read -r name ua; do
+            code=$(curl -sS -o page.html -w '%{http_code} %{content_type} %{size_download}' -A "$ua" "$SITE" || echo "fallo")
+            body=$(grep -c '<body' page.html || true); meta=$(grep -c 'msvalidate.01' page.html || true)
+            first=$(head -c 120 page.html | tr '\n' ' ')
+            printf '%-22s %-45s <body>:%s msvalidate:%s | %s\n' "$name" "$code" "$body" "$meta" "$first"
+          done <<'LIST'
+          navegador|Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36
+          curl|curl/8.5.0
+          bingbot|Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)
+          Bing (verificación)|Mozilla/5.0 (compatible; BingSiteAuth/1.0; +http://www.bing.com/webmasters)
+          BingPreview|Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) BingPreview/1.0b
+          Googlebot|Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+          OAI-SearchBot|Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; OAI-SearchBot/1.0; +https://openai.com/searchbot)
+          GPTBot|Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; GPTBot/1.1; +https://openai.com/gptbot)
+          ChatGPT-User|Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; ChatGPT-User/1.0; +https://openai.com/bot
+          ClaudeBot|Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; ClaudeBot/1.0; +claudebot@anthropic.com)
+          PerplexityBot|Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; PerplexityBot/1.0; +https://perplexity.ai/perplexitybot)
+          vacío|
+          LIST
+          echo; echo "Cabeceras para un navegador:"; curl -sSI "$SITE" | grep -iE '^(HTTP|server|cf-|content-type|location)' || true
+          echo; echo "http:// y www:"; curl -sSI http://manelvila.com/ | grep -iE '^(HTTP|location)' || true; curl -sSI https://www.manelvila.com/ 2>&1 | grep -iE '^(HTTP|location)|curl' || true
