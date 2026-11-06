@@ -62,22 +62,22 @@ const T = {
     projects: 'Projects', about: 'About', contact: 'Contact',
     job: 'Graphic designer and art director',
     panelAbout: [
-      'I’m Manel Vila, a graphic designer and art director. I studied at EASD Valencia, I’m part of Gomet Verd Estudi, and I’m happiest working on branding and lettering.',
+      'I’m Manel Vila, a graphic designer and art director. I studied at EASD Valencia, I’m part of Gomet Verd Estudi, and branding is where I’m happiest.',
       'I’ve also worked with Jotateam Studio, Socis Club, T.O.T Studio and Domingo Studio.'
     ],
     readMore: 'Read more →', close: 'Close', index: (n) => `Index · ${n} projects`,
     copy: 'Copy', copyEmail: 'Copy email',
-    marquee: 'Always WIPing · Working In Play · Branding · Lettering · Art direction · ',
+    marquee: 'Always WIPing · Working In Play · Branding · Art direction · Lettering · ',
     ftChips: ['Contact', 'New projects'], ftTitle: ['Got a project', 'in mind?'],
     ftLabels: ['(01) Contact', '(02) Social', '(03) Based in', '(04) Index'],
     top: 'Back to top', member: `Member of ${PERSON.studio}`, footer: 'Footer', language: 'Language',
     igLabel: `Instagram (${PERSON.instagramLabel})`,
     home: {
       title: 'Manel Vila — Graphic design and art direction',
-      desc: 'Portfolio of Manel Vila, graphic designer and art director. Branding, lettering and editorial design for Vintage Palace, 404 Studio, Claur Tiles, Bernal and more.',
+      desc: 'Portfolio of Manel Vila, graphic designer and art director. Branding, art direction and editorial design for Vintage Palace, 404 Studio, Claur Tiles, Bernal and more.',
       h1: 'Manel Vila — graphic designer and art director. Projects',
       featured: 'Featured projects', carousel: 'carousel', all: 'All projects', seeAll: 'See all projects',
-      intro: 'Branding, lettering, editorial and motion graphics.', view: 'View project', pause: 'Pause slideshow'
+      intro: 'Branding first; also art direction, lettering, editorial and motion graphics.', view: 'View project', pause: 'Pause slideshow'
     },
     pj: {
       image: (n, t) => `image ${n} of ${t}`, enlarge: (n, t) => `Enlarge image ${n} of ${t}`,
@@ -90,12 +90,12 @@ const T = {
     },
     ab: {
       title: 'About and contact — Manel Vila',
-      desc: 'Manel Vila, graphic designer and art director specialising in branding and lettering. Member of Gomet Verd Estudi. Valencia · Barcelona.',
+      desc: 'Manel Vila, graphic designer and art director specialising in branding. Member of Gomet Verd Estudi. Valencia · Barcelona.',
       close: 'Close About and go back',
       tagline: 'Graphic designer and art director. I work between Valencia and Barcelona and I’m part of Gomet Verd Estudi.',
       bio: [
-        'I like brands that have something to say. My job is to find that something and give it a shape: an identity, a set of letters, a system that works just as well on a poster as on a screen.',
-        'I studied at EASD Valencia, and while I’m at ease in every corner of graphic design, I’m happiest in branding and lettering: drawing letters, trying things out, getting them wrong and starting again until a word finds its own voice.',
+        'I like brands that have something to say. My job is to find that something and give it a shape: an identity, a visual world, a system that works just as well on a poster as on a screen.',
+        'I studied at EASD Valencia, and while I’m at ease in every corner of graphic design, what I truly love is branding: understanding what a brand wants to be, finding its own voice and building a system around it that makes it recognisable anywhere. Lettering, editorial and motion come after that, as different ways of telling the same story.',
         'I’m part of Gomet Verd Estudi, an independent branding and art direction studio between Valencia and Barcelona. Every project there starts with a conversation and becomes a game we play together with the client, mixing strategy, storytelling and visual exploration until we reach something you can see, hold or set in motion. Many of the projects in this portfolio were born there.',
         'We’re driven by a simple idea, ALWAYS WIPing (Working In Play): stay curious, question the usual and enjoy the process, because in the end it shows in the result.',
         'I enjoy working in a team and seeing each project through, from the first idea to the last application. If you have one in mind, <a href="#contacto">drop me a line</a>.'
@@ -110,22 +110,22 @@ const T = {
     projects: 'Proyectos', about: 'About', contact: 'Contacto',
     job: 'Diseñador gráfico y director de arte',
     panelAbout: [
-      'Soy Manel Vila, diseñador gráfico y director de arte. Estudié en la EASD de Valencia, formo parte de Gomet Verd Estudi y donde más disfruto es en el branding y el lettering.',
+      'Soy Manel Vila, diseñador gráfico y director de arte. Estudié en la EASD de Valencia, formo parte de Gomet Verd Estudi y donde más disfruto es en el branding.',
       'También he trabajado con Jotateam Studio, Socis Club, T.O.T Studio y Domingo Studio.'
     ],
     readMore: 'Leer más →', close: 'Cerrar', index: (n) => `Índice · ${n} proyectos`,
     copy: 'Copiar', copyEmail: 'Copiar email',
-    marquee: 'Always WIPing · Working In Play · Branding · Lettering · Dirección de arte · ',
+    marquee: 'Always WIPing · Working In Play · Branding · Dirección de arte · Lettering · ',
     ftChips: ['Contacto', 'Nuevos proyectos'], ftTitle: ['¿Tienes un proyecto', 'en mente?'],
     ftLabels: ['(01) Contacto', '(02) Redes', '(03) Base', '(04) Índice'],
     top: 'Volver arriba', member: `Miembro de ${PERSON.studio}`, footer: 'Pie de página', language: 'Idioma',
     igLabel: `Instagram (${PERSON.instagramLabel})`,
     home: {
       title: 'Manel Vila — Diseño gráfico y dirección de arte',
-      desc: 'Portfolio de Manel Vila, diseñador gráfico y director de arte. Branding, lettering y editorial para Vintage Palace, 404 Studio, Claur Tiles, Bernal y más.',
+      desc: 'Portfolio de Manel Vila, diseñador gráfico y director de arte. Branding, dirección de arte y editorial para Vintage Palace, 404 Studio, Claur Tiles, Bernal y más.',
       h1: 'Manel Vila — diseñador gráfico y director de arte. Proyectos',
       featured: 'Proyectos destacados', carousel: 'carrusel', all: 'Todos los proyectos', seeAll: 'Ver todos los proyectos',
-      intro: 'Branding, lettering, editorial y motion graphics.', view: 'Ver proyecto', pause: 'Pausar pase automático'
+      intro: 'Branding ante todo; también dirección de arte, lettering, editorial y motion graphics.', view: 'Ver proyecto', pause: 'Pausar pase automático'
     },
     pj: {
       image: (n, t) => `imagen ${n} de ${t}`, enlarge: (n, t) => `Ampliar imagen ${n} de ${t}`,
@@ -138,12 +138,12 @@ const T = {
     },
     ab: {
       title: 'About y contacto — Manel Vila',
-      desc: 'Manel Vila, diseñador gráfico y director de arte especializado en branding y lettering. Miembro de Gomet Verd Estudi. Valencia · Barcelona.',
+      desc: 'Manel Vila, diseñador gráfico y director de arte especializado en branding. Miembro de Gomet Verd Estudi. Valencia · Barcelona.',
       close: 'Cerrar About y volver',
       tagline: 'Diseñador gráfico y director de arte. Trabajo entre Valencia y Barcelona y formo parte de Gomet Verd Estudi.',
       bio: [
-        'Me gustan las marcas que tienen algo que contar. Mi trabajo consiste en encontrar ese algo y darle forma: una identidad, unas letras, un sistema que funcione igual de bien en un cartel que en una pantalla.',
-        'Estudié en la EASD de Valencia y, aunque me muevo con soltura por cualquier rama del diseño gráfico, donde más disfruto es en el branding y el lettering: dibujar letras, probar, equivocarme y volver a empezar hasta que una palabra encuentra su propia voz.',
+        'Me gustan las marcas que tienen algo que contar. Mi trabajo consiste en encontrar ese algo y darle forma: una identidad, un universo visual, un sistema que funcione igual de bien en un cartel que en una pantalla.',
+        'Estudié en la EASD de Valencia y, aunque me muevo con soltura por cualquier rama del diseño gráfico, lo que de verdad me apasiona es el branding: entender qué quiere ser una marca, encontrarle una voz propia y construir a su alrededor un sistema que la haga reconocible en cualquier sitio. El lettering, la editorial o el motion vienen después, como maneras distintas de contar esa misma historia.',
         'Formo parte de Gomet Verd Estudi, un estudio independiente de branding y dirección de arte entre Valencia y Barcelona. Allí cada proyecto empieza con una conversación y acaba siendo un juego compartido con quien nos lo encarga: mezclamos estrategia, narrativa y exploración visual hasta llegar a algo que se pueda ver, tocar o poner en movimiento. Muchos de los trabajos de este portfolio nacieron ahí.',
         'Nos mueve una idea sencilla, ALWAYS WIPing (Working In Play): seguir siendo curiosos, cuestionar lo de siempre y disfrutar del proceso, porque al final se nota en el resultado.',
         'Me gusta trabajar en equipo y acompañar cada proyecto de principio a fin, de la primera idea a la última aplicación. Si tienes uno entre manos, <a href="#contacto">escríbeme</a>.'
@@ -362,8 +362,8 @@ const personLD = (lang) => ({
   alumniOf: { '@type': 'CollegeOrUniversity', name: 'Escuela de Arte Superior de Diseño de Valencia (EASD)' },
   memberOf: { '@type': 'Organization', name: PERSON.studio, sameAs: [PERSON.instagram] },
   knowsAbout: lang === 'en'
-    ? ['Branding', 'Lettering', 'Art direction', 'Editorial design', 'Typography', 'Motion graphics']
-    : ['Branding', 'Lettering', 'Dirección de arte', 'Diseño editorial', 'Tipografía', 'Motion graphics']
+    ? ['Branding', 'Art direction', 'Lettering', 'Editorial design', 'Typography', 'Motion graphics']
+    : ['Branding', 'Dirección de arte', 'Lettering', 'Diseño editorial', 'Tipografía', 'Motion graphics']
 });
 const websiteLD = (lang) => ({ '@type': 'WebSite', '@id': `${SITE}/#web`, url: `${SITE}/`, name: PERSON.name, inLanguage: ['en', 'es'], author: { '@id': `${SITE}/#manel-vila` } });
 
