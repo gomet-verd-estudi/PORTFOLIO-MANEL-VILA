@@ -105,6 +105,18 @@ html.vt-back::view-transition-new(hero):only-child { animation-name: vt-pop-new;
 @keyframes vt-pop-old  { to { transform: translateY(100vh); } }
 @keyframes vt-pop-new  { from { transform: translateY(-22vh); filter: brightness(.8); } }
 
+/* Barra de carga: responde al toque mientras llega la página (si no estaba ya preparada) */
+html.is-loading body::before {
+  content: ''; position: fixed; left: 0; top: 0; z-index: 90;
+  width: 100%; height: 2px; background: var(--blue);
+  transform-origin: 0 50%;
+  animation: loadbar 2.6s cubic-bezier(.08, .8, .2, 1) both;
+}
+@keyframes loadbar { from { transform: scaleX(0); } to { transform: scaleX(.86); } }
+/* Red de seguridad: si el navegador se salta la transición, la página llega con un fundido */
+html.is-enter body { animation: page-in .6s ease both; }
+@keyframes page-in { from { opacity: 0; } }
+
 /* Respaldo sin View Transitions: hoja de papel (por debajo del menú, que no desaparece nunca) */
 html.is-veiled body::after, html.is-leaving body::after {
   content: ''; position: fixed; inset: 0; z-index: 58; pointer-events: none;

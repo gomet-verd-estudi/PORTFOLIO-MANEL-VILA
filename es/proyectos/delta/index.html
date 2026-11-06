@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <script>/* Transición de llegada sin View Transitions: la hoja de papel ya cubre la página al pintarse */try{var v=sessionStorage.getItem('mv-veil');if(v&&!('CSSViewTransitionRule' in window)){document.documentElement.classList.add('is-veiled');if(v==='back')document.documentElement.classList.add('veil-back')}}catch(e){}</script>
+  <script>/* Llegada con la hoja de papel (si la página anterior salió con ella): ya cubre la página al pintarse */try{var v=sessionStorage.getItem('mv-veil');if(v){document.documentElement.classList.add('is-veiled');if(v==='back')document.documentElement.classList.add('veil-back')}}catch(e){}</script>
+  <script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"selector_matches":"[target], [download], [href^=\"mailto:\"], [href^=\"tel:\"]"}}]},"eagerness":"moderate"}]}</script>
   <title>Delta — Motion Graphics + IA · Manel Vila</title>
   <meta name="description" content="Delta: Motion Graphics + IA. Trabajo realizado en T.O.T Studio. Proyecto de Manel Vila, diseñador gráfico y director de arte.">
   <meta name="author" content="Manel Vila">
@@ -28,6 +29,7 @@
   <link rel="preload" href="../../../content/src/font/KMR-Waldenburg-Buch.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="../../../assets/css/style.css">
   <script src="../../../assets/js/host.js"></script>
+  <link rel="preload" as="image" href="../../../content/posters/delta.jpg" fetchpriority="high">
   <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"CreativeWork","@id":"https://manelvila.com/es/proyectos/delta/#work","name":"Delta","headline":"Delta","description":"Trabajo realizado en T.O.T Studio.","genre":"Motion Graphics + IA","keywords":"Motion Graphics, IA","url":"https://manelvila.com/es/proyectos/delta/","image":["https://manelvila.com/content/posters/delta.jpg"],"inLanguage":"es","creator":{"@id":"https://manelvila.com/#manel-vila"},"producer":{"@type":"Organization","name":"T.O.T Studio"},"isPartOf":{"@id":"https://manelvila.com/#web"}},{"@type":"Person","@id":"https://manelvila.com/#manel-vila","name":"Manel Vila","jobTitle":"Diseñador gráfico y director de arte","url":"https://manelvila.com/","email":"mailto:gometverdestudi@gmail.com","telephone":"+34684450515","image":"https://manelvila.com/content/posters/og.jpg","address":{"@type":"PostalAddress","addressLocality":"Valencia","addressCountry":"ES"},"alumniOf":{"@type":"CollegeOrUniversity","name":"Escuela de Arte Superior de Diseño de Valencia (EASD)"},"memberOf":{"@type":"Organization","name":"Gomet Verd Estudi","sameAs":["https://www.instagram.com/gometverdestudi/"]},"knowsAbout":["Branding","Dirección de arte","Lettering","Diseño editorial","Tipografía","Motion graphics"]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Proyectos","item":"https://manelvila.com/es/"},{"@type":"ListItem","position":2,"name":"Delta","item":"https://manelvila.com/es/proyectos/delta/"}]}]}</script>
 </head>
 <body class="project" data-index="12" data-slug="delta">
