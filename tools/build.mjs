@@ -22,6 +22,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
+import { createHash } from 'node:crypto';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SITE = 'https://manelvila.com';
@@ -975,6 +976,15 @@ write('about.html', redirect('', PAGE.about('es'), `About — ${PERSON.name}`));
 BASE.forEach((p) => write(`proyectos/${p.slug}/index.html`, redirect(`proyectos/${p.slug}/`, PAGE.project('es', p), `${p.name} — ${PERSON.name}`)));
 write('sitemap.xml', sitemap);
 write('llms.txt', llms);
+// Huella de esta versión (páginas, estilos y scripts): el aviso a los buscadores la compara con la
+// publicada en manelvila.com para saber cuándo Cloudflare ya sirve la versión nueva
+{
+  const h = createHash('sha1');
+  const files = ['index.html', 'about/index.html', 'es/index.html', 'es/about/index.html', 'assets/css/style.css',
+    ...fs.readdirSync(path.join(ROOT, 'assets/js')).filter((f) => f.endsWith('.js')).map((f) => `assets/js/${f}`)];
+  files.forEach((f) => h.update(fs.readFileSync(path.join(ROOT, f))));
+  write('version.txt', h.digest('hex').slice(0, 16) + '\n');
+}
 write('llms-full.txt', llmsFull);
 
 // Vídeos ligeros de las miniaturas del índice (tools/tiles.py): 640×800, ya recortados a 4:5, H.264

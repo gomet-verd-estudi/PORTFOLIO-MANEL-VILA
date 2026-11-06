@@ -24,13 +24,16 @@ jobs:
 
       - name: Esperar a que Cloudflare publique esta versión
         run: |
-          # La versión está en línea cuando manelvila.com sirve el mismo sitemap que este commit
+          # La versión está en línea cuando manelvila.com sirve la misma huella (version.txt) que este commit
+          want=$(cat version.txt)
           for i in $(seq 1 40); do
-            if curl -fsS "$SITE/sitemap.xml?v=$GITHUB_SHA" -o live.xml 2>/dev/null && cmp -s live.xml sitemap.xml \
-               && curl -fsS "$SITE/$KEY.txt" 2>/dev/null | grep -q "$KEY"; then echo "Versión publicada en $SITE"; exit 0; fi
+            live=$(curl -fsS "$SITE/version.txt?v=$GITHUB_SHA" 2>/dev/null || true)
+            if [ "$live" = "$want" ] && curl -fsS "$SITE/$KEY.txt" 2>/dev/null | grep -q "$KEY"; then echo "Versión $want publicada en $SITE"; break; fi
+            [ "$i" = 40 ] && { echo "::error::$SITE no sirve todavía la versión $want (sirve: $live)"; exit 1; }
             sleep 15
           done
-          echo "::error::$SITE no sirve todavía esta versión"; exit 1
+          # Etiquetas de verificación de propiedad visibles en la home publicada
+          curl -fsS "$SITE/" | grep -o '<meta name="\(msvalidate.01\|google-site-verification\)" content="[^"]*">' || echo "Sin etiquetas de verificación en la home"
 
       - name: Enviar todas las direcciones del sitemap
         run: |
