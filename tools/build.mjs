@@ -86,7 +86,7 @@ const T = {
       services: 'Services', discipline: 'Discipline', studio: 'Studio', team: 'Team', year: 'Year', design: 'Design',
       pieces: (n) => `${n} pieces`, back: 'Back to projects', aboutPj: 'About the project',
       gallery: (n) => `Gallery · ${n} pieces`, more: 'More projects', next: 'Next project', all: 'All projects',
-      lightbox: 'Enlarged gallery', prev: 'Previous', nextImg: 'Next', by: 'Manel Vila, graphic designer',
+      lightbox: 'Enlarged gallery', prev: 'Previous', nextImg: 'Next', by: 'Manel Vila, graphic designer', byShort: 'Manel Vila, designer',
       desc: (p) => `${p.name}: ${p.tag}. ${p.short} A project by Manel Vila, graphic designer and art director.`
     },
     ab: {
@@ -134,7 +134,7 @@ const T = {
       services: 'Servicios', discipline: 'Disciplina', studio: 'Estudio', team: 'Equipo', year: 'Año', design: 'Diseño',
       pieces: (n) => `${n} piezas`, back: 'Volver a los proyectos', aboutPj: 'Sobre el proyecto',
       gallery: (n) => `Galería · ${n} piezas`, more: 'Más proyectos', next: 'Siguiente proyecto', all: 'Todos los proyectos',
-      lightbox: 'Galería ampliada', prev: 'Anterior', nextImg: 'Siguiente', by: 'Manel Vila, diseñador gráfico',
+      lightbox: 'Galería ampliada', prev: 'Anterior', nextImg: 'Siguiente', by: 'Manel Vila, diseñador gráfico', byShort: 'Manel Vila, diseñador',
       desc: (p) => `${p.name}: ${p.tag}. ${p.short} Proyecto de Manel Vila, diseñador gráfico y director de arte.`
     },
     ab: {
@@ -688,7 +688,8 @@ function project(lang, i) {
   const heroPoster = m.type === 'video' ? m.poster : null;
   return `${head(C, {
     // Bing marca como error los títulos largos y Google los corta: como mucho 60 caracteres
-    title: [`${p.name} — ${p.tag} · ${t.pj.by}`, `${p.name} — ${p.tag} · ${PERSON.name}`, `${p.name} · ${t.pj.by}`, `${p.name} · ${PERSON.name}`].find((x) => x.length <= 60) || `${p.name} · ${PERSON.name}`,
+    // (la firma «diseñador gráfico» / «graphic designer» va antes que la disciplina: así cada idioma tiene su título)
+    title: [`${p.name} — ${p.tag} · ${t.pj.by}`, `${p.name} · ${t.pj.by}`, `${p.name} · ${t.pj.byShort}`, `${p.name} — ${p.tag} · ${PERSON.name}`, `${p.name} · ${PERSON.name}`].find((x) => x.length <= 60) || `${p.name} · ${PERSON.name}`,
     description: desc,
     image: thumbOf(p) || 'content/posters/og.jpg',
     type: 'article',
