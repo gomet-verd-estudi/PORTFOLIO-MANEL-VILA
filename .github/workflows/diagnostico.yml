@@ -35,5 +35,9 @@ jobs:
           PerplexityBot|Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; PerplexityBot/1.0; +https://perplexity.ai/perplexitybot)
           vacío|
           LIST
-          echo; echo "Cabeceras para un navegador:"; curl -sSI "$SITE" | grep -iE '^(HTTP|server|cf-|content-type|location)' || true
+          echo; echo "== Cabeceras completas (navegador, GET):"; curl -sS -D - -o /dev/null "$SITE"
+          echo "== Cabeceras completas (bingbot, GET):"; curl -sS -D - -o /dev/null -A 'Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)' "$SITE"
+          echo "== Cabeceras de /es/ (bingbot):"; curl -sS -D - -o /dev/null -A 'Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)' "${SITE}es/"
+          echo "== Directivas de robots en el HTML que recibe bingbot:"; curl -sS -A 'Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)' "$SITE" | grep -ioE '<meta[^>]+(robots|bingbot)[^>]*>' || echo "(ninguna)"
+          echo "== robots.txt tal como se sirve:"; curl -sS "${SITE}robots.txt"
           echo; echo "http:// y www:"; curl -sSI http://manelvila.com/ | grep -iE '^(HTTP|location)' || true; curl -sSI https://www.manelvila.com/ 2>&1 | grep -iE '^(HTTP|location)|curl' || true
