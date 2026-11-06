@@ -2,15 +2,21 @@
  * Generador estático de manelvila.com
  * -----------------------------------
  * Lee el contenido (assets/js/projects.js + assets/js/gallery.js) y escribe HTML real,
- * indexable y que funciona sin JavaScript:
- *   index.html                 home (carrusel + índice en grid + menú)
- *   proyectos/<slug>/index.html  una página por proyecto
- *   about/index.html           about y contacto
- *   about.html                 redirección de la dirección antigua
- *   sitemap.xml
+ * indexable y que funciona sin JavaScript, en dos idiomas:
+ *
+ *   inglés (idioma de inicio)          español
+ *   index.html                         es/index.html                    home (carrusel + índice + menú)
+ *   about/index.html                   es/about/index.html              about y contacto
+ *   projects/<slug>/index.html         es/proyectos/<slug>/index.html   una página por proyecto
+ *
+ *   proyectos/<slug>/index.html, about.html   redirecciones de las direcciones antiguas (eran en español)
+ *   sitemap.xml                                con las dos versiones de cada página
+ *
+ * Textos de la interfaz: el objeto T de este archivo. Textos de los proyectos: projects.js
+ * (español) y su bloque EN (inglés).
  *
  * Uso:  node tools/build.mjs
- * No necesita dependencias. Cloudflare Pages sirve el resultado tal cual (sin build).
+ * No necesita dependencias. Cloudflare sirve el resultado tal cual (sin build).
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -27,12 +33,11 @@ vm.createContext(ctx);
 for (const f of ['assets/js/gallery.js', 'assets/js/projects.js']) {
   vm.runInContext(fs.readFileSync(path.join(ROOT, f), 'utf8'), ctx, { filename: f });
 }
-const PROJECTS = ctx.window.PROJECTS;
-const N = PROJECTS.length;
+const BASE = ctx.window.PROJECTS;
+const N = BASE.length;
 
 const PERSON = {
   name: 'Manel Vila',
-  job: 'Diseñador gráfico y director de arte',
   email: 'gometverdestudi@gmail.com',
   phone: '+34 684 450 515',
   phoneHref: '+34684450515',
@@ -41,8 +46,128 @@ const PERSON = {
   studio: 'Gomet Verd Estudi'
 };
 const COLLABS = ['Jotateam Studio', 'Socis Club', 'T.O.T Studio', 'Domingo Studio', 'D’Matinada'];
-const SERVICES = ['Identidad corporativa', 'Dirección de arte', 'Lettering', 'Tipografía', 'Packaging', 'Editorial', 'Cartelería', 'RRSS', 'Motion graphics', '3D'];
 const CLIENTS = ['Vintage Palace', '404 Studio', 'Claur Tiles', 'Bernal', 'D’Matinada', 'Orbis Vacui', 'Leo Rizzi', 'Kaniche Pedigree Hot Dogs'];
+
+/* ---------- idiomas ---------- */
+const LANG = {
+  en: { code: 'en', dir: '', pj: 'projects', locale: 'en_GB', label: 'EN', name: 'English' },
+  es: { code: 'es', dir: 'es/', pj: 'proyectos', locale: 'es_ES', label: 'ES', name: 'Español' }
+};
+const LANGS = ['en', 'es'];
+
+/* Textos de la interfaz */
+const T = {
+  en: {
+    skip: 'Skip to content', nav: 'Main', openMenu: 'Open menu',
+    projects: 'Projects', about: 'About', contact: 'Contact',
+    job: 'Graphic designer and art director',
+    panelAbout: [
+      'I’m Manel Vila, a graphic designer and art director. I studied at EASD Valencia, I’m part of Gomet Verd Estudi, and I’m happiest working on branding and lettering.',
+      'I’ve also worked with Jotateam Studio, Socis Club, T.O.T Studio and Domingo Studio.'
+    ],
+    readMore: 'Read more →', close: 'Close', index: (n) => `Index · ${n} projects`,
+    copy: 'Copy', copyEmail: 'Copy email',
+    marquee: 'Always WIPing · Working In Play · Branding · Lettering · Art direction · ',
+    ftChips: ['Contact', 'New projects'], ftTitle: ['Got a project', 'in mind?'],
+    ftLabels: ['(01) Contact', '(02) Social', '(03) Based in', '(04) Index'],
+    top: 'Back to top', member: `Member of ${PERSON.studio}`, footer: 'Footer', language: 'Language',
+    igLabel: `Instagram (${PERSON.instagramLabel})`,
+    home: {
+      title: 'Manel Vila — Graphic design and art direction',
+      desc: 'Portfolio of Manel Vila, graphic designer and art director. Branding, lettering and editorial design for Vintage Palace, 404 Studio, Claur Tiles, Bernal and more.',
+      h1: 'Manel Vila — graphic designer and art director. Projects',
+      featured: 'Featured projects', carousel: 'carousel', all: 'All projects', seeAll: 'See all projects',
+      intro: 'Branding, lettering, editorial and motion graphics.', view: 'View project', pause: 'Pause slideshow'
+    },
+    pj: {
+      image: (n, t) => `image ${n} of ${t}`, enlarge: (n, t) => `Enlarge image ${n} of ${t}`,
+      cover: 'cover', coverVideo: 'cover video',
+      services: 'Services', discipline: 'Discipline', studio: 'Studio', team: 'Team', year: 'Year', design: 'Design',
+      pieces: (n) => `${n} pieces`, back: 'Back to projects', aboutPj: 'About the project',
+      gallery: (n) => `Gallery · ${n} pieces`, more: 'More projects', next: 'Next project', all: 'All projects',
+      lightbox: 'Enlarged gallery', prev: 'Previous', nextImg: 'Next',
+      desc: (p) => `${p.name}: ${p.tag}. ${p.short} A project by Manel Vila, graphic designer and art director.`
+    },
+    ab: {
+      title: 'About and contact — Manel Vila',
+      desc: 'Manel Vila, graphic designer and art director specialising in branding and lettering. Member of Gomet Verd Estudi. Valencia · Barcelona.',
+      close: 'Close About and go back',
+      tagline: 'Graphic designer and art director. I work between Valencia and Barcelona and I’m part of Gomet Verd Estudi.',
+      bio: [
+        'I like brands that have something to say. My job is to find that something and give it a shape: an identity, a set of letters, a system that works just as well on a poster as on a screen.',
+        'I studied at EASD Valencia, and while I’m at ease in every corner of graphic design, I’m happiest in branding and lettering: drawing letters, trying things out, getting them wrong and starting again until a word finds its own voice.',
+        'I’m part of Gomet Verd Estudi, an independent branding and art direction studio between Valencia and Barcelona. Every project there starts with a conversation and becomes a game we play together with the client, mixing strategy, storytelling and visual exploration until we reach something you can see, hold or set in motion. Many of the projects in this portfolio were born there.',
+        'We’re driven by a simple idea, ALWAYS WIPing (Working In Play): stay curious, question the usual and enjoy the process, because in the end it shows in the result.',
+        'I enjoy working in a team and seeing each project through, from the first idea to the last application. If you have one in mind, <a href="#contacto">drop me a line</a>.'
+      ],
+      labels: { services: 'Services', studio: 'Studio', collabs: 'I’ve also worked with', clients: 'Clients', education: 'Education', contact: 'Contact', time: 'Local time' },
+      services: ['Brand identity', 'Art direction', 'Lettering', 'Typography', 'Packaging', 'Editorial', 'Posters', 'Social media', 'Motion graphics', '3D'],
+      education: 'EASD Valencia — School of Art and Design'
+    }
+  },
+  es: {
+    skip: 'Saltar al contenido', nav: 'Principal', openMenu: 'Abrir menú',
+    projects: 'Proyectos', about: 'About', contact: 'Contacto',
+    job: 'Diseñador gráfico y director de arte',
+    panelAbout: [
+      'Soy Manel Vila, diseñador gráfico y director de arte. Estudié en la EASD de Valencia, formo parte de Gomet Verd Estudi y donde más disfruto es en el branding y el lettering.',
+      'También he trabajado con Jotateam Studio, Socis Club, T.O.T Studio y Domingo Studio.'
+    ],
+    readMore: 'Leer más →', close: 'Cerrar', index: (n) => `Índice · ${n} proyectos`,
+    copy: 'Copiar', copyEmail: 'Copiar email',
+    marquee: 'Always WIPing · Working In Play · Branding · Lettering · Dirección de arte · ',
+    ftChips: ['Contacto', 'Nuevos proyectos'], ftTitle: ['¿Tienes un proyecto', 'en mente?'],
+    ftLabels: ['(01) Contacto', '(02) Redes', '(03) Base', '(04) Índice'],
+    top: 'Volver arriba', member: `Miembro de ${PERSON.studio}`, footer: 'Pie de página', language: 'Idioma',
+    igLabel: `Instagram (${PERSON.instagramLabel})`,
+    home: {
+      title: 'Manel Vila — Diseño gráfico y dirección de arte',
+      desc: 'Portfolio de Manel Vila, diseñador gráfico y director de arte. Branding, lettering y editorial para Vintage Palace, 404 Studio, Claur Tiles, Bernal y más.',
+      h1: 'Manel Vila — diseñador gráfico y director de arte. Proyectos',
+      featured: 'Proyectos destacados', carousel: 'carrusel', all: 'Todos los proyectos', seeAll: 'Ver todos los proyectos',
+      intro: 'Branding, lettering, editorial y motion graphics.', view: 'Ver proyecto', pause: 'Pausar pase automático'
+    },
+    pj: {
+      image: (n, t) => `imagen ${n} de ${t}`, enlarge: (n, t) => `Ampliar imagen ${n} de ${t}`,
+      cover: 'portada', coverVideo: 'vídeo de portada',
+      services: 'Servicios', discipline: 'Disciplina', studio: 'Estudio', team: 'Equipo', year: 'Año', design: 'Diseño',
+      pieces: (n) => `${n} piezas`, back: 'Volver a los proyectos', aboutPj: 'Sobre el proyecto',
+      gallery: (n) => `Galería · ${n} piezas`, more: 'Más proyectos', next: 'Siguiente proyecto', all: 'Todos los proyectos',
+      lightbox: 'Galería ampliada', prev: 'Anterior', nextImg: 'Siguiente',
+      desc: (p) => `${p.name}: ${p.tag}. ${p.short} Proyecto de Manel Vila, diseñador gráfico y director de arte.`
+    },
+    ab: {
+      title: 'About y contacto — Manel Vila',
+      desc: 'Manel Vila, diseñador gráfico y director de arte especializado en branding y lettering. Miembro de Gomet Verd Estudi. Valencia · Barcelona.',
+      close: 'Cerrar About y volver',
+      tagline: 'Diseñador gráfico y director de arte. Trabajo entre Valencia y Barcelona y formo parte de Gomet Verd Estudi.',
+      bio: [
+        'Me gustan las marcas que tienen algo que contar. Mi trabajo consiste en encontrar ese algo y darle forma: una identidad, unas letras, un sistema que funcione igual de bien en un cartel que en una pantalla.',
+        'Estudié en la EASD de Valencia y, aunque me muevo con soltura por cualquier rama del diseño gráfico, donde más disfruto es en el branding y el lettering: dibujar letras, probar, equivocarme y volver a empezar hasta que una palabra encuentra su propia voz.',
+        'Formo parte de Gomet Verd Estudi, un estudio independiente de branding y dirección de arte entre Valencia y Barcelona. Allí cada proyecto empieza con una conversación y acaba siendo un juego compartido con quien nos lo encarga: mezclamos estrategia, narrativa y exploración visual hasta llegar a algo que se pueda ver, tocar o poner en movimiento. Muchos de los trabajos de este portfolio nacieron ahí.',
+        'Nos mueve una idea sencilla, ALWAYS WIPing (Working In Play): seguir siendo curiosos, cuestionar lo de siempre y disfrutar del proceso, porque al final se nota en el resultado.',
+        'Me gusta trabajar en equipo y acompañar cada proyecto de principio a fin, de la primera idea a la última aplicación. Si tienes uno entre manos, <a href="#contacto">escríbeme</a>.'
+      ],
+      labels: { services: 'Servicios', studio: 'Estudio', collabs: 'También he trabajado con', clients: 'Clientes', education: 'Formación', contact: 'Contacto', time: 'Hora local' },
+      services: ['Identidad corporativa', 'Dirección de arte', 'Lettering', 'Tipografía', 'Packaging', 'Editorial', 'Cartelería', 'RRSS', 'Motion graphics', '3D'],
+      education: 'EASD — Escuela de Arte Superior de Diseño de Valencia'
+    }
+  }
+};
+
+/* Proyectos con los textos de cada idioma (el bloque `en` de projects.js sobrescribe al español) */
+const PROJ = { es: BASE, en: BASE.map((p) => ({ ...p, ...(p.en || {}) })) };
+
+/* ---------- rutas ---------- */
+const PAGE = {
+  home: (lang) => LANG[lang].dir,
+  about: (lang) => `${LANG[lang].dir}about/`,
+  project: (lang, p) => `${LANG[lang].dir}${LANG[lang].pj}/${p.slug}/`
+};
+/** Prefijo hasta la raíz del sitio (para estilos, scripts y medios). */
+const up = (page) => '../'.repeat(page.split('/').filter(Boolean).length);
+/** Enlace relativo de una página a otra. */
+const rel = (from, to) => { const r = path.posix.relative('/' + from, '/' + to); return r ? r + '/' : './'; };
 
 /* ---------- utilidades ---------- */
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -86,7 +211,6 @@ function sources(R, p, media = '') {
 const thumbOf = (p) => (p.media ? (p.media.type === 'image' ? p.media.src : p.media.poster) : (p.gallery[0] && p.gallery[0][0]));
 const plain = (s) => String(s ?? '').replace(/\s+/g, ' ').trim();
 const clip = (s, n = 158) => { s = plain(s); return s.length <= n ? s : s.slice(0, s.lastIndexOf(' ', n - 1)) + '…'; };
-const projectPath = (p) => `proyectos/${p.slug}/`;
 const write = (rel, html) => {
   const f = path.join(ROOT, rel);
   fs.mkdirSync(path.dirname(f), { recursive: true });
@@ -106,10 +230,28 @@ function img(R, src, { alt = '', sizes = '100vw', lazy = true, cls = '', extra =
 
 const MARK = '<svg data-mark aria-hidden="true"></svg>';
 
+/**
+ * Contexto de una página: idioma, su ruta, la raíz del sitio (R) y su equivalente en el otro idioma.
+ * Todas las piezas reciben este objeto (C) para escribir enlaces y textos correctos.
+ */
+function page(lang, here, alt) {
+  const L = LANG[lang];
+  return {
+    lang, L, t: T[lang], P: PROJ[lang], here, alt,
+    R: up(here),
+    to: (target) => rel(here, target),
+    home: rel(here, PAGE.home(lang)),
+    aboutUrl: rel(here, PAGE.about(lang)),
+    pj: (p) => rel(here, PAGE.project(lang, p))
+  };
+}
+
 /* ---------- piezas compartidas ---------- */
-function head({ R, title, description, canonical, image = 'content/posters/og.jpg', type = 'website', jsonld = [], extra = '' }) {
+function head(C, { title, description, image = 'content/posters/og.jpg', type = 'website', jsonld = [], extra = '' }) {
+  const { R, L, lang, here, alt } = C;
+  const other = LANGS.filter((l) => l !== lang);
   return `<!DOCTYPE html>
-<html lang="es" data-root="${R}">
+<html lang="${lang}" data-root="${R}" data-pj="${L.pj}/">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -117,13 +259,16 @@ function head({ R, title, description, canonical, image = 'content/posters/og.jp
   <meta name="description" content="${esc(description)}">
   <meta name="author" content="${PERSON.name}">
   <meta name="theme-color" content="#0600FF">
-  <link rel="canonical" href="${SITE}/${canonical}">
+  <link rel="canonical" href="${SITE}/${here}">
+${LANGS.map((l) => `  <link rel="alternate" hreflang="${l}" href="${SITE}/${alt[l]}">`).join('\n')}
+  <link rel="alternate" hreflang="x-default" href="${SITE}/${alt.en}">
   <meta property="og:type" content="${type}">
   <meta property="og:site_name" content="${PERSON.name}">
-  <meta property="og:locale" content="es_ES">
+  <meta property="og:locale" content="${L.locale}">
+${other.map((l) => `  <meta property="og:locale:alternate" content="${LANG[l].locale}">`).join('\n')}
   <meta property="og:title" content="${esc(title)}">
   <meta property="og:description" content="${esc(description)}">
-  <meta property="og:url" content="${SITE}/${canonical}">
+  <meta property="og:url" content="${SITE}/${here}">
   <meta property="og:image" content="${abs(image)}">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="${R}favicon.ico" sizes="32x32">
@@ -136,33 +281,35 @@ function head({ R, title, description, canonical, image = 'content/posters/og.jp
 ${extra}${jsonld.map((j) => `  <script type="application/ld+json">${JSON.stringify(j)}</script>\n`).join('')}</head>`;
 }
 
-/** Menú: la franja con el monograma. `here` = 'home' | 'about' | 'project'. */
-function franja(R, here) {
-  const about = here === 'home'
-    ? '<button class="franja__item" data-panel="about">About</button>'
-    : `<a class="franja__item" href="${R}about/"${here === 'about' ? ' aria-current="page"' : ''}>About</a>`;
-  const contact = here === 'about'
-    ? '<a class="franja__item" href="#contacto" data-close-nav>Contacto</a>'
-    : '<button class="franja__item" data-panel="contact">Contacto</button>';
+/** Menú: la franja con el monograma. `kind` = 'home' | 'about' | 'project'. */
+function franja(C, kind) {
+  const { t } = C;
+  const about = kind === 'home'
+    ? `<button class="franja__item" data-panel="about">${t.about}</button>`
+    : `<a class="franja__item" href="${C.aboutUrl}"${kind === 'about' ? ' aria-current="page"' : ''}>${t.about}</a>`;
+  const contact = kind === 'about'
+    ? `<a class="franja__item" href="#contacto" data-close-nav>${t.contact}</a>`
+    : `<button class="franja__item" data-panel="contact">${t.contact}</button>`;
   return `
-  <a class="skip" href="#contenido">Saltar al contenido</a>
-  <nav class="franja" aria-label="Principal">
-    <button class="franja__mark" aria-label="Abrir menú" aria-expanded="false" aria-controls="franja-items">${MARK}</button>
+  <a class="skip" href="#contenido">${t.skip}</a>
+  <nav class="franja" aria-label="${t.nav}">
+    <button class="franja__mark" aria-label="${t.openMenu}" aria-expanded="false" aria-controls="franja-items">${MARK}</button>
     <div class="franja__items" id="franja-items">
-      <a class="franja__item franja__name" href="${R || './'}">${PERSON.name}</a>
-      <button class="franja__item" data-panel="projects">Proyectos</button>
+      <a class="franja__item franja__name" href="${C.home}">${PERSON.name}</a>
+      <button class="franja__item" data-panel="projects">${t.projects}</button>
       ${about}
       ${contact}
     </div>
   </nav>`;
 }
 
-function projectList(R, current = -1) {
-  return PROJECTS.map((p, i) => {
-    const t = thumbOf(p);
-    const th = t ? small(t) || t : '';
+function projectList(C, current = -1) {
+  const { R } = C;
+  return C.P.map((p, i) => {
+    const th0 = thumbOf(p);
+    const th = th0 ? small(th0) || th0 : '';
     return `
-        <a class="plist__row" href="${R}${projectPath(p)}" data-index="${i}"${th ? ` data-thumb="${R}${url(th)}"` : ''}${i === current ? ' aria-current="page"' : ''}>
+        <a class="plist__row" href="${C.pj(p)}" data-index="${i}"${th ? ` data-thumb="${R}${url(th)}"` : ''}${i === current ? ' aria-current="page"' : ''}>
           <span class="plist__num">${pad(i + 1)}</span>
           <span class="plist__name">${esc(p.name)}</span>
           <span class="plist__tag">${esc(p.tag)}</span>
@@ -170,45 +317,43 @@ function projectList(R, current = -1) {
   }).join('');
 }
 
-function contactLinks(cls = 'contact-list') {
-  return `<div class="${cls}">
-        <span class="copyable"><a href="mailto:${PERSON.email}">${PERSON.email}</a><button class="copy" data-copy="${PERSON.email}" aria-label="Copiar email">Copiar</button></span>
-        <a href="tel:${PERSON.phoneHref}">${PERSON.phone}</a>
-        <a href="${PERSON.instagram}" target="_blank" rel="noopener">${PERSON.instagramLabel}</a>
-      </div>`;
-}
+const copyable = (t) => `<span class="copyable"><a href="mailto:${PERSON.email}">${PERSON.email}</a><button class="copy" data-copy="${PERSON.email}" aria-label="${t.copyEmail}">${t.copy}</button></span>`;
 
-function panels(R, here, current = -1) {
-  const aboutPanel = here === 'home' ? `
-  <section class="panel" data-panel="about" hidden aria-label="About" data-lenis-prevent>
+function panels(C, kind, current = -1) {
+  const { t } = C;
+  const aboutPanel = kind === 'home' ? `
+  <section class="panel" data-panel="about" hidden aria-label="${t.about}" data-lenis-prevent>
     <div class="panel__inner"><div class="panel__pad">
-      <p>Soy Manel Vila, diseñador gráfico y director de arte, graduado por la EASD de Valencia y miembro de Gomet Verd Estudi. Me he especializado en branding y lettering.</p>
-      <p>He colaborado con estudios como Jotateam Studio, Socis Club, T.O.T Studio y Domingo Studio.</p>
-      <div class="panel__foot"><a class="panel__link" href="${R}about/">About completo →</a><button class="panel__close" aria-label="Cerrar">(X)</button></div>
+      ${t.panelAbout.map((x) => `<p>${x}</p>`).join('\n      ')}
+      <div class="panel__foot"><a class="panel__link" href="${C.aboutUrl}">${t.readMore}</a><button class="panel__close" aria-label="${t.close}">(X)</button></div>
     </div></div>
   </section>` : '';
-  const contactPanel = here === 'about' ? '' : `
-  <section class="panel" data-panel="contact" hidden aria-label="Contacto" data-lenis-prevent>
+  const contactPanel = kind === 'about' ? '' : `
+  <section class="panel" data-panel="contact" hidden aria-label="${t.contact}" data-lenis-prevent>
     <div class="panel__inner"><div class="panel__pad">
-      ${contactLinks()}
-      <div class="panel__foot"><span>Valencia · Barcelona</span><button class="panel__close" aria-label="Cerrar">(X)</button></div>
+      <div class="contact-list">
+        ${copyable(t)}
+        <a href="tel:${PERSON.phoneHref}">${PERSON.phone}</a>
+        <a href="${PERSON.instagram}" target="_blank" rel="noopener">${PERSON.instagramLabel}</a>
+      </div>
+      <div class="panel__foot"><span>Valencia · Barcelona</span><button class="panel__close" aria-label="${t.close}">(X)</button></div>
     </div></div>
   </section>`;
   return `
-  <section class="panel" data-panel="projects" hidden aria-label="Proyectos" data-lenis-prevent>
+  <section class="panel" data-panel="projects" hidden aria-label="${t.projects}" data-lenis-prevent>
     <div class="panel__inner"><div class="panel__pad">
-      <div class="plist">${projectList(R, current)}
+      <div class="plist">${projectList(C, current)}
       </div>
-      <div class="panel__foot"><span>Índice · ${pad(N)} proyectos</span><button class="panel__close" aria-label="Cerrar">(X)</button></div>
+      <div class="panel__foot"><span>${t.index(pad(N))}</span><button class="panel__close" aria-label="${t.close}">(X)</button></div>
     </div></div>
   </section>${aboutPanel}${contactPanel}`;
 }
 
-const personLD = () => ({
+const personLD = (lang) => ({
   '@type': 'Person',
   '@id': `${SITE}/#manel-vila`,
   name: PERSON.name,
-  jobTitle: PERSON.job,
+  jobTitle: T[lang].job,
   url: `${SITE}/`,
   email: `mailto:${PERSON.email}`,
   telephone: PERSON.phoneHref,
@@ -216,56 +361,70 @@ const personLD = () => ({
   address: { '@type': 'PostalAddress', addressLocality: 'Valencia', addressCountry: 'ES' },
   alumniOf: { '@type': 'CollegeOrUniversity', name: 'Escuela de Arte Superior de Diseño de Valencia (EASD)' },
   memberOf: { '@type': 'Organization', name: PERSON.studio, sameAs: [PERSON.instagram] },
-  knowsAbout: ['Branding', 'Lettering', 'Dirección de arte', 'Diseño editorial', 'Tipografía', 'Motion graphics']
+  knowsAbout: lang === 'en'
+    ? ['Branding', 'Lettering', 'Art direction', 'Editorial design', 'Typography', 'Motion graphics']
+    : ['Branding', 'Lettering', 'Dirección de arte', 'Diseño editorial', 'Tipografía', 'Motion graphics']
 });
-const websiteLD = () => ({ '@type': 'WebSite', '@id': `${SITE}/#web`, url: `${SITE}/`, name: PERSON.name, inLanguage: 'es', author: { '@id': `${SITE}/#manel-vila` } });
+const websiteLD = (lang) => ({ '@type': 'WebSite', '@id': `${SITE}/#web`, url: `${SITE}/`, name: PERSON.name, inLanguage: ['en', 'es'], author: { '@id': `${SITE}/#manel-vila` } });
 
 /** Cinta que corre (la frase del estudio, repetida). */
-const marquee = (text = 'Always WIPing · Working In Play · Branding · Lettering · Dirección de arte · ') =>
+const marquee = (text) =>
   `<div class="marquee" aria-hidden="true"><div class="marquee__track">${('<span>' + esc(text) + '</span>').repeat(4)}</div></div>`;
+
+/** Selector de idioma: lleva a la misma página en el otro idioma. */
+function langSwitch(C) {
+  return `<nav class="ft__lang" aria-label="${C.t.language} · ${C.lang === 'en' ? 'Idioma' : 'Language'}">
+        ${LANGS.map((l) => {
+          const cur = l === C.lang;
+          return `<a href="${C.to(C.alt[l])}" hreflang="${l}" lang="${l}" data-lang="${l}"${cur ? ' aria-current="true"' : ''} title="${LANG[l].name}">${LANG[l].label}</a>`;
+        }).join('')}
+      </nav>`;
+}
 
 /**
  * Footer editorial (común a proyectos, About y el final del índice):
- * cinta · llamada a contactar (opcional) · columnas numeradas · nombre a sangre · colofón.
+ * cinta · llamada a contactar (opcional) · columnas numeradas · nombre a sangre · colofón con el selector de idioma.
  */
-function footer(R, { cta = true, here = '' } = {}) {
+function footer(C, { cta = true, kind = '' } = {}) {
+  const { t } = C;
   const year = TODAY.slice(0, 4);
   return `
-  <footer class="ft" aria-label="Pie de página">
-    ${marquee()}
+  <footer class="ft" aria-label="${t.footer}">
+    ${marquee(t.marquee)}
     ${cta ? `<div class="ft__cta">
-      <p class="chips ft__chips"><span class="chip chip--num">✶</span><span class="chip">Contacto</span><span class="chip chip--round">Nuevos proyectos</span></p>
-      <h2 class="ft__title" data-reveal><span class="mask"><span>¿Tienes un proyecto</span></span><span class="mask"><span>en mente?</span></span></h2>
+      <p class="chips ft__chips"><span class="chip chip--num">✶</span><span class="chip">${t.ftChips[0]}</span><span class="chip chip--round">${t.ftChips[1]}</span></p>
+      <h2 class="ft__title" data-reveal>${t.ftTitle.map((x) => `<span class="mask"><span>${x}</span></span>`).join('')}</h2>
       <a class="ft__mail" href="mailto:${PERSON.email}"><span>${PERSON.email}</span><span aria-hidden="true">↗</span></a>
     </div>` : ''}
     <div class="ft__cols">
       <section class="ft__col">
-        <h2 class="ft__label">(01) Contacto</h2>
-        <span class="copyable"><a href="mailto:${PERSON.email}">${PERSON.email}</a><button class="copy" data-copy="${PERSON.email}" aria-label="Copiar email">Copiar</button></span>
+        <h2 class="ft__label">${t.ftLabels[0]}</h2>
+        ${copyable(t)}
         <a href="tel:${PERSON.phoneHref}">${PERSON.phone}</a>
       </section>
       <section class="ft__col">
-        <h2 class="ft__label">(02) Redes</h2>
+        <h2 class="ft__label">${t.ftLabels[1]}</h2>
         <a href="${PERSON.instagram}" target="_blank" rel="noopener">Instagram <span aria-hidden="true">↗</span></a>
         <span class="ft__muted">${PERSON.instagramLabel}</span>
       </section>
       <section class="ft__col">
-        <h2 class="ft__label">(03) Base</h2>
+        <h2 class="ft__label">${t.ftLabels[2]}</h2>
         <span>Valencia · Barcelona</span>
         <span class="ft__muted">Valencia <time class="ft__clock" data-clock>CET</time></span>
       </section>
       <section class="ft__col">
-        <h2 class="ft__label">(04) Índice</h2>
-        <a href="${R}?grid"${here === 'grid' ? ' aria-current="page"' : ''}>Proyectos <sup>${pad(N)}</sup></a>
-        <a href="${R}about/"${here === 'about' ? ' aria-current="page"' : ''}>About</a>
-        <button class="ft__top" data-top>Volver arriba <span aria-hidden="true">↑</span></button>
+        <h2 class="ft__label">${t.ftLabels[3]}</h2>
+        <a href="${C.home}?grid"${kind === 'grid' ? ' aria-current="page"' : ''}>${t.projects} <sup>${pad(N)}</sup></a>
+        <a href="${C.aboutUrl}"${kind === 'about' ? ' aria-current="page"' : ''}>${t.about}</a>
+        <button class="ft__top" data-top>${t.top} <span aria-hidden="true">↑</span></button>
       </section>
     </div>
     <p class="ft__name" data-reveal aria-hidden="true"><span class="mask"><span>[Manel Vila]</span></span></p>
     <div class="ft__legal">
       <span>© ${year} ${PERSON.name}</span>
-      <span>Miembro de ${PERSON.studio}</span>
+      <span>${t.member}</span>
       <span>Always WIPing [Working In Play]</span>
+      ${langSwitch(C)}
     </div>
   </footer>`;
 }
@@ -274,11 +433,11 @@ function footer(R, { cta = true, here = '' } = {}) {
  * Esquinas: la interfaz vive en las cuatro esquinas. Arriba, el monograma y el botón grid;
  * abajo, a la izquierda un dato (email o el proyecto y su pieza) y a la derecha Instagram.
  */
-function corners(left = `<a class="corner corner--l" href="mailto:${PERSON.email}">Email</a>`) {
+function corners(C, left = `<a class="corner corner--l" href="mailto:${PERSON.email}">Email</a>`) {
   return `
   <div class="corners">
     ${left}
-    <a class="corner corner--r" href="${PERSON.instagram}" target="_blank" rel="noopener" aria-label="Instagram (${PERSON.instagramLabel})">IG <span aria-hidden="true">↗</span></a>
+    <a class="corner corner--r" href="${PERSON.instagram}" target="_blank" rel="noopener" aria-label="${C.t.igLabel}">IG <span aria-hidden="true">↗</span></a>
   </div>`;
 }
 
@@ -290,69 +449,68 @@ const kv = (rows, attrs = '') => `<dl class="kv"${attrs}>
 const scripts = (R, list) => list.map((s) => `  <script src="${R}assets/js/${s}.js"></script>`).join('\n');
 
 /* ---------- HOME ---------- */
-function home() {
-  const R = '';
-  const tiles = PROJECTS.map((p, i) => {
-    const t = thumbOf(p);
-    const vis = t
-      ? img(R, t, { alt: '', sizes: '(max-width: 923px) 100vw, 58vw' })
+function home(lang) {
+  const C = page(lang, PAGE.home(lang), { en: PAGE.home('en'), es: PAGE.home('es') });
+  const { R, t, P } = C;
+  const tiles = P.map((p, i) => {
+    const th = thumbOf(p);
+    const vis = th
+      ? img(R, th, { alt: '', sizes: '(max-width: 923px) 100vw, 34vw' })
       : `<span class="cover"><span class="cover__title">[${esc(p.name)}]</span></span>`;
     return `
-      <a class="tile" href="${projectPath(p)}" data-index="${i}" style="--i:${i}">
+      <a class="tile" href="${C.pj(p)}" data-index="${i}" style="--i:${i}">
         <span class="tile__media"${p.media && p.media.bg ? ` style="--bg:${p.media.bg}"` : ''}>${vis}</span>
         <span class="tile__cap"><span class="tile__num">${pad(i + 1)}</span><span class="tile__name">${esc(p.name)}</span><span class="tile__tag">${esc(p.tag)}</span></span>
       </a>`;
   }).join('');
-  const first = PROJECTS[0].media || {};
+  const first = P[0].media || {};
   const lcp = first.poster || (first.type === 'image' ? first.src : '');
-  return `${head({
-    R,
-    title: `${PERSON.name} — Diseño gráfico y dirección de arte`,
-    description: 'Portfolio de Manel Vila, diseñador gráfico y director de arte. Branding, lettering y editorial para Vintage Palace, 404 Studio, Claur Tiles, Bernal y más.',
-    canonical: '',
-    jsonld: [{ '@context': 'https://schema.org', '@graph': [websiteLD(), personLD(), {
-      '@type': 'ItemList', name: 'Proyectos', itemListElement: PROJECTS.map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: `${SITE}/${projectPath(p)}`, name: p.name }))
+  return `${head(C, {
+    title: t.home.title,
+    description: t.home.desc,
+    jsonld: [{ '@context': 'https://schema.org', '@graph': [websiteLD(lang), personLD(lang), {
+      '@type': 'ItemList', name: t.projects, itemListElement: P.map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: `${SITE}/${PAGE.project(lang, p)}`, name: p.name }))
     }] }],
-    extra: `  <link rel="preload" as="image" href="${url(lcp)}" fetchpriority="high">
+    extra: `  <link rel="preload" as="image" href="${R}${url(lcp)}" fetchpriority="high">
   <noscript><style>.grid{position:static;visibility:visible;opacity:1}.tile{opacity:1;transform:none}.track,.info,.grid-btn,.intro{display:none}.home{overflow:auto;height:auto}</style></noscript>\n`
   })}
 <body class="home">
 
   <div class="intro" aria-hidden="true">${MARK}</div>
-${franja(R, 'home')}
+${franja(C, 'home')}
 
   <button class="grid-btn" aria-pressed="false">
     <span class="grid-btn__icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
     <span class="grid-btn__count">01 / ${pad(N)}</span>
-    <span class="sr-only">Ver todos los proyectos</span>
+    <span class="sr-only">${t.home.seeAll}</span>
   </button>
-${panels(R, 'home')}
+${panels(C, 'home')}
 
   <main id="contenido">
-    <h1 class="sr-only">${PERSON.name} — diseñador gráfico y director de arte. Proyectos</h1>
-    <div class="track" id="track" aria-label="Proyectos destacados" aria-roledescription="carrusel"></div>
-    <nav class="grid" id="grid" aria-label="Todos los proyectos">
+    <h1 class="sr-only">${t.home.h1}</h1>
+    <div class="track" id="track" aria-label="${t.home.featured}" aria-roledescription="${t.home.carousel}"></div>
+    <nav class="grid" id="grid" aria-label="${t.home.all}">
       <header class="grid__intro">
-        <h2 class="grid__title"><span>Proyectos</span><span>(${pad(N)})</span></h2>
-        <p>Branding, lettering, editorial y motion graphics.</p>
-        <p class="grid__by">${PERSON.name} — ${PERSON.job}</p>
+        <h2 class="grid__title"><span>${t.projects}</span><span>(${pad(N)})</span></h2>
+        <p>${t.home.intro}</p>
+        <p class="grid__by">${PERSON.name} — ${t.job}</p>
       </header>${tiles}
-      ${footer('', { here: 'grid' })}
+      ${footer(C, { kind: 'grid' })}
     </nav>
   </main>
 
-  <div class="cursor" aria-hidden="true"><span>Ver proyecto</span></div>
-${corners()}
+  <div class="cursor" aria-hidden="true"><span>${t.home.view}</span></div>
+${corners(C)}
 
   <div class="info">
     <div class="more" id="more"><div class="more__inner"></div></div>
     <div class="tiempos">
-      <button class="play" aria-pressed="false" aria-label="Pausar pase automático"></button>
+      <button class="play" aria-pressed="false" aria-label="${t.home.pause}"></button>
       <div class="progress" id="progress"></div>
     </div>
     <div class="bar">
       <span class="bar__num roll"></span>
-      <a class="bar__name roll" href="${projectPath(PROJECTS[0])}"></a>
+      <a class="bar__name roll" href="${C.pj(P[0])}"></a>
       <span class="bar__tag roll"></span>
       <span class="bar__short roll"></span>
       <button class="bar__more" aria-controls="more" aria-expanded="false">+info</button>
@@ -394,7 +552,8 @@ function galleryKinds(gal) {
 /** Portada del proyecto: su vídeo/imagen, o la primera pieza de la galería si no tiene. */
 const heroOf = (p) => p.media || (p.gallery[0] ? { type: 'image', src: p.gallery[0][0] } : null);
 
-function heroHTML(R, p) {
+function heroHTML(C, p) {
+  const { R, t } = C;
   const m = heroOf(p);
   if (!m) return '';
   const ar = m.ar || (m.type === 'image' ? dims(m.src)[0] / dims(m.src)[1] : 16 / 9);
@@ -404,12 +563,12 @@ function heroHTML(R, p) {
   const style = ` style="--bg:${m.bg || (m.type === 'image' ? 'var(--paper)' : '#000')};--ar:${ar.toFixed(4)};--ar-m:${(m.mobile && m.arMobile ? m.arMobile : ar).toFixed(4)}"`;
   if (m.type === 'video') {
     return `<figure class="${cls}"${style}>
-      <video muted loop playsinline autoplay preload="metadata" poster="${R}${url(m.poster || '')}" aria-label="${esc(p.name)} — vídeo de portada">
+      <video muted loop playsinline autoplay preload="metadata" poster="${R}${url(m.poster || '')}" aria-label="${esc(p.name)} — ${t.pj.coverVideo}">
         ${m.mobile ? sources(R, m.mobile, '(max-width: 923px)') : ''}${sources(R, m.src)}
       </video>
     </figure>`;
   }
-  return `<figure class="${cls}"${style}>${img(R, m.src, { alt: `${p.name} — portada`, lazy: false, priority: true })}</figure>`;
+  return `<figure class="${cls}"${style}>${img(R, m.src, { alt: `${p.name} — ${t.pj.cover}`, lazy: false, priority: true })}</figure>`;
 }
 
 function videoData(R, vid) {
@@ -418,121 +577,122 @@ function videoData(R, vid) {
   return ` data-video="${R}${url(v.h264)}"` + (alts ? ` data-alts="${alts}"` : '');
 }
 
-function project(p, i) {
-  const R = '../../';
-  const nx = PROJECTS[(i + 1) % N];
-  const pv = PROJECTS[(i - 1 + N) % N];
+function project(lang, i) {
+  const P = PROJ[lang];
+  const p = P[i];
+  const C = page(lang, PAGE.project(lang, p), { en: PAGE.project('en', p), es: PAGE.project('es', p) });
+  const { R, t } = C;
+  const nx = P[(i + 1) % N];
+  const pv = P[(i - 1 + N) % N];
   const m = heroOf(p) || {};
   const coverKey = m.deck || m.src;
   const gal = p.gallery.filter((e) => !(e[3] && e[3] === coverKey) && e[0] !== (m.type === 'image' ? m.src : ''));
   const { kinds, flush } = galleryKinds(gal);
   const total = gal.length;
   const figs = gal.map(([src, w, h, vid], j) => {
-    const alt = `${p.name} — imagen ${j + 1} de ${total}`;
+    const alt = `${p.name} — ${t.pj.image(j + 1, total)}`;
     const sizes = kinds[j] === 'full' ? '100vw' : '(max-width: 923px) 100vw, 50vw';
     return `
       <figure class="g g--${kinds[j]}${flush[j] ? ' g--flush' : ''}" data-reveal data-n="${j}">
-        <button class="g__open" aria-label="Ampliar imagen ${j + 1} de ${total}">${img(R, src, { alt, sizes, extra: vid && exists(vid) ? videoData(R, vid) : '' })}</button>
+        <button class="g__open" aria-label="${t.pj.enlarge(j + 1, total)}">${img(R, src, { alt, sizes, extra: vid && exists(vid) ? videoData(R, vid) : '' })}</button>
       </figure>`;
   }).join('');
 
   const meta = [];
-  if (p.services.length) meta.push(['Servicios', p.services.map(esc)]);
-  meta.push(['Disciplina', esc(p.tag)]);
-  if (p.studio) meta.push(['Estudio', esc(p.studio)]);
-  if (p.team) meta.push(['Equipo', esc(p.team)]);
-  if (p.year) meta.push(['Año', String(p.year)]);
-  meta.push(['Diseño', PERSON.name]);
+  if (p.services.length) meta.push([t.pj.services, p.services.map(esc)]);
+  meta.push([t.pj.discipline, esc(p.tag)]);
+  if (p.studio) meta.push([t.pj.studio, esc(p.studio)]);
+  if (p.team) meta.push([t.pj.team, esc(p.team)]);
+  if (p.year) meta.push([t.pj.year, String(p.year)]);
+  meta.push([t.pj.design, PERSON.name]);
 
-  const desc = p.long ? clip(p.long) : `${p.name}: ${p.tag}. ${p.short} Proyecto de ${PERSON.name}, diseñador gráfico y director de arte.`;
+  const desc = p.long ? clip(p.long) : t.pj.desc(p);
   const imgs = [thumbOf(p), ...gal.slice(0, 5).map((e) => e[0])].filter(Boolean);
   const nxThumb = thumbOf(nx);
   // Esquina inferior izquierda: el proyecto y la pieza que se está viendo (la actualiza project.js)
-  const info = `<p class="corner corner--l corner--info" aria-hidden="true"><span class="corner__name">${esc(p.name)}</span><span data-count>${total ? `${pad(total)} piezas` : esc(p.tag)}</span></p>`;
+  const info = `<p class="corner corner--l corner--info" aria-hidden="true"><span class="corner__name">${esc(p.name)}</span><span data-count>${total ? t.pj.pieces(pad(total)) : esc(p.tag)}</span></p>`;
 
-  return `${head({
-    R,
+  return `${head(C, {
     title: `${p.name} — ${p.tag} · ${PERSON.name}`,
     description: desc,
-    canonical: projectPath(p),
     image: thumbOf(p) || 'content/posters/og.jpg',
     type: 'article',
     jsonld: [{ '@context': 'https://schema.org', '@graph': [
       {
         '@type': 'CreativeWork',
-        '@id': `${SITE}/${projectPath(p)}#trabajo`,
+        '@id': `${SITE}/${C.here}#work`,
         name: p.name,
         headline: p.name,
         description: plain(p.long || p.short),
         genre: p.tag,
         keywords: p.services.join(', '),
-        url: `${SITE}/${projectPath(p)}`,
+        url: `${SITE}/${C.here}`,
         image: imgs.map(abs),
-        inLanguage: 'es',
+        inLanguage: lang,
         creator: { '@id': `${SITE}/#manel-vila` },
         ...(p.studio ? { producer: { '@type': 'Organization', name: p.studio } } : {}),
         ...(p.year ? { dateCreated: String(p.year) } : {}),
         isPartOf: { '@id': `${SITE}/#web` }
       },
-      { ...personLD() },
+      { ...personLD(lang) },
       {
         '@type': 'BreadcrumbList',
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Proyectos', item: `${SITE}/` },
-          { '@type': 'ListItem', position: 2, name: p.name, item: `${SITE}/${projectPath(p)}` }
+          { '@type': 'ListItem', position: 1, name: t.projects, item: `${SITE}/${PAGE.home(lang)}` },
+          { '@type': 'ListItem', position: 2, name: p.name, item: `${SITE}/${C.here}` }
         ]
       }
     ] }]
   })}
 <body class="project" data-index="${i}" data-slug="${p.slug}">
   <div class="readbar" aria-hidden="true"></div>
-${franja(R, 'project')}
+${franja(C, 'project')}
 
-  <a class="grid-btn pj__back" href="${R}#${p.slug}" aria-label="Volver a los proyectos">
+  <a class="grid-btn pj__back" href="${C.home}#${p.slug}" aria-label="${t.pj.back}">
     <span class="grid-btn__icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
     <span class="grid-btn__count">${pad(i + 1)} / ${pad(N)}</span>
   </a>
-${panels(R, 'project', i)}
+${panels(C, 'project', i)}
 
   <main id="contenido" class="pj">
     <article>
-      ${heroHTML(R, p)}
+      ${heroHTML(C, p)}
 
       <header class="pj__head sheet">
         <h1 class="pj__title">${esc(p.name)}</h1>
         <p class="pj__tag">${esc(p.tag)}</p>
       </header>
 
-      <section class="pj__intro sheet" aria-label="Sobre el proyecto">
+      <section class="pj__intro sheet" aria-label="${t.pj.aboutPj}">
         <p class="sheet__text" data-reveal>${esc(p.long || p.short)}</p>
         ${kv(meta, ' data-reveal')}
       </section>
 
-      ${total ? `<section class="pj__gallery" aria-label="Galería · ${total} piezas">${figs}
+      ${total ? `<section class="pj__gallery" aria-label="${t.pj.gallery(total)}">${figs}
       </section>` : ''}
     </article>
 
-    <nav class="pj__nav" aria-label="Más proyectos">
-      <a class="pj__next" href="${R}${projectPath(nx)}" rel="next">
+    <nav class="pj__nav" aria-label="${t.pj.more}">
+      <a class="pj__next" href="${C.pj(nx)}" rel="next">
         ${nxThumb ? `<span class="pj__next-img"${nx.media && nx.media.bg ? ` style="--bg:${nx.media.bg}"` : ''}>${img(R, nxThumb, { alt: '', sizes: '100vw' })}</span>` : ''}
-        <span class="pj__next-cap"><span>Siguiente proyecto · ${pad(((i + 1) % N) + 1)}</span><span class="pj__next-title">${esc(nx.name)} <span aria-hidden="true">→</span></span></span>
+        <span class="pj__next-cap"><span>${t.pj.next} · ${pad(((i + 1) % N) + 1)}</span><span class="pj__next-title">${esc(nx.name)} <span aria-hidden="true">→</span></span></span>
       </a>
       <div class="pj__pn">
-        <a href="${R}${projectPath(pv)}" rel="prev">← ${esc(pv.name)}</a>
-        <a href="${R}?grid">Todos los proyectos</a>
+        <a href="${C.pj(pv)}" rel="prev">← ${esc(pv.name)}</a>
+        <a href="${C.home}?grid">${t.pj.all}</a>
       </div>
     </nav>
   </main>
 
-${footer(R)}
-${corners(info)}
+${footer(C)}
+${corners(C, info)}
 
-  <dialog class="lightbox" aria-label="Galería ampliada">
+  <dialog class="lightbox" aria-label="${t.pj.lightbox}">
     <div class="lightbox__stage"></div>
     <div class="lightbox__bar">
       <span class="lightbox__count"></span>
-      <span class="lightbox__nav"><button data-lb="prev" aria-label="Anterior">←</button><button data-lb="next" aria-label="Siguiente">→</button></span>
-      <button data-lb="close" aria-label="Cerrar">(X)</button>
+      <span class="lightbox__nav"><button data-lb="prev" aria-label="${t.pj.prev}">←</button><button data-lb="next" aria-label="${t.pj.nextImg}">→</button></span>
+      <button data-lb="close" aria-label="${t.close}">(X)</button>
     </div>
   </dialog>
 
@@ -543,62 +703,59 @@ ${scripts(R, ['vendor/lenis.min', 'ui', 'project'])}
 }
 
 /* ---------- ABOUT ---------- */
-function about() {
-  const R = '../';
+function about(lang) {
+  const C = page(lang, PAGE.about(lang), { en: PAGE.about('en'), es: PAGE.about('es') });
+  const { R, t } = C;
+  const a = t.ab;
   const ig = `<a href="${PERSON.instagram}" target="_blank" rel="noopener">${PERSON.instagramLabel} <span aria-hidden="true">↗</span></a>`;
   const rows = [
-    ['Servicios', SERVICES.map(esc)],
-    ['Estudio', [`Miembro de ${PERSON.studio}`, 'Valencia · Barcelona']],
-    ['También he colaborado con', COLLABS.map(esc)],
-    ['Clientes', CLIENTS.map(esc)],
-    ['Formación', ['EASD — Escuela de Arte Superior de Diseño de Valencia']],
-    ['Contacto', [
-      `<span class="copyable"><a href="mailto:${PERSON.email}">${PERSON.email.replace('@', '<wbr>@')}</a><button class="copy" data-copy="${PERSON.email}" aria-label="Copiar email">Copiar</button></span>`,
+    [a.labels.services, a.services.map(esc)],
+    [a.labels.studio, [PERSON.studio, 'Valencia · Barcelona']],
+    [a.labels.collabs, COLLABS.map(esc)],
+    [a.labels.clients, CLIENTS.map(esc)],
+    [a.labels.education, [esc(a.education)]],
+    [a.labels.contact, [
+      `<span class="copyable"><a href="mailto:${PERSON.email}">${PERSON.email.replace('@', '<wbr>@')}</a><button class="copy" data-copy="${PERSON.email}" aria-label="${t.copyEmail}">${t.copy}</button></span>`,
       `<a href="tel:${PERSON.phoneHref}">${PERSON.phone}</a>`,
       ig
     ], ' id="contacto"'],
-    ['Hora local', ['Valencia <time data-clock>CET</time>']]
+    [a.labels.time, ['Valencia <time data-clock>CET</time>']]
   ];
-  return `${head({
-    R,
-    title: `About y contacto — ${PERSON.name}`,
-    description: 'Manel Vila, diseñador gráfico y director de arte especializado en branding y lettering. Miembro de Gomet Verd Estudi. Valencia · Barcelona.',
-    canonical: 'about/',
+  return `${head(C, {
+    title: a.title,
+    description: a.desc,
     type: 'profile',
     jsonld: [{ '@context': 'https://schema.org', '@graph': [
-      { '@type': 'ProfilePage', url: `${SITE}/about/`, name: `About — ${PERSON.name}`, mainEntity: { '@id': `${SITE}/#manel-vila` } },
-      personLD()
+      { '@type': 'ProfilePage', url: `${SITE}/${C.here}`, name: a.title, inLanguage: lang, mainEntity: { '@id': `${SITE}/#manel-vila` } },
+      personLD(lang)
     ] }]
   })}
 <body class="about">
-${franja(R, 'about')}
+${franja(C, 'about')}
 
-  <a class="grid-btn" href="${R}" data-back aria-label="Cerrar About y volver">
+  <a class="grid-btn" href="${C.home}" data-back aria-label="${a.close}">
     <span class="grid-btn__icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-    <span class="grid-btn__count">Proyectos</span>
+    <span class="grid-btn__count">${t.projects}</span>
   </a>
-${panels(R, 'about')}
+${panels(C, 'about')}
 
   <main id="contenido">
     <article class="sheet about__sheet" aria-labelledby="about-title">
       <header class="sheet__head">
         <h1 id="about-title">${PERSON.name}</h1>
-        <span>About</span>
+        <span>${t.about}</span>
       </header>
-      <p class="sheet__tag">Diseñador gráfico y director de arte, miembro de ${PERSON.studio}. Valencia · Barcelona.</p>
+      <p class="sheet__tag">${a.tagline}</p>
 
       <div class="sheet__text" data-reveal>
-        <p>Construyo identidades con personalidad y algo que contar, con el branding y el lettering como especialidad y la curiosidad como método.</p>
-        <p>Soy Manel Vila, diseñador gráfico y director de arte, graduado por la EASD (Escuela de Arte Superior de Diseño) de Valencia. Trabajo con soltura en cualquier rama del diseño gráfico, aunque me he especializado en branding y lettering. Me considero una persona comprometida, con capacidad para trabajar en equipo y bajo presión, y disfruto acompañando cada proyecto desde la idea hasta su última aplicación.</p>
-        <p>Soy miembro de Gomet Verd Estudi, un estudio creativo independiente afincado en Valencia y Barcelona y especializado en branding y dirección de arte. El estudio combina estrategia, narrativa y exploración visual, y entiende cada proyecto como un proceso de experimentación y juego compartido con el cliente, desde la idea inicial hasta su desarrollo gráfico y audiovisual. Buena parte de los proyectos de este portfolio nacen ahí.</p>
-        <p>ALWAYS WIPing (Working In Play) es su manera de trabajar: mantener la curiosidad, cuestionar lo establecido y disfrutar del proceso tanto como del resultado.</p>
+        ${a.bio.map((x) => `<p>${x}</p>`).join('\n        ')}
       </div>
 
       ${kv(rows, ' data-reveal')}
     </article>
   </main>
-${footer(R, { cta: false, here: 'about' })}
-${corners()}
+${footer(C, { cta: false, kind: 'about' })}
+${corners(C)}
 
 ${scripts(R, ['vendor/lenis.min', 'ui'])}
 </body>
@@ -606,45 +763,53 @@ ${scripts(R, ['vendor/lenis.min', 'ui'])}
 `;
 }
 
-/* ---------- redirección de la URL antigua ---------- */
-const legacyAbout = `<!DOCTYPE html>
+/* ---------- redirecciones de las direcciones antiguas (la web era solo en español) ---------- */
+const redirect = (from, to, title) => { const r = rel(from, to); return `<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>About — ${PERSON.name}</title>
-  <link rel="canonical" href="${SITE}/about/">
+  <title>${esc(title)}</title>
+  <link rel="canonical" href="${SITE}/${to}">
   <meta name="robots" content="noindex">
-  <meta http-equiv="refresh" content="0; url=about/">
-  <script>location.replace('about/' + location.hash);</script>
+  <meta http-equiv="refresh" content="0; url=${r}">
+  <script>location.replace('${r}' + location.search + location.hash);</script>
 </head>
-<body><a href="about/">About — ${PERSON.name}</a></body>
+<body><a href="${r}">${esc(title)}</a></body>
 </html>
-`;
+`; };
 
-/* ---------- sitemap ---------- */
+/* ---------- sitemap: cada página con su versión en el otro idioma ---------- */
+function sitemapEntry(alt, prio, images = []) {
+  const links = LANGS.map((l) => `    <xhtml:link rel="alternate" hreflang="${l}" href="${SITE}/${alt[l]}"/>`).join('\n') +
+    `\n    <xhtml:link rel="alternate" hreflang="x-default" href="${SITE}/${alt.en}"/>`;
+  return LANGS.map((l) => `  <url><loc>${SITE}/${alt[l]}</loc><lastmod>${TODAY}</lastmod><priority>${prio}</priority>
+${links}
+${images.map((s) => `    <image:image><image:loc>${abs(s)}</image:loc></image:image>`).join('\n')}
+  </url>`.replace(/\n\n/g, '\n')).join('\n');
+}
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-  <url><loc>${SITE}/</loc><lastmod>${TODAY}</lastmod><priority>1.0</priority></url>
-  <url><loc>${SITE}/about/</loc><lastmod>${TODAY}</lastmod><priority>0.7</priority></url>
-${PROJECTS.map((p) => {
-  const imgs = [thumbOf(p), ...p.gallery.map((e) => e[0])].filter(Boolean).slice(0, 30);
-  return `  <url><loc>${SITE}/${projectPath(p)}</loc><lastmod>${TODAY}</lastmod><priority>0.8</priority>
-${imgs.map((s) => `    <image:image><image:loc>${abs(s)}</image:loc></image:image>`).join('\n')}
-  </url>`;
-}).join('\n')}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+${sitemapEntry({ en: PAGE.home('en'), es: PAGE.home('es') }, '1.0')}
+${sitemapEntry({ en: PAGE.about('en'), es: PAGE.about('es') }, '0.7')}
+${BASE.map((p) => sitemapEntry({ en: PAGE.project('en', p), es: PAGE.project('es', p) }, '0.8',
+  [thumbOf(p), ...p.gallery.map((e) => e[0])].filter(Boolean).slice(0, 30))).join('\n')}
 </urlset>
 `;
 
 /* ---------- escribir ---------- */
-write('index.html', home());
-write('about/index.html', about());
-write('about.html', legacyAbout);
-PROJECTS.forEach((p, i) => write(`${projectPath(p)}index.html`, project(p, i)));
+for (const lang of LANGS) {
+  write(`${PAGE.home(lang)}index.html`, home(lang));
+  write(`${PAGE.about(lang)}index.html`, about(lang));
+  PROJ[lang].forEach((p, i) => write(`${PAGE.project(lang, p)}index.html`, project(lang, i)));
+}
+// Direcciones antiguas → su equivalente en español
+write('about.html', redirect('', PAGE.about('es'), `About — ${PERSON.name}`));
+BASE.forEach((p) => write(`proyectos/${p.slug}/index.html`, redirect(`proyectos/${p.slug}/`, PAGE.project('es', p), `${p.name} — ${PERSON.name}`)));
 write('sitemap.xml', sitemap);
 
 // Mapa de medios para el navegador: variantes de vídeo y AVIF de las portadas/imágenes usadas por JS
 const imgs = {};
-for (const p of PROJECTS) {
+for (const p of BASE) {
   const m = p.media || {};
   for (const src of [m.type === 'image' ? m.src : null, m.type === 'image' ? m.mobile : null, m.poster].filter(Boolean)) {
     const [w, h] = dims(src);
@@ -656,11 +821,13 @@ write('assets/js/media.js', `/* Generado por tools/build.mjs: variantes AV1/HEVC
 window.MEDIA = ${JSON.stringify({ video: Object.fromEntries(Object.entries(VMAN).filter(([k]) => !k.startsWith('_'))), img: imgs })};
 `);
 
-// Avisa de rutas que no existen (fotos o vídeos que faltan)
+// Avisa de rutas que no existen (fotos o vídeos que faltan) y de textos sin traducir
 const missing = new Set();
-for (const p of PROJECTS) {
+for (const p of BASE) {
   const m = p.media || {};
   [m.src, m.mobile, m.poster, ...p.gallery.map((e) => e[0])].filter(Boolean).forEach((s) => { if (!exists(s)) missing.add(s); });
 }
-console.log(`ok · ${N} proyectos · ${PROJECTS.reduce((a, p) => a + p.gallery.length, 0)} piezas de galería`);
+const untranslated = BASE.filter((p) => !p.en || !p.en.short).map((p) => p.slug);
+console.log(`ok · ${N} proyectos × ${LANGS.length} idiomas · ${BASE.reduce((a, p) => a + p.gallery.length, 0)} piezas de galería`);
 if (missing.size) console.log('faltan:\n  ' + [...missing].join('\n  '));
+if (untranslated.length) console.log('sin traducir al inglés: ' + untranslated.join(', '));

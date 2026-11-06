@@ -1,14 +1,27 @@
 {
-  "name": "Manel Vila — Diseño gráfico y dirección de arte",
+  "name": "Manel Vila — Graphic design and art direction",
   "short_name": "Manel Vila",
-  "lang": "es",
+  "lang": "en",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#EDECEC",
   "theme_color": "#0600FF",
   "icons": [
-    { "src": "content/icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "content/icon-512.png", "sizes": "512x512", "type": "image/png" },
-    { "src": "content/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "content/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "content/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "content/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ]
 }

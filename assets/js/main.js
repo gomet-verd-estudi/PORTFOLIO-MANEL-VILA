@@ -28,11 +28,13 @@
     const ok = ['av1', 'hevc'].filter((k) => v[k] && can[k]).sort((a, b) => (v.bytes || {})[a] - (v.bytes || {})[b]);
     return ok.length ? v[ok[0]] : v.h264;   // el más ligero que este navegador puede reproducir
   };
-  const src = (m) => encodeURI(m.type === 'video' ? best(mq.matches && m.mobile ? m.mobile : m.src) : (mq.matches && m.mobile ? m.mobile : m.src));
+  // Raíz del sitio desde esta página ('' en la home inglesa, '../' en /es/): los medios viven en la raíz
+  const ROOT = document.documentElement.dataset.root || '';
+  const src = (m) => ROOT + encodeURI(m.type === 'video' ? best(mq.matches && m.mobile ? m.mobile : m.src) : (mq.matches && m.mobile ? m.mobile : m.src));
   /* <picture> con AVIF para las portadas de imagen */
   function picture(path, alt, cls, eager) {
     const d = MEDIA.img[path];
-    const e = encodeURI;
+    const e = (x) => ROOT + encodeURI(x);
     if (!d) return `<img class="${cls}" src="${e(path)}" alt="${esc(alt)}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">`;
     const sizes = '100vw';
     const aset = d.avif ? (d.smallAvif ? `${e(d.smallAvif)} 800w, ${e(d.avif)} ${d.w}w` : e(d.avif)) : '';
@@ -59,7 +61,10 @@
   let W = track.clientWidth;
   let programmatic = false;
   const flags = { more: false, grid: false, hold: false, drag: false, paused: reduced };
-  const pageOf = (i) => `proyectos/${projects[i].slug}/`;
+  // Carpeta de proyectos del idioma de la página: projects/ (inglés) o proyectos/ (español, en /es/)
+  const PJ = document.documentElement.dataset.pj || 'projects/';
+  const pageOf = (i) => `${PJ}${projects[i].slug}/`;
+  const t = UI.t || { services: 'Services', team: 'Team', seeFull: 'See full project →', seeAll: 'See all projects', backCarousel: 'Back to carousel', closeAbout: 'Close About', pause: 'Pause slideshow', resume: 'Resume slideshow', goTo: 'Go to' };
 
   /* ================================================================
      Render
@@ -80,7 +85,7 @@
     const posn = m.position ? ` style="object-position:${m.position}"` : '';
     if (m.type === 'image') return picture(mq.matches && m.mobile ? m.mobile : m.src, p.name, 'slide__media', eager);
     // El fotograma (poster) solo se pide para el primero; el resto, al acercarse (ver syncVideos)
-    const poster = encodeURI(m.poster || '');
+    const poster = m.poster ? ROOT + encodeURI(m.poster) : '';
     return `<video class="slide__media" muted playsinline preload="none" ${eager ? `poster="${poster}"` : `data-poster="${poster}"`} data-src="${src(m)}"${posn} aria-label="${esc(p.name)}"></video>`;
   }
   const slideHTML = (i, clone) => `
@@ -104,7 +109,7 @@
   }
   fitCovers();
 
-  progress.innerHTML = projects.map((p, i) => `<button data-index="${i}" aria-label="Ir a ${esc(p.name)}"><i></i></button>`).join('');
+  progress.innerHTML = projects.map((p, i) => `<button data-index="${i}" aria-label="${t.goTo} ${esc(p.name)}"><i></i></button>`).join('');
   const dots = Array.from(progress.children);
 
   /* ================================================================
@@ -164,12 +169,12 @@
     dots.forEach((d, k) => { d.classList.toggle('is-active', k === i); d.style.setProperty('--p', k === i && (reduced || flags.paused) ? 1 : 0); });
 
     const rows = [];
-    if (p.services.length) rows.push(['Servicios', p.services.map(esc).join(' · ')]);
-    if (p.team) rows.push(['Equipo', esc(p.team)]);
+    if (p.services.length) rows.push([t.services, p.services.map(esc).join(' · ')]);
+    if (p.team) rows.push([t.team, esc(p.team)]);
     moreInner.innerHTML =
       (p.long ? `<p class="more__long">${esc(p.long)}</p>` : '') +
       rows.map(([l, v]) => `<div class="more__row"><span class="more__label">${l}</span><span>${v}</span></div>`).join('') +
-      `<a class="more__open" href="${pageOf(i)}">Ver proyecto completo →</a>`;
+      `<a class="more__open" href="${pageOf(i)}">${t.seeFull}</a>`;
 
     if (!first) closeMore();
     resetTimer();
@@ -346,7 +351,7 @@
   function togglePause() {
     flags.paused = !flags.paused;
     playBtn.setAttribute('aria-pressed', String(flags.paused));
-    playBtn.setAttribute('aria-label', flags.paused ? 'Reanudar pase automático' : 'Pausar pase automático');
+    playBtn.setAttribute('aria-label', flags.paused ? t.resume : t.pause);
     document.body.classList.toggle('is-paused', flags.paused);
   }
   playBtn.addEventListener('click', togglePause);
@@ -376,7 +381,7 @@
     if (on) closeMore();
     document.body.classList.toggle('is-grid', on);
     gridBtn.setAttribute('aria-pressed', String(on));
-    gridBtn.querySelector('.sr-only').textContent = on ? 'Volver al carrusel' : 'Ver todos los proyectos';
+    gridBtn.querySelector('.sr-only').textContent = on ? t.backCarousel : t.seeAll;
     if (on) {
       grid.scrollTop = restoreY != null ? restoreY : 0;
       if (gridScroller) { gridScroller.resize(); gridScroller.reset(); }   // el scroll suave parte de aquí
@@ -414,7 +419,7 @@
       v.className = 'tile__video';
       v.setAttribute('aria-hidden', 'true');
       v.addEventListener('playing', () => v.classList.add('is-on'));
-      v.src = encodeURI(best(m.mobile || m.src));   // las casillas son verticales: mejor la versión vertical si existe
+      v.src = ROOT + encodeURI(best(m.mobile || m.src));   // las casillas son verticales: mejor la versión vertical si existe
       t.querySelector('.tile__media').appendChild(v);
       t._v = v;
     }
@@ -485,7 +490,7 @@
   // Desplegables excluyentes: abrir un panel del menú recoge el +info (y al revés), para que nunca se pisen
   UI.onChange((s) => {
     document.body.classList.toggle('is-panel', !!s.panel);
-    gridBtn.querySelector('.sr-only').textContent = s.panel === 'about' ? 'Cerrar About' : flags.grid ? 'Volver al carrusel' : 'Ver todos los proyectos';
+    gridBtn.querySelector('.sr-only').textContent = s.panel === 'about' ? t.closeAbout : flags.grid ? t.backCarousel : t.seeAll;
     if (s.panel && flags.more) closeMore();
   });
 
