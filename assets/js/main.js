@@ -405,7 +405,7 @@
       v.className = 'tile__video';
       v.setAttribute('aria-hidden', 'true');
       v.addEventListener('playing', () => v.classList.add('is-on'));
-      v.src = encodeURI(best(m.src));
+      v.src = encodeURI(best(m.mobile || m.src));   // las casillas son verticales: mejor la versión vertical si existe
       t.querySelector('.tile__media').appendChild(v);
       t._v = v;
     }

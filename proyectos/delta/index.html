@@ -27,7 +27,6 @@
 </head>
 <body class="project" data-index="12" data-slug="delta">
   <div class="readbar" aria-hidden="true"></div>
-  <div class="pj__sticky" aria-hidden="true"><span>[Delta]</span></div>
 
   <a class="skip" href="#contenido">Saltar al contenido</a>
   <nav class="franja" aria-label="Principal">
@@ -135,28 +134,24 @@
 
   <main id="contenido" class="pj">
     <article>
-      <header class="pj__head">
-        <nav class="chips" aria-label="Ruta">
-          <a class="chip chip--num" href="../../#delta" aria-label="Proyecto 13 de 14">13</a>
-          <a class="chip" href="../../?grid">Proyectos</a>
-          <span class="chip chip--round">Motion Graphics + IA</span>
-        </nav>
-        <h1 class="pj__title"><span class="mask"><span>[Delta]</span></span></h1>
-      </header>
-
-      <figure class="pj__hero is-tall" style="--bg:#1f1f1f;--ar:1.0000;--ar-m:1.0000">
+      <figure class="pj__hero" style="--bg:#1f1f1f;--ar:1.0000;--ar-m:1.0000">
       <video muted loop playsinline autoplay preload="metadata" poster="../../content/posters/delta.jpg" aria-label="Delta — vídeo de portada">
         <source src="../../content/media/delta.av1.mp4" type='video/mp4; codecs="av01.0.08M.10"'><source src="../../content/media/delta.hevc.mp4" type='video/mp4; codecs="hvc1.1.6.L120.90"'><source src="../../content/media/delta.mp4" type='video/mp4'>
       </video>
     </figure>
 
-      <section class="pj__intro" aria-label="Sobre el proyecto">
-        <p class="pj__lead" data-reveal>Trabajo realizado en T.O.T Studio.</p>
-        <dl class="pj__meta" data-reveal>
-          <div><dt>Servicios</dt><dd><ul class="list-inline"><li>Motion Graphics</li><li>IA</li></ul></dd></div>
-          <div><dt>Disciplina</dt><dd>Motion Graphics + IA</dd></div>
-          <div><dt>Estudio</dt><dd>T.O.T Studio</dd></div>
-          <div><dt>Diseño</dt><dd>Manel Vila</dd></div>
+      <header class="pj__head sheet">
+        <h1 class="pj__title">Delta</h1>
+        <p class="pj__tag">Motion Graphics + IA</p>
+      </header>
+
+      <section class="pj__intro sheet" aria-label="Sobre el proyecto">
+        <p class="sheet__text" data-reveal>Trabajo realizado en T.O.T Studio.</p>
+        <dl class="kv" data-reveal>
+          <div class="kv__row"><dt>Servicios</dt><dd><span>Motion Graphics</span><span>IA</span></dd></div>
+          <div class="kv__row"><dt>Disciplina</dt><dd>Motion Graphics + IA</dd></div>
+          <div class="kv__row"><dt>Estudio</dt><dd>T.O.T Studio</dd></div>
+          <div class="kv__row"><dt>Diseño</dt><dd>Manel Vila</dd></div>
         </dl>
       </section>
 
@@ -165,9 +160,8 @@
 
     <nav class="pj__nav" aria-label="Más proyectos">
       <a class="pj__next" href="../../proyectos/pontevecchio/" rel="next">
-        <span class="pj__next-label">Siguiente proyecto · 14</span>
-        <span class="pj__next-title">[Pontevecchio]</span>
-        <span class="pj__next-img"><picture><source type="image/avif" srcset="../../content/posters/pontevecchio-800.avif 800w, ../../content/posters/pontevecchio.avif 1200w" sizes="(max-width: 923px) 100vw, 30vw"><img src="../../content/posters/pontevecchio.jpg" srcset="../../content/posters/pontevecchio-800.jpg 800w, ../../content/posters/pontevecchio.jpg 1200w" sizes="(max-width: 923px) 100vw, 30vw" width="1200" height="632" alt="" loading="lazy" decoding="async"></picture></span>
+        <span class="pj__next-img" style="--bg:#000"><picture><source type="image/avif" srcset="../../content/posters/pontevecchio-800.avif 800w, ../../content/posters/pontevecchio.avif 1200w" sizes="100vw"><img src="../../content/posters/pontevecchio.jpg" srcset="../../content/posters/pontevecchio-800.jpg 800w, ../../content/posters/pontevecchio.jpg 1200w" sizes="100vw" width="1200" height="632" alt="" loading="lazy" decoding="async"></picture></span>
+        <span class="pj__next-cap"><span>Siguiente proyecto · 14</span><span class="pj__next-title">Pontevecchio <span aria-hidden="true">→</span></span></span>
       </a>
       <div class="pj__pn">
         <a href="../../proyectos/sun-and-snow/" rel="prev">← Sun&amp;Snow</a>
@@ -215,6 +209,11 @@
       <span>Always WIPing [Working In Play]</span>
     </div>
   </footer>
+
+  <div class="corners">
+    <p class="corner corner--l corner--info" aria-hidden="true"><span class="corner__name">Delta</span><span data-count>Motion Graphics + IA</span></p>
+    <a class="corner corner--r" href="https://www.instagram.com/gometverdestudi/" target="_blank" rel="noopener" aria-label="Instagram (@gometverdestudi)">IG <span aria-hidden="true">↗</span></a>
+  </div>
 
   <dialog class="lightbox" aria-label="Galería ampliada">
     <div class="lightbox__stage"></div>

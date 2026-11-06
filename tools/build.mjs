@@ -271,6 +271,23 @@ function footer(R, { cta = true, here = '' } = {}) {
   </footer>`;
 }
 
+/**
+ * Esquinas: la interfaz vive en las cuatro esquinas. Arriba, el monograma y el botón grid;
+ * abajo, a la izquierda un dato (email o el proyecto y su pieza) y a la derecha Instagram.
+ */
+function corners(left = `<a class="corner corner--l" href="mailto:${PERSON.email}">Email</a>`) {
+  return `
+  <div class="corners">
+    ${left}
+    <a class="corner corner--r" href="${PERSON.instagram}" target="_blank" rel="noopener" aria-label="Instagram (${PERSON.instagramLabel})">IG <span aria-hidden="true">↗</span></a>
+  </div>`;
+}
+
+/** Ficha etiqueta / valor: una línea por dato, sin viñetas. rows = [[etiqueta, [valores] | html, attrs]] */
+const kv = (rows, attrs = '') => `<dl class="kv"${attrs}>
+          ${rows.map(([k, v, a = '']) => `<div class="kv__row"${a}><dt>${k}</dt><dd>${Array.isArray(v) ? v.map((x) => `<span>${x}</span>`).join('') : v}</dd></div>`).join('\n          ')}
+        </dl>`;
+
 const scripts = (R, list) => list.map((s) => `  <script src="${R}assets/js/${s}.js"></script>`).join('\n');
 
 /* ---------- HOME ---------- */
@@ -316,15 +333,17 @@ ${panels(R, 'home')}
     <h1 class="sr-only">${PERSON.name} — diseñador gráfico y director de arte. Proyectos</h1>
     <div class="track" id="track" aria-label="Proyectos destacados" aria-roledescription="carrusel"></div>
     <nav class="grid" id="grid" aria-label="Todos los proyectos">
-      <header class="grid__head">
-        <h2 class="grid__title">[Proyectos]</h2>
-        <p class="grid__meta"><span>${pad(N)} trabajos</span><span>Branding · Lettering · Editorial · Motion</span></p>
+      <header class="grid__intro">
+        <h2 class="grid__title"><span>Proyectos</span><span>(${pad(N)})</span></h2>
+        <p>Branding, lettering, editorial y motion graphics.</p>
+        <p class="grid__by">${PERSON.name} — ${PERSON.job}</p>
       </header>${tiles}
       ${footer('', { here: 'grid' })}
     </nav>
   </main>
 
   <div class="cursor" aria-hidden="true"><span>Ver proyecto</span></div>
+${corners()}
 
   <div class="info">
     <div class="more" id="more"><div class="more__inner"></div></div>
@@ -357,24 +376,41 @@ function galleryKinds(gal) {
     let z = j; while (z < kinds.length - 1 && kinds[z + 1] !== 'full') z++;
     if ((z - a + 1) % 2 === 1 && j === z) kinds[j] = 'solo';
   });
-  return kinds;
+  // Parejas a sangre: si las dos piezas tienen casi la misma proporción se igualan en alto (sin hueco)
+  const flush = kinds.map(() => false);
+  let run = [];
+  const pair = () => {
+    for (let k = 0; k + 1 < run.length; k += 2) {
+      const [a, b] = [run[k], run[k + 1]];
+      const ra = gal[a][1] / gal[a][2], rb = gal[b][1] / gal[b][2];
+      if (Math.abs(ra - rb) / Math.max(ra, rb) < 0.1) flush[a] = flush[b] = true;
+    }
+    run = [];
+  };
+  kinds.forEach((k, j) => (k === 'full' ? pair() : run.push(j)));
+  pair();
+  return { kinds, flush };
 }
 
+/** Portada del proyecto: su vídeo/imagen, o la primera pieza de la galería si no tiene. */
+const heroOf = (p) => p.media || (p.gallery[0] ? { type: 'image', src: p.gallery[0][0] } : null);
+
 function heroHTML(R, p) {
-  const m = p.media;
+  const m = heroOf(p);
   if (!m) return '';
   const ar = m.ar || (m.type === 'image' ? dims(m.src)[0] / dims(m.src)[1] : 16 / 9);
-  const tall = ar < 1.2;
-  const style = ` style="--bg:${m.bg || '#000'};--ar:${ar.toFixed(4)};--ar-m:${(m.mobile && m.arMobile ? m.arMobile : ar).toFixed(4)}"`;
+  // Móvil: a pantalla completa si hay versión vertical, si se pidió llenar o si la pieza es vertical
+  const fillM = !!(m.mobile || m.fillMobile);
+  const cls = `pj__hero${fillM ? ' is-fill-m' : ''}${fillM || ar < 0.9 ? ' is-screen-m' : ''}`;
+  const style = ` style="--bg:${m.bg || (m.type === 'image' ? 'var(--paper)' : '#000')};--ar:${ar.toFixed(4)};--ar-m:${(m.mobile && m.arMobile ? m.arMobile : ar).toFixed(4)}"`;
   if (m.type === 'video') {
-    return `<figure class="pj__hero${tall ? ' is-tall' : ''}"${style}>
+    return `<figure class="${cls}"${style}>
       <video muted loop playsinline autoplay preload="metadata" poster="${R}${url(m.poster || '')}" aria-label="${esc(p.name)} — vídeo de portada">
         ${m.mobile ? sources(R, m.mobile, '(max-width: 923px)') : ''}${sources(R, m.src)}
       </video>
     </figure>`;
   }
-  const g = p.gallery.find((e) => e[0] === m.src);
-  return `<figure class="pj__hero"${style}>${img(R, m.src, { alt: `${p.name} — portada`, lazy: false, priority: true })}</figure>`;
+  return `<figure class="${cls}"${style}>${img(R, m.src, { alt: `${p.name} — portada`, lazy: false, priority: true })}</figure>`;
 }
 
 function videoData(R, vid) {
@@ -387,23 +423,22 @@ function project(p, i) {
   const R = '../../';
   const nx = PROJECTS[(i + 1) % N];
   const pv = PROJECTS[(i - 1 + N) % N];
-  const m = p.media || {};
+  const m = heroOf(p) || {};
   const coverKey = m.deck || m.src;
   const gal = p.gallery.filter((e) => !(e[3] && e[3] === coverKey) && e[0] !== (m.type === 'image' ? m.src : ''));
-  const kinds = galleryKinds(gal);
+  const { kinds, flush } = galleryKinds(gal);
   const total = gal.length;
   const figs = gal.map(([src, w, h, vid], j) => {
     const alt = `${p.name} — imagen ${j + 1} de ${total}`;
     const sizes = kinds[j] === 'full' ? '100vw' : '(max-width: 923px) 100vw, 50vw';
     return `
-      <figure class="g g--${kinds[j]}" data-reveal data-n="${j}">
+      <figure class="g g--${kinds[j]}${flush[j] ? ' g--flush' : ''}" data-reveal data-n="${j}">
         <button class="g__open" aria-label="Ampliar imagen ${j + 1} de ${total}">${img(R, src, { alt, sizes, extra: vid && exists(vid) ? videoData(R, vid) : '' })}</button>
-        <figcaption>${pad(j + 1)} — ${pad(total)}</figcaption>
       </figure>`;
   }).join('');
 
   const meta = [];
-  if (p.services.length) meta.push(['Servicios', `<ul class="list-inline">${p.services.map((s) => `<li>${esc(s)}</li>`).join('')}</ul>`]);
+  if (p.services.length) meta.push(['Servicios', p.services.map(esc)]);
   meta.push(['Disciplina', esc(p.tag)]);
   if (p.studio) meta.push(['Estudio', esc(p.studio)]);
   if (p.team) meta.push(['Equipo', esc(p.team)]);
@@ -413,6 +448,8 @@ function project(p, i) {
   const desc = p.long ? clip(p.long) : `${p.name}: ${p.tag}. ${p.short} Proyecto de ${PERSON.name}, diseñador gráfico y director de arte.`;
   const imgs = [thumbOf(p), ...gal.slice(0, 5).map((e) => e[0])].filter(Boolean);
   const nxThumb = thumbOf(nx);
+  // Esquina inferior izquierda: el proyecto y la pieza que se está viendo (la actualiza project.js)
+  const info = `<p class="corner corner--l corner--info" aria-hidden="true"><span class="corner__name">${esc(p.name)}</span><span data-count>${total ? `${pad(total)} piezas` : esc(p.tag)}</span></p>`;
 
   return `${head({
     R,
@@ -450,7 +487,6 @@ function project(p, i) {
   })}
 <body class="project" data-index="${i}" data-slug="${p.slug}">
   <div class="readbar" aria-hidden="true"></div>
-  <div class="pj__sticky" aria-hidden="true"><span>[${esc(p.name)}]</span></div>
 ${franja(R, 'project')}
 
   <a class="grid-btn pj__back" href="${R}#${p.slug}" aria-label="Volver a los proyectos">
@@ -461,22 +497,16 @@ ${panels(R, 'project', i)}
 
   <main id="contenido" class="pj">
     <article>
-      <header class="pj__head">
-        <nav class="chips" aria-label="Ruta">
-          <a class="chip chip--num" href="${R}#${p.slug}" aria-label="Proyecto ${i + 1} de ${N}">${pad(i + 1)}</a>
-          <a class="chip" href="${R}?grid">Proyectos</a>
-          <span class="chip chip--round">${esc(p.tag)}</span>
-        </nav>
-        <h1 class="pj__title"><span class="mask"><span>[${esc(p.name)}]</span></span></h1>
-      </header>
-
       ${heroHTML(R, p)}
 
-      <section class="pj__intro" aria-label="Sobre el proyecto">
-        ${p.long ? `<p class="pj__lead" data-reveal>${esc(p.long)}</p>` : `<p class="pj__lead" data-reveal>${esc(p.short)}</p>`}
-        <dl class="pj__meta" data-reveal>
-          ${meta.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('\n          ')}
-        </dl>
+      <header class="pj__head sheet">
+        <h1 class="pj__title">${esc(p.name)}</h1>
+        <p class="pj__tag">${esc(p.tag)}</p>
+      </header>
+
+      <section class="pj__intro sheet" aria-label="Sobre el proyecto">
+        <p class="sheet__text" data-reveal>${esc(p.long || p.short)}</p>
+        ${kv(meta, ' data-reveal')}
       </section>
 
       ${total ? `<section class="pj__gallery" aria-label="Galería · ${total} piezas">${figs}
@@ -485,9 +515,8 @@ ${panels(R, 'project', i)}
 
     <nav class="pj__nav" aria-label="Más proyectos">
       <a class="pj__next" href="${R}${projectPath(nx)}" rel="next">
-        <span class="pj__next-label">Siguiente proyecto · ${pad(((i + 1) % N) + 1)}</span>
-        <span class="pj__next-title">[${esc(nx.name)}]</span>
-        ${nxThumb ? `<span class="pj__next-img">${img(R, nxThumb, { alt: '', sizes: '(max-width: 923px) 100vw, 30vw' })}</span>` : ''}
+        ${nxThumb ? `<span class="pj__next-img"${nx.media && nx.media.bg ? ` style="--bg:${nx.media.bg}"` : ''}>${img(R, nxThumb, { alt: '', sizes: '100vw' })}</span>` : ''}
+        <span class="pj__next-cap"><span>Siguiente proyecto · ${pad(((i + 1) % N) + 1)}</span><span class="pj__next-title">${esc(nx.name)} <span aria-hidden="true">→</span></span></span>
       </a>
       <div class="pj__pn">
         <a href="${R}${projectPath(pv)}" rel="prev">← ${esc(pv.name)}</a>
@@ -497,6 +526,7 @@ ${panels(R, 'project', i)}
   </main>
 
 ${footer(R)}
+${corners(info)}
 
   <dialog class="lightbox" aria-label="Galería ampliada">
     <div class="lightbox__stage"></div>
@@ -516,7 +546,20 @@ ${scripts(R, ['ui', 'project'])}
 /* ---------- ABOUT ---------- */
 function about() {
   const R = '../';
-  const list = (a) => `<ul class="list-inline">${a.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>`;
+  const ig = `<a href="${PERSON.instagram}" target="_blank" rel="noopener">${PERSON.instagramLabel} <span aria-hidden="true">↗</span></a>`;
+  const rows = [
+    ['Servicios', SERVICES.map(esc)],
+    ['Estudio', [`Miembro de ${PERSON.studio}`, 'Valencia · Barcelona']],
+    ['También he colaborado con', COLLABS.map(esc)],
+    ['Clientes', CLIENTS.map(esc)],
+    ['Formación', ['EASD — Escuela de Arte Superior de Diseño de Valencia']],
+    ['Contacto', [
+      `<span class="copyable"><a href="mailto:${PERSON.email}">${PERSON.email.replace('@', '<wbr>@')}</a><button class="copy" data-copy="${PERSON.email}" aria-label="Copiar email">Copiar</button></span>`,
+      `<a href="tel:${PERSON.phoneHref}">${PERSON.phone}</a>`,
+      ig
+    ], ' id="contacto"'],
+    ['Hora local', ['Valencia <time data-clock>CET</time>']]
+  ];
   return `${head({
     R,
     title: `About y contacto — ${PERSON.name}`,
@@ -538,74 +581,25 @@ ${franja(R, 'about')}
 ${panels(R, 'about')}
 
   <main id="contenido">
-    <section class="page" aria-labelledby="about-title">
-      <div class="chips">
-        <span class="chip chip--num">00</span>
-        <span class="chip">About</span>
-        <span class="chip chip--round">Valencia · Barcelona</span>
+    <article class="sheet about__sheet" aria-labelledby="about-title">
+      <header class="sheet__head">
+        <h1 id="about-title">${PERSON.name}</h1>
+        <span>About</span>
+      </header>
+      <p class="sheet__tag">Diseñador gráfico y director de arte, miembro de ${PERSON.studio}. Valencia · Barcelona.</p>
+
+      <div class="sheet__text" data-reveal>
+        <p>Construyo identidades con personalidad y algo que contar, con el branding y el lettering como especialidad y la curiosidad como método.</p>
+        <p>Soy Manel Vila, diseñador gráfico y director de arte, graduado por la EASD (Escuela de Arte Superior de Diseño) de Valencia. Trabajo con soltura en cualquier rama del diseño gráfico, aunque me he especializado en branding y lettering. Me considero una persona comprometida, con capacidad para trabajar en equipo y bajo presión, y disfruto acompañando cada proyecto desde la idea hasta su última aplicación.</p>
+        <p>Soy miembro de Gomet Verd Estudi, un estudio creativo independiente afincado en Valencia y Barcelona y especializado en branding y dirección de arte. El estudio combina estrategia, narrativa y exploración visual, y entiende cada proyecto como un proceso de experimentación y juego compartido con el cliente, desde la idea inicial hasta su desarrollo gráfico y audiovisual. Buena parte de los proyectos de este portfolio nacen ahí.</p>
+        <p>ALWAYS WIPing (Working In Play) es su manera de trabajar: mantener la curiosidad, cuestionar lo establecido y disfrutar del proceso tanto como del resultado.</p>
       </div>
 
-      <h1 class="display" id="about-title" data-reveal><span class="mask"><span>[Manel Vila]</span></span></h1>
-
-      <p class="lead" data-reveal>
-        Diseñador gráfico y director de arte. Construyo identidades con personalidad y algo que contar,
-        con el branding y el lettering como especialidad y la curiosidad como método.
-      </p>
-
-      <div class="rows" data-reveal>
-        <div class="row">
-          <h2 class="row__label">Perfil</h2>
-          <div class="row__body">
-            <p>Soy Manel Vila, diseñador gráfico y director de arte, graduado por la EASD (Escuela de Arte Superior de Diseño) de Valencia. Trabajo con soltura en cualquier rama del diseño gráfico, aunque me he especializado en branding y lettering.</p>
-            <p>Me considero una persona comprometida, con capacidad para trabajar en equipo y bajo presión, y disfruto acompañando cada proyecto desde la idea hasta su última aplicación.</p>
-          </div>
-        </div>
-
-        <div class="row">
-          <h2 class="row__label">Gomet Verd Estudi</h2>
-          <div class="row__body">
-            <p>Soy miembro de Gomet Verd Estudi, un estudio creativo independiente afincado en Valencia y Barcelona y especializado en branding y dirección de arte. El estudio combina estrategia, narrativa y exploración visual, y entiende cada proyecto como un proceso de experimentación y juego compartido con el cliente, desde la idea inicial hasta su desarrollo gráfico y audiovisual. Buena parte de los proyectos de este portfolio nacen ahí.</p>
-            <p>ALWAYS WIPing (Working In Play) es su manera de trabajar: mantener la curiosidad, cuestionar lo establecido y disfrutar del proceso tanto como del resultado.</p>
-          </div>
-        </div>
-
-        <div class="row">
-          <h2 class="row__label">Colaboraciones</h2>
-          <div class="row__body">
-            <p>Además de mi trabajo en el estudio, he colaborado con otros estudios y equipos creativos:</p>
-            ${list(COLLABS)}
-          </div>
-        </div>
-
-        <div class="row">
-          <h2 class="row__label">Servicios</h2>
-          <div class="row__body">${list(SERVICES)}</div>
-        </div>
-
-        <div class="row">
-          <h2 class="row__label">Clientes</h2>
-          <div class="row__body">${list(CLIENTS)}</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="contact" id="contacto" aria-labelledby="contact-title">
-      <div class="chips">
-        <span class="chip chip--num">✶</span>
-        <span class="chip">Contacto</span>
-        <span class="chip chip--round">Hablemos</span>
-      </div>
-      <h2 class="contact__title" id="contact-title" data-reveal>¿Tienes un proyecto en mente?</h2>
-
-      <div class="contact__big" data-reveal>
-        <span class="copyable"><a href="mailto:${PERSON.email}">${PERSON.email}</a><button class="copy" data-copy="${PERSON.email}" aria-label="Copiar email">Copiar</button></span>
-        <a href="tel:${PERSON.phoneHref}">${PERSON.phone}</a>
-        <a href="${PERSON.instagram}" target="_blank" rel="noopener">${PERSON.instagramLabel}</a>
-      </div>
-
-    </section>
+      ${kv(rows, ' data-reveal')}
+    </article>
   </main>
 ${footer(R, { cta: false, here: 'about' })}
+${corners()}
 
 ${scripts(R, ['ui'])}
 </body>

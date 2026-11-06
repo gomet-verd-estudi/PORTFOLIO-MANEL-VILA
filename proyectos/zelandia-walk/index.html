@@ -27,7 +27,6 @@
 </head>
 <body class="project" data-index="10" data-slug="zelandia-walk">
   <div class="readbar" aria-hidden="true"></div>
-  <div class="pj__sticky" aria-hidden="true"><span>[Zelandia Walk]</span></div>
 
   <a class="skip" href="#contenido">Saltar al contenido</a>
   <nav class="franja" aria-label="Principal">
@@ -135,27 +134,23 @@
 
   <main id="contenido" class="pj">
     <article>
-      <header class="pj__head">
-        <nav class="chips" aria-label="Ruta">
-          <a class="chip chip--num" href="../../#zelandia-walk" aria-label="Proyecto 11 de 14">11</a>
-          <a class="chip" href="../../?grid">Proyectos</a>
-          <span class="chip chip--round">Branding + Editorial</span>
-        </nav>
-        <h1 class="pj__title"><span class="mask"><span>[Zelandia Walk]</span></span></h1>
-      </header>
-
-      <figure class="pj__hero" style="--bg:#fff;--ar:1.7778;--ar-m:0.5607">
+      <figure class="pj__hero is-fill-m is-screen-m" style="--bg:#fff;--ar:1.7778;--ar-m:0.5607">
       <video muted loop playsinline autoplay preload="metadata" poster="../../content/posters/zelandia.jpg" aria-label="Zelandia Walk — vídeo de portada">
         <source src="../../content/media/zelandia-walk-movil.mp4" type='video/mp4' media="(max-width: 923px)"><source src="../../content/media/zelandia-walk.mp4" type='video/mp4'>
       </video>
     </figure>
 
-      <section class="pj__intro" aria-label="Sobre el proyecto">
-        <p class="pj__lead" data-reveal>Branding y editorial para Zelandia Walk.</p>
-        <dl class="pj__meta" data-reveal>
-          <div><dt>Servicios</dt><dd><ul class="list-inline"><li>Branding</li><li>Editorial</li></ul></dd></div>
-          <div><dt>Disciplina</dt><dd>Branding + Editorial</dd></div>
-          <div><dt>Diseño</dt><dd>Manel Vila</dd></div>
+      <header class="pj__head sheet">
+        <h1 class="pj__title">Zelandia Walk</h1>
+        <p class="pj__tag">Branding + Editorial</p>
+      </header>
+
+      <section class="pj__intro sheet" aria-label="Sobre el proyecto">
+        <p class="sheet__text" data-reveal>Branding y editorial para Zelandia Walk.</p>
+        <dl class="kv" data-reveal>
+          <div class="kv__row"><dt>Servicios</dt><dd><span>Branding</span><span>Editorial</span></dd></div>
+          <div class="kv__row"><dt>Disciplina</dt><dd>Branding + Editorial</dd></div>
+          <div class="kv__row"><dt>Diseño</dt><dd>Manel Vila</dd></div>
         </dl>
       </section>
 
@@ -164,9 +159,8 @@
 
     <nav class="pj__nav" aria-label="Más proyectos">
       <a class="pj__next" href="../../proyectos/sun-and-snow/" rel="next">
-        <span class="pj__next-label">Siguiente proyecto · 12</span>
-        <span class="pj__next-title">[Sun&amp;Snow]</span>
-        <span class="pj__next-img"><picture><source type="image/avif" srcset="../../content/posters/sunsnow.avif"><img src="../../content/posters/sunsnow.jpg" width="746" height="1280" alt="" loading="lazy" decoding="async"></picture></span>
+        <span class="pj__next-img" style="--bg:#000"><picture><source type="image/avif" srcset="../../content/posters/sunsnow.avif"><img src="../../content/posters/sunsnow.jpg" width="746" height="1280" alt="" loading="lazy" decoding="async"></picture></span>
+        <span class="pj__next-cap"><span>Siguiente proyecto · 12</span><span class="pj__next-title">Sun&amp;Snow <span aria-hidden="true">→</span></span></span>
       </a>
       <div class="pj__pn">
         <a href="../../proyectos/cisma/" rel="prev">← Cisma</a>
@@ -214,6 +208,11 @@
       <span>Always WIPing [Working In Play]</span>
     </div>
   </footer>
+
+  <div class="corners">
+    <p class="corner corner--l corner--info" aria-hidden="true"><span class="corner__name">Zelandia Walk</span><span data-count>Branding + Editorial</span></p>
+    <a class="corner corner--r" href="https://www.instagram.com/gometverdestudi/" target="_blank" rel="noopener" aria-label="Instagram (@gometverdestudi)">IG <span aria-hidden="true">↗</span></a>
+  </div>
 
   <dialog class="lightbox" aria-label="Galería ampliada">
     <div class="lightbox__stage"></div>
