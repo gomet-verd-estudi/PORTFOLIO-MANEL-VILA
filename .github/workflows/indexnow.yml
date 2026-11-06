@@ -20,17 +20,20 @@ jobs:
       HOST: manelvila.com
       KEY: 5c9588674bb110511b98c213eae2f6d0   # pública a propósito: está publicada en la raíz de la web
     steps:
-      - name: Esperar a que Cloudflare publique la nueva versión
+      - uses: actions/checkout@v4
+
+      - name: Esperar a que Cloudflare publique esta versión
         run: |
-          for i in $(seq 1 30); do
-            if curl -fsS "$SITE/$KEY.txt" 2>/dev/null | grep -q "$KEY"; then echo "Clave publicada"; exit 0; fi
-            sleep 20
+          # La versión está en línea cuando manelvila.com sirve el mismo sitemap que este commit
+          for i in $(seq 1 40); do
+            if curl -fsS "$SITE/sitemap.xml?v=$GITHUB_SHA" -o live.xml 2>/dev/null && cmp -s live.xml sitemap.xml \
+               && curl -fsS "$SITE/$KEY.txt" 2>/dev/null | grep -q "$KEY"; then echo "Versión publicada en $SITE"; exit 0; fi
+            sleep 15
           done
-          echo "::error::La clave $KEY.txt no está publicada en $SITE"; exit 1
+          echo "::error::$SITE no sirve todavía esta versión"; exit 1
 
       - name: Enviar todas las direcciones del sitemap
         run: |
-          sleep 60   # margen para que Cloudflare termine de repartir la versión nueva
           curl -fsS "$SITE/sitemap.xml" | grep -o '<loc>[^<]*</loc>' | sed -e 's#<loc>##' -e 's#</loc>##' > urls.txt
           printf '%s\n' "$SITE/llms.txt" "$SITE/llms-full.txt" >> urls.txt
           echo "$(wc -l < urls.txt) direcciones"
