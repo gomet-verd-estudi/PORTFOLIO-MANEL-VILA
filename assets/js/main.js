@@ -23,10 +23,29 @@
   const MEDIA = window.MEDIA || { video: {}, img: {} };
   const probe = document.createElement('video');
   const can = { av1: !!probe.canPlayType('video/mp4; codecs="av01.0.08M.10"'), hevc: !!probe.canPlayType('video/mp4; codecs="hvc1.1.6.L120.90"') };
+  /*
+   * Fluidez antes que peso: en móvil, AV1 solo si el aparato lo decodifica con su chip (lo confirma
+   * el navegador y se recuerda); si no, HEVC (solo lo aceptan los que lo decodifican por chip) o H.264.
+   * En ordenador, el más ligero que pueda reproducir.
+   */
+  const coarse = window.matchMedia('(pointer: coarse)').matches;
+  let hw = null;
+  try { hw = JSON.parse(localStorage.getItem('mv-hw')); } catch (e) { /* sin storage */ }
+  if (!hw && coarse && navigator.mediaCapabilities) {
+    navigator.mediaCapabilities.decodingInfo({ type: 'file', video: { contentType: 'video/mp4; codecs="av01.0.08M.10"', width: 1080, height: 1920, bitrate: 2500000, framerate: 30 } })
+      .then((r) => {
+        hw = { av1: !!(r.supported && r.powerEfficient) };
+        try { localStorage.setItem('mv-hw', JSON.stringify(hw)); } catch (e) { /* sin storage */ }
+        // Si el chip decodifica AV1, los vídeos del carrusel que aún no han empezado a cargar pasan al más ligero
+        if (hw.av1 && window.__mvRefreshVideos) window.__mvRefreshVideos();
+      })
+      .catch(() => {});
+  }
+  const usable = (k) => can[k] && (k !== 'av1' || !coarse || (hw && hw.av1));
   const best = (p) => {
     const v = MEDIA.video[p] || { h264: p };
-    const ok = ['av1', 'hevc'].filter((k) => v[k] && can[k]).sort((a, b) => (v.bytes || {})[a] - (v.bytes || {})[b]);
-    return ok.length ? v[ok[0]] : v.h264;   // el más ligero que este navegador puede reproducir
+    const ok = ['av1', 'hevc'].filter((k) => v[k] && usable(k)).sort((a, b) => (v.bytes || {})[a] - (v.bytes || {})[b]);
+    return ok.length ? v[ok[0]] : v.h264;
   };
   // Raíz del sitio desde esta página ('' en la home inglesa, '../' en /es/): los medios viven en la raíz
   const ROOT = document.documentElement.dataset.root || '';
@@ -132,6 +151,11 @@
     });
   }
   function unfit() { fitted.forEach((st, el) => el.setAttribute('style', st)); fitted.clear(); }
+
+  window.__mvRefreshVideos = () => slides.forEach((sl) => {
+    const v = sl.querySelector('video'), m = projects[+sl.dataset.real].media;
+    if (v && m && !v.getAttribute('src')) v.dataset.src = src(m);
+  });
 
   function fitCovers() {
     const vr = window.innerWidth / window.innerHeight;
@@ -427,7 +451,7 @@
     // La vista queda en la dirección (?grid) para poder volver exactamente a ella
     setUrl(location.pathname + (on ? '?grid' : '') + location.hash);
     syncVideos();
-    syncTiles();
+    if (on) quiet(950); else syncTiles();      // los vídeos de las miniaturas esperan a que termine la animación
   }
   /*
    * Carrusel ↔ índice con transición: la diapositiva actual se reduce hasta su miniatura y el resto
@@ -474,30 +498,56 @@
   // Vídeos del índice: cada pieza reproduce su vídeo cuando está en pantalla (también en móvil)
   // y lo pausa al salir. Se crean al verse por primera vez, para no descargar todo de golpe.
   const tiles = Array.from(grid.querySelectorAll('.tile'));
-  function tilePlay(t) {
-    const m = projects[+t.dataset.index].media;
-    if (!m || m.type !== 'video' || saveData) return;
-    let v = t._v;
-    if (!v) {
-      v = document.createElement('video');
-      Object.assign(v, { muted: true, loop: true, playsInline: true, preload: 'auto' });
-      v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
-      v.className = 'tile__video';
-      v.setAttribute('aria-hidden', 'true');
-      v.addEventListener('playing', () => v.classList.add('is-on'));
-      v.src = ROOT + encodeURI(best(m.mobile || m.src));   // las casillas son verticales: mejor la versión vertical si existe
-      t.querySelector('.tile__media').appendChild(v);
-      t._v = v;
-    }
-    const pr = v.play(); if (pr && pr.catch) pr.catch(() => {});
+  /*
+   * Vídeos de las miniaturas, pensados para que el índice vaya fluido:
+   * · cada miniatura usa su vídeo ligero (640×800, ya recortado, H.264: lo decodifica el chip);
+   * · no arrancan mientras el índice se abre ni mientras se desplaza: esperan a que se quede quieto;
+   * · como mucho 2 a la vez en móvil y 3 en ordenador: las que más se ven.
+   */
+  const MAXV = coarse ? 2 : 3;
+  let gridQuietAt = 0, tileTimer = 0;
+  function tileVideo(t) {
+    if (t._v) return t._v;
+    const p = projects[+t.dataset.index], m = p.media;
+    if (!m || m.type !== 'video' || saveData) return null;
+    const v = document.createElement('video');
+    Object.assign(v, { muted: true, loop: true, playsInline: true, preload: 'auto' });
+    v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
+    v.className = 'tile__video';
+    v.setAttribute('aria-hidden', 'true');
+    v.addEventListener('playing', () => v.classList.add('is-on'));
+    v.src = ROOT + encodeURI((MEDIA.tile && MEDIA.tile[p.slug]) || best(m.mobile || m.src));
+    t.querySelector('.tile__media').appendChild(v);
+    return (t._v = v);
   }
+  function tilePlay(t) { const v = tileVideo(t); if (v) { const pr = v.play(); if (pr && pr.catch) pr.catch(() => {}); } }
   const tilePause = (t) => { if (t._v && !t._v.paused) t._v.pause(); };
-  function syncTiles() { tiles.forEach((t) => (flags.grid && t._vis ? tilePlay(t) : tilePause(t))); }
+  function syncTiles() {
+    clearTimeout(tileTimer);
+    if (!flags.grid) { tiles.forEach(tilePause); return; }
+    const wait = gridQuietAt - performance.now();
+    if (wait > 0) { tileTimer = setTimeout(syncTiles, wait + 20); return; }
+    const chosen = tiles.filter((t) => (t._ratio || 0) >= 0.5).sort((a, b) => b._ratio - a._ratio).slice(0, MAXV);
+    tiles.forEach((t) => !chosen.includes(t) && tilePause(t));
+    // Arrancan de una en una, con un respiro entre ellas: así ningún fotograma carga con todas a la vez
+    const start = chosen.filter((t) => !t._v || t._v.paused);
+    const next = () => {
+      const t = start.shift(); if (!t || !flags.grid || performance.now() < gridQuietAt) return;
+      tilePlay(t); if (start.length) tileTimer = setTimeout(next, 180);
+    };
+    next();
+  }
+  const quiet = (ms) => { gridQuietAt = Math.max(gridQuietAt, performance.now() + ms); syncTiles(); };
+  grid.addEventListener('scroll', () => {
+    // Al desplazarse: las que salen se paran ya; las nuevas esperan a que el índice se quede quieto
+    tiles.forEach((t) => (t._ratio || 0) < 0.25 && tilePause(t));
+    quiet(240);
+  }, { passive: true });
   if ('IntersectionObserver' in window) {
-    const tio = new IntersectionObserver((entries) => entries.forEach((en) => {
-      en.target._vis = en.isIntersecting;
-      if (flags.grid) en.isIntersecting ? tilePlay(en.target) : tilePause(en.target);
-    }), { root: grid, threshold: 0.35 });
+    const tio = new IntersectionObserver((entries) => {
+      entries.forEach((en) => { en.target._ratio = en.intersectionRatio; en.target._vis = en.isIntersecting; });
+      if (flags.grid) syncTiles();
+    }, { root: grid, threshold: [0, 0.25, 0.5, 0.75, 1] });
     tiles.forEach((t) => tio.observe(t));
   }
 

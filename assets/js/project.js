@@ -94,11 +94,18 @@
       el = document.createElement('video');
       Object.assign(el, { muted: true, loop: true, playsInline: true, autoplay: true, controls: false, src: v.currentSrc || v.src, poster: v.poster });
     } else {
-      // Copia del <picture> (AVIF + JPG) pidiendo la versión grande
-      el = (im.closest('picture') || im).cloneNode(true);
-      el.querySelectorAll('[sizes]').forEach((n) => n.setAttribute('sizes', '100vw'));
-      const ci = el.tagName === 'IMG' ? el : el.querySelector('img');
-      ci.removeAttribute('loading');
+      // Se abre al instante con la imagen que ya está cargada; la versión grande (AVIF + JPG a pantalla
+      // completa) se decodifica aparte y la sustituye cuando está lista, sin bloquear la animación
+      el = new Image();
+      el.alt = im.alt; el.decoding = 'async';
+      el.width = +im.getAttribute('width') || im.naturalWidth; el.height = +im.getAttribute('height') || im.naturalHeight;
+      el.src = im.currentSrc || im.src;
+      const big = (im.closest('picture') || im).cloneNode(true);
+      big.querySelectorAll('[sizes]').forEach((n) => n.setAttribute('sizes', '100vw'));
+      const bi = big.tagName === 'IMG' ? big : big.querySelector('img');
+      bi.removeAttribute('loading');
+      const shown = el;
+      (bi.decode ? bi.decode() : Promise.resolve()).then(() => { if (shown.isConnected) shown.replaceWith(big); }).catch(() => {});
     }
     stage.replaceChildren(el);
     if (!reduced && el.animate) el.animate([{ opacity: 0, transform: 'scale(.985)' }, { opacity: 1, transform: 'none' }], { duration: 380, easing: 'cubic-bezier(.16,1,.3,1)' });
