@@ -80,6 +80,36 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/servicios/motion-graphics/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/services/motion-graphics/"/>
   </url>
+  <url><loc>https://manelvila.com/sectors/independent-fashion/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/sectors/independent-fashion/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/sectores/moda-independiente/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/sectors/independent-fashion/"/>
+  </url>
+  <url><loc>https://manelvila.com/es/sectores/moda-independiente/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/sectors/independent-fashion/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/sectores/moda-independiente/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/sectors/independent-fashion/"/>
+  </url>
+  <url><loc>https://manelvila.com/sectors/music/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/sectors/music/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/sectores/musica/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/sectors/music/"/>
+  </url>
+  <url><loc>https://manelvila.com/es/sectores/musica/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/sectors/music/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/sectores/musica/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/sectors/music/"/>
+  </url>
+  <url><loc>https://manelvila.com/sectors/cultural-brands/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/sectors/cultural-brands/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/sectores/marcas-culturales/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/sectors/cultural-brands/"/>
+  </url>
+  <url><loc>https://manelvila.com/es/sectores/marcas-culturales/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/sectors/cultural-brands/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/sectores/marcas-culturales/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/sectors/cultural-brands/"/>
+  </url>
   <url><loc>https://manelvila.com/start/</loc><lastmod>2026-11-07</lastmod><priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/start/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/empezar/"/>
