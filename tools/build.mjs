@@ -74,7 +74,7 @@ const T = {
     top: 'Back to top', member: `Member of ${PERSON.studio}`, footer: 'Footer', language: 'Language',
     igLabel: `Instagram (${PERSON.instagramLabel})`,
     home: {
-      title: 'Manel Vila — Graphic designer & art director, Valencia',
+      title: 'Manel Vila — Graphic designer in Valencia & Barcelona',
       desc: 'Manel Vila, graphic designer and art director in Valencia and Barcelona. Branding and brand identity, art direction, lettering and editorial design.',
       h1: 'Manel Vila — graphic designer and art director. Projects',
       featured: 'Featured projects', carousel: 'carousel', all: 'All projects', seeAll: 'See all projects',
@@ -122,7 +122,7 @@ const T = {
     top: 'Volver arriba', member: `Miembro de ${PERSON.studio}`, footer: 'Pie de página', language: 'Idioma',
     igLabel: `Instagram (${PERSON.instagramLabel})`,
     home: {
-      title: 'Manel Vila — Diseñador gráfico y director de arte, Valencia',
+      title: 'Manel Vila — Diseñador gráfico en Valencia y Barcelona',
       desc: 'Manel Vila, diseñador gráfico y director de arte en Valencia y Barcelona. Branding e identidad corporativa, dirección de arte, lettering y diseño editorial.',
       h1: 'Manel Vila — diseñador gráfico y director de arte. Proyectos',
       featured: 'Proyectos destacados', carousel: 'carrusel', all: 'Todos los proyectos', seeAll: 'Ver todos los proyectos',
@@ -394,7 +394,7 @@ const studioLD = () => ({
   '@id': STUDIO_ID,
   name: PERSON.studio,
   description: 'Estudio creativo independiente de branding y dirección de arte en Valencia y Barcelona.',
-  address: { '@type': 'PostalAddress', addressLocality: 'Valencia', addressCountry: 'ES' },
+  address: [{ '@type': 'PostalAddress', addressLocality: 'Valencia', addressCountry: 'ES' }, { '@type': 'PostalAddress', addressLocality: 'Barcelona', addressCountry: 'ES' }],
   sameAs: [PERSON.instagram],
   member: { '@id': `${SITE}/#manel-vila` }
 });
@@ -413,7 +413,10 @@ const personLD = (lang) => {
     email: `mailto:${PERSON.email}`,
     telephone: PERSON.phoneHref,
     image: abs('content/posters/og.jpg'),
-    address: { '@type': 'PostalAddress', addressLocality: 'Valencia', addressRegion: en ? 'Valencian Community' : 'Comunitat Valenciana', addressCountry: 'ES' },
+    address: [
+      { '@type': 'PostalAddress', addressLocality: 'Valencia', addressRegion: en ? 'Valencian Community' : 'Comunitat Valenciana', addressCountry: 'ES' },
+      { '@type': 'PostalAddress', addressLocality: 'Barcelona', addressRegion: en ? 'Catalonia' : 'Cataluña', addressCountry: 'ES' }
+    ],
     workLocation: [city('Valencia'), city('Barcelona')],
     hasOccupation: [
       { '@type': 'Occupation', name: en ? 'Graphic designer' : 'Diseñador gráfico', occupationLocation: [city('Valencia'), city('Barcelona')],
@@ -478,7 +481,7 @@ function footer(C, { cta = true, kind = '' } = {}) {
       <section class="ft__col">
         <h2 class="ft__label">${t.ftLabels[2]}</h2>
         <span>Valencia · Barcelona</span>
-        <span class="ft__muted">Valencia <time class="ft__clock" data-clock>CET</time></span>
+        <span class="ft__muted">${t.ab.labels.time} <time class="ft__clock" data-clock>CET</time></span>
       </section>
       <section class="ft__col">
         <h2 class="ft__label">${t.ftLabels[3]}</h2>
@@ -800,7 +803,7 @@ function about(lang) {
       `<a href="tel:${PERSON.phoneHref}">${PERSON.phone}</a>`,
       ig
     ], ' id="contacto"'],
-    [a.labels.time, ['Valencia <time data-clock>CET</time>']]
+    [a.labels.time, ['Valencia · Barcelona <time data-clock>CET</time>']]
   ];
   return `${head(C, {
     title: a.title,
