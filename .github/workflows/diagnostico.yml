@@ -61,8 +61,10 @@ jobs:
           echo "   (404 o el globo genérico = todavía no lo ha recogido; 200 con nuestro icono = ya está)."
           echo "   La última línea es un dominio inventado: su md5 es el del globo genérico, para comparar."
           for u in "https://www.google.com/s2/favicons?domain=manelvila.com&sz=64" \
+                   "https://www.google.com/s2/favicons?domain=manelvila.com&sz=128" \
                    "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://manelvila.com/&size=64" \
                    "https://www.google.com/s2/favicons?domain=dominio-que-no-existe-mv.com&sz=64"; do
             r=$(curl -sS -L -o g.png -w '%{http_code} %{content_type} %{size_download}B' "$u" || echo fallo)
             echo "$r  $(file -b g.png | cut -c1-60)  md5 $(md5sum g.png | cut -c1-8)  ← $u"
+            echo "   imagen (base64): $(base64 -w0 g.png)"
           done
