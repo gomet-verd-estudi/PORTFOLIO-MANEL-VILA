@@ -79,5 +79,6 @@ jobs:
             echo "  SPF/TXT:   $(dig +short TXT $d | tr '\n' ' ')"
             echo "  DMARC:     $(dig +short TXT _dmarc.$d | tr '\n' ' ')"
             echo "  NS:        $(dig +short NS $d | tr '\n' ' ')"
+            echo "  página:    $(curl -sS -L -m 15 -o p.html -w '%{http_code} %{url_effective}' https://$d/ 2>&1 | head -c 200) · título: $(grep -oiE '<title>[^<]*' p.html | head -1 | cut -c8-120)"
           done
           echo "(MX vacío = el dominio no recibe correo: no hay buzones @dominio)"
