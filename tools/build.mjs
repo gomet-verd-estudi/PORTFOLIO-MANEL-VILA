@@ -59,10 +59,169 @@ const NOT_HIM = {
 const COLLABS = ['Jotateam Studio', 'Socis Club', 'T.O.T Studio', 'Domingo Studio', 'D’Matinada'];
 const CLIENTS = ['Vintage Palace', '404 Studio', 'Claur Tiles', 'Bernal', 'D’Matinada', 'Orbis Vacui', 'Leo Rizzi', 'Kaniche Pedigree Hot Dogs'];
 
+/* ==========================================================================
+   CAPTACIÓN — la ficha «Empezar un proyecto», los servicios y el aviso legal
+   ========================================================================== */
+
+/*
+ * Ficha «Empezar un proyecto» (/start/ y /es/empezar/). Quien la rellena la envía desde su propio
+ * correo o su WhatsApp, ya escrita: no hace falta servidor ni guardar datos en la web.
+ *  · whatsapp: número con prefijo y sin espacios ni «+» ('' quita el botón de WhatsApp)
+ *  · budgets: tramos de presupuesto (cámbialos por los tuyos; el último deja la puerta abierta)
+ *  · reply: la promesa de respuesta que se lee bajo el título
+ */
+const BRIEF = {
+  whatsapp: '34684450515',
+  budgets: {
+    en: ['Under €1,500', '€1,500 – 3,000', '€3,000 – 6,000', 'Over €6,000', 'I’d rather talk about it'],
+    es: ['Menos de 1.500 €', '1.500 – 3.000 €', '3.000 – 6.000 €', 'Más de 6.000 €', 'Prefiero hablarlo']
+  },
+  reply: { en: 'I usually reply within two working days.', es: 'Suelo responder en dos días laborables.' }
+};
+
+/* Aviso legal (LSSI-CE): titular de la web. El NIF y el domicilio solo aparecen cuando se rellenan. */
+const LEGAL = { holder: PERSON.name, nif: '', address: '', updated: '2026-11-07' };
+
+/*
+ * Servicios: una página por disciplina (/services/<slug>/, /es/servicios/<slug>/) para que Google y las
+ * IA respondan con Manel a búsquedas como «branding Valencia» o «dirección de arte Barcelona».
+ * Los proyectos de cada servicio salen solos de la disciplina de cada proyecto (match) y de `also`.
+ */
+const SERVICES = [
+  {
+    key: 'branding', slug: { en: 'branding', es: 'branding' },
+    match: (p) => /branding/i.test(p.tag), also: [],
+    label: { en: 'Branding and identity', es: 'Branding e identidad' },
+    name: { en: 'Branding and brand identity', es: 'Branding e identidad corporativa' },
+    short: {
+      en: 'Identities with something to say, from the first idea to the complete system.',
+      es: 'Identidades con algo que contar, de la primera idea al sistema completo.'
+    },
+    text: {
+      en: [
+        'Branding is the part of the job I love most. Every project starts with a conversation: understanding what the brand wants to be, who it speaks to and what sets it apart. From there I look for its own voice and turn it into a visual system that works just as well on a poster, a package or a screen.',
+        'It doesn’t stop at the logo. I design the whole identity — typography, colour, imagery, tone — and see it through to the last application, so the brand is recognisable anywhere.',
+        'That’s how I’ve worked with a fashion studio showing at 080 Barcelona Fashion Week, a workshop that makes handmade tiles, a creative studio, a cultural promoter and a band releasing a new album, mostly through Gomet Verd Estudi.'
+      ],
+      es: [
+        'El branding es la parte del oficio que más me apasiona. Cada proyecto empieza con una conversación: entender qué quiere ser la marca, a quién le habla y qué la hace distinta. A partir de ahí le busco una voz propia y la convierto en un sistema visual que funcione igual de bien en un cartel, en un envase o en una pantalla.',
+        'No se queda en el logotipo. Diseño la identidad completa —tipografía, color, imagen, tono— y la acompaño hasta la última aplicación, para que la marca se reconozca en cualquier sitio.',
+        'Así he trabajado con un estudio de moda que desfila en la 080 Barcelona Fashion Week, un taller de azulejos hechos a mano, un estudio creativo, una promotora cultural o un grupo que estrenaba disco, casi siempre desde Gomet Verd Estudi.'
+      ]
+    },
+    includes: {
+      en: ['Concept and visual strategy', 'Logo and identity system', 'Typography, colour and imagery', 'Packaging', 'Social media', 'Merchandise and applications'],
+      es: ['Concepto y estrategia visual', 'Logotipo y sistema de identidad', 'Tipografía, color e imagen', 'Packaging', 'Redes sociales', 'Merchandising y aplicaciones']
+    }
+  },
+  {
+    key: 'art-direction', slug: { en: 'art-direction', es: 'direccion-de-arte' },
+    match: (p) => /dirección de arte/i.test(p.tag) || p.services.some((x) => /dirección de arte/i.test(x)), also: [],
+    label: { en: 'Art direction', es: 'Dirección de arte' },
+    name: { en: 'Art direction', es: 'Dirección de arte' },
+    short: {
+      en: 'One concept and one visual world, so every piece tells the same story.',
+      es: 'Un concepto y un universo visual para que cada pieza cuente la misma historia.'
+    },
+    text: {
+      en: [
+        'Art direction is what holds a project together when it passes through many hands: photography, 3D, illustration, space. I define the concept and the visual world, and I make sure every piece tells the same story.',
+        'At Kaniche Pedigree Hot Dogs I designed and art-directed the restaurant’s in-store posters, blending punk attitude with a high-society air. At Vintage Palace and Claur Tiles, the imagery that goes with the identity, working alongside photographers.'
+      ],
+      es: [
+        'La dirección de arte es lo que mantiene unido un proyecto cuando pasa por muchas manos: fotografía, 3D, ilustración, espacio. Defino el concepto y el universo visual, y me aseguro de que cada pieza cuente la misma historia.',
+        'En Kaniche Pedigree Hot Dogs diseñé y dirigí la cartelería interior del restaurante, mezclando la actitud punk con el aire de la alta sociedad. En Vintage Palace y Claur Tiles, la imagen que acompaña a la identidad, junto a los fotógrafos.'
+      ]
+    },
+    includes: {
+      en: ['Concept and visual world', 'Brand imagery with photography and 3D', 'Posters and graphics for spaces', 'Consistency across pieces and formats'],
+      es: ['Concepto y universo visual', 'Imagen de marca con fotografía y 3D', 'Cartelería y gráfica para espacios', 'Coherencia entre piezas y formatos']
+    }
+  },
+  {
+    key: 'editorial', slug: { en: 'editorial-design', es: 'diseno-editorial' },
+    match: (p) => /editorial/i.test(p.tag), also: [],
+    label: { en: 'Editorial design', es: 'Diseño editorial' },
+    name: { en: 'Editorial design', es: 'Diseño editorial' },
+    short: {
+      en: 'Books, photobooks and record sleeves designed with the same care as an identity.',
+      es: 'Libros, fotolibros y fundas de disco diseñados con el mismo cuidado que una identidad.'
+    },
+    text: {
+      en: [
+        'I like editorial design because it makes you think about rhythm: how a page turns, how much room an image needs, what tone the typography sets. I design books, photobooks and record sleeves with the same care as an identity.',
+        'Cisma is a documentary photobook about how the city of Alzira has changed since the 1920s. For Bernal, the sleeve of “¿Qué tal todo allí fuera?”, a handmade edition of fifty copies, and the vinyl for “Vida y Milagros”.'
+      ],
+      es: [
+        'Me gusta el diseño editorial porque obliga a pensar en el ritmo: cómo se pasa una página, cuánto respira una imagen, qué tono tiene la tipografía. Diseño libros, fotolibros y fundas de disco con el mismo cuidado que una identidad.',
+        'Cisma es un fotolibro documental sobre cómo ha cambiado Alzira desde los años veinte. Para Bernal, la funda de «¿Qué tal todo allí fuera?», una edición de cincuenta copias hechas a mano, y el vinilo de «Vida y Milagros».'
+      ]
+    },
+    includes: {
+      en: ['Books and photobooks', 'Vinyl and record sleeves', 'Layout and typographic systems', 'Editorial pieces for brands'],
+      es: ['Libros y fotolibros', 'Fundas de vinilo y disco', 'Maquetación y sistema tipográfico', 'Piezas editoriales de marca']
+    }
+  },
+  {
+    key: 'lettering', slug: { en: 'lettering-and-posters', es: 'lettering-y-carteleria' },
+    match: (p) => /lettering|cartel/i.test(p.tag) || p.services.some((x) => /^(lettering|cartelería)/i.test(x)), also: ['404-studio'],
+    label: { en: 'Lettering and posters', es: 'Lettering y cartelería' },
+    name: { en: 'Lettering and posters', es: 'Lettering y cartelería' },
+    short: {
+      en: 'Letters drawn for one place: a tour poster, a music video, a T-shirt.',
+      es: 'Letras dibujadas para un sitio concreto: un cartel de gira, un videoclip, una camiseta.'
+    },
+    text: {
+      en: [
+        'Letters drawn for one specific place: a tour poster, the titles of a music video, a T-shirt. Lettering gives a piece a voice no off-the-shelf typeface has.',
+        'Among others: the poster for Leo Rizzi’s tour “Bailando alrededor del río” and its Instagram versions, the titles and credits for Bernal’s music video “Parques”, the in-store posters at Kaniche and the type for a line of 404 Studio T-shirts in collaboration with Adidas.'
+      ],
+      es: [
+        'Letras dibujadas para un sitio concreto: un cartel de gira, los títulos de un videoclip, una camiseta. El lettering le da a una pieza una voz que ninguna tipografía de catálogo tiene.',
+        'Entre otros: el cartel de la gira «Bailando alrededor del río» de Leo Rizzi y sus versiones para Instagram, los títulos y créditos del videoclip «Parques» de Bernal, la cartelería interior de Kaniche y la tipografía de unas camisetas de 404 Studio en colaboración con Adidas.'
+      ]
+    },
+    includes: {
+      en: ['Custom lettering', 'Tour and event posters', 'Titles and credits', 'Lettering for products and merchandise'],
+      es: ['Lettering a medida', 'Carteles de gira y eventos', 'Títulos y créditos', 'Tipografía para producto y merchandising']
+    }
+  },
+  {
+    key: 'motion', slug: { en: 'motion-graphics', es: 'motion-graphics' },
+    match: (p) => /motion/i.test(p.tag), also: [],
+    label: { en: 'Motion graphics', es: 'Motion graphics' },
+    name: { en: 'Motion graphics', es: 'Motion graphics' },
+    short: {
+      en: 'An identity set in motion: animated logos, social pieces, graphics for video.',
+      es: 'La identidad en movimiento: logotipos animados, piezas para redes, gráficos para vídeo.'
+    },
+    text: {
+      en: [
+        'Motion takes an identity into movement: logos that come alive, pieces for social media, transitions and graphics for video. It’s another way of telling the same story.',
+        'Sun&Snow, Delta and Pontevecchio were made at T.O.T Studio; Delta combines motion graphics with artificial intelligence.'
+      ],
+      es: [
+        'El motion lleva una identidad al movimiento: logotipos que cobran vida, piezas para redes, transiciones y gráficos para vídeo. Es otra manera de contar la misma historia.',
+        'Sun&Snow, Delta y Pontevecchio son trabajos realizados en T.O.T Studio; Delta combina motion graphics con inteligencia artificial.'
+      ]
+    },
+    includes: {
+      en: ['Brand and logo animation', 'Social media pieces', 'Graphics for video', 'Motion with AI'],
+      es: ['Animación de marca y logotipos', 'Piezas para redes sociales', 'Gráficos para vídeo', 'Motion con IA']
+    }
+  }
+];
+/* Opciones de «Qué necesitas» en la ficha: los servicios y dos más */
+const NEEDS = [
+  ...SERVICES.map((s) => ({ key: s.key, label: s.label })),
+  { key: 'packaging', label: { en: 'Packaging', es: 'Packaging' } },
+  { key: 'unsure', label: { en: 'Not sure yet', es: 'Aún no lo sé' } }
+];
+
 /* ---------- idiomas ---------- */
 const LANG = {
-  en: { code: 'en', dir: '', pj: 'projects', locale: 'en_GB', label: 'EN', name: 'English' },
-  es: { code: 'es', dir: 'es/', pj: 'proyectos', locale: 'es_ES', label: 'ES', name: 'Español' }
+  en: { code: 'en', dir: '', pj: 'projects', svc: 'services', start: 'start', locale: 'en_GB', label: 'EN', name: 'English' },
+  es: { code: 'es', dir: 'es/', pj: 'proyectos', svc: 'servicios', start: 'empezar', locale: 'es_ES', label: 'ES', name: 'Español' }
 };
 const LANGS = ['en', 'es'];
 
@@ -109,7 +268,7 @@ const T = {
         'I studied at EASD Valencia, and while I’m at ease in every corner of graphic design, what I truly love is branding: understanding what a brand wants to be, finding its own voice and building a system around it that makes it recognisable anywhere. Lettering, editorial and motion come after that, as different ways of telling the same story.',
         'I’m part of Gomet Verd Estudi, an independent branding and art direction studio between Valencia and Barcelona. Every project there starts with a conversation and becomes a game we play together with the client, mixing strategy, storytelling and visual exploration until we reach something you can see, hold or set in motion. Many of the projects in this portfolio were born there.',
         'We’re driven by a simple idea, ALWAYS WIPing (Working In Play): stay curious, question the usual and enjoy the process, because in the end it shows in the result.',
-        'I enjoy working in a team and seeing each project through, from the first idea to the last application. If you have one in mind, <a href="#contacto">drop me a line</a>.'
+        'I enjoy working in a team and seeing each project through, from the first idea to the last application. If you have one in mind, <a href="{brief}">tell me about it</a>.'
       ],
       labels: { services: 'Services', studio: 'Studio', collabs: 'I’ve also worked with', clients: 'Clients', education: 'Education', contact: 'Contact', time: 'Local time' },
       services: ['Brand identity', 'Art direction', 'Lettering', 'Typography', 'Packaging', 'Editorial', 'Posters', 'Social media', 'Motion graphics', '3D'],
@@ -157,7 +316,7 @@ const T = {
         'Estudié en la EASD de Valencia y, aunque me muevo con soltura por cualquier rama del diseño gráfico, lo que de verdad me apasiona es el branding: entender qué quiere ser una marca, encontrarle una voz propia y construir a su alrededor un sistema que la haga reconocible en cualquier sitio. El lettering, la editorial o el motion vienen después, como maneras distintas de contar esa misma historia.',
         'Formo parte de Gomet Verd Estudi, un estudio independiente de branding y dirección de arte entre Valencia y Barcelona. Allí cada proyecto empieza con una conversación y acaba siendo un juego compartido con quien nos lo encarga: mezclamos estrategia, narrativa y exploración visual hasta llegar a algo que se pueda ver, tocar o poner en movimiento. Muchos de los trabajos de este portfolio nacieron ahí.',
         'Nos mueve una idea sencilla, ALWAYS WIPing (Working In Play): seguir siendo curiosos, cuestionar lo de siempre y disfrutar del proceso, porque al final se nota en el resultado.',
-        'Me gusta trabajar en equipo y acompañar cada proyecto de principio a fin, de la primera idea a la última aplicación. Si tienes uno entre manos, <a href="#contacto">escríbeme</a>.'
+        'Me gusta trabajar en equipo y acompañar cada proyecto de principio a fin, de la primera idea a la última aplicación. Si tienes uno entre manos, <a href="{brief}">cuéntamelo</a>.'
       ],
       labels: { services: 'Servicios', studio: 'Estudio', collabs: 'También he trabajado con', clients: 'Clientes', education: 'Formación', contact: 'Contacto', time: 'Hora local' },
       services: ['Identidad corporativa', 'Dirección de arte', 'Lettering', 'Tipografía', 'Packaging', 'Editorial', 'Cartelería', 'RRSS', 'Motion graphics', '3D'],
@@ -166,6 +325,78 @@ const T = {
   }
 };
 
+/* Textos de captación: ficha, servicios, legal y llamadas a la acción */
+Object.assign(T.en, {
+  services: 'Services', start: 'Start a project', talk: 'Let’s talk', legal: 'Legal & privacy', and: '&', in: 'in',
+  yours: 'Your project', youCta: 'Tell me about it in a minute',
+  cta: { q: (n) => `A project like ${n}?`, go: 'Let’s start yours' },
+  svc: {
+    title: 'Graphic design services · Manel Vila',
+    desc: 'Branding and brand identity, art direction, editorial design, lettering and motion graphics in Valencia and Barcelona. Services by Manel Vila, graphic designer.',
+    tagline: 'Branding first; also art direction, editorial, lettering and motion. Valencia · Barcelona.',
+    text: ['I mostly work with brands that are just starting out or need to tell their story again. Every project starts with a conversation and ends in a system you can see, hold or set in motion.'],
+    includes: 'Includes', works: 'Projects', start: 'Start a project', n: (k) => `${k} ${k === 1 ? 'project' : 'projects'}`,
+    close: 'Close and go back', all: 'All services'
+  },
+  brief: {
+    title: 'Start a project · Manel Vila, graphic designer',
+    desc: 'Got a branding, art direction or editorial project? Tell me about it in a minute and I’ll get back to you with next steps. Valencia and Barcelona.',
+    tagline: 'Tell me about it in a minute.',
+    text: 'With this sheet I come to our first conversation already knowing what you need, by when and with what room to move. Fill in whatever you’re sure about; we’ll work out the rest together.',
+    labels: ['What you need', 'Stage', 'Timing', 'Budget', 'The project', 'You'],
+    stage: ['A new brand', 'A redesign', 'A single piece or campaign', 'Something else'],
+    when: ['As soon as possible', 'In 1–3 months', 'Later on', 'No date yet'],
+    about: 'What is your brand or project, and what would you like to achieve?',
+    you: { name: 'Name', brand: 'Brand or company (optional)', email: 'Email', phone: 'Phone (optional)' },
+    send: 'Send by email', wa: 'Send on WhatsApp', or: 'or',
+    note: 'I only use these details to reply to you.',
+    done: { email: 'Your email app has opened with the sheet written out: just press send.', wa: 'WhatsApp has opened with the sheet written out: just press send.' },
+    fallback: 'Nothing opened? Copy the sheet and send it to', copy: 'Copy sheet',
+    close: 'Close and go back',
+    msg: { subject: 'New project', need: 'I need', stage: 'Stage', when: 'Timing', budget: 'Budget', from: 'Seen on', src: 'Came from', via: 'Sent from' }
+  },
+  lg: {
+    title: 'Legal notice & privacy · Manel Vila',
+    desc: 'Legal notice, privacy and cookies of manelvila.com, the portfolio of graphic designer Manel Vila.',
+    updated: 'Updated'
+  }
+});
+Object.assign(T.es, {
+  services: 'Servicios', start: 'Empezar un proyecto', talk: 'Hablemos', legal: 'Aviso legal y privacidad', and: 'y', in: 'en',
+  yours: 'Tu proyecto', youCta: 'Cuéntamelo en un minuto',
+  cta: { q: (n) => `¿Un proyecto como ${n}?`, go: 'Empecemos el tuyo' },
+  svc: {
+    title: 'Servicios de diseño gráfico · Manel Vila',
+    desc: 'Branding e identidad corporativa, dirección de arte, diseño editorial, lettering y motion graphics en Valencia y Barcelona. Servicios de Manel Vila, diseñador gráfico.',
+    tagline: 'Branding ante todo; también dirección de arte, editorial, lettering y motion. Valencia · Barcelona.',
+    text: ['Trabajo sobre todo con marcas que empiezan o que necesitan contarse de nuevo. Cada proyecto empieza con una conversación y acaba en un sistema que se puede ver, tocar o poner en movimiento.'],
+    includes: 'Incluye', works: 'Proyectos', start: 'Empezar un proyecto', n: (k) => `${k} ${k === 1 ? 'proyecto' : 'proyectos'}`,
+    close: 'Cerrar y volver', all: 'Todos los servicios'
+  },
+  brief: {
+    title: 'Empezar un proyecto · Manel Vila, diseñador gráfico',
+    desc: '¿Tienes un proyecto de branding, dirección de arte o editorial? Cuéntamelo en un minuto y te respondo con los siguientes pasos. Valencia y Barcelona.',
+    tagline: 'Cuéntamelo en un minuto.',
+    text: 'Con esta ficha llego a la primera conversación sabiendo qué necesitas, para cuándo y con qué margen. Rellena lo que tengas claro; lo demás lo vemos juntos.',
+    labels: ['Qué necesitas', 'Momento', 'Plazo', 'Presupuesto', 'El proyecto', 'Tú'],
+    stage: ['Una marca nueva', 'Un rediseño', 'Una pieza o campaña', 'Otra cosa'],
+    when: ['Lo antes posible', 'En 1–3 meses', 'Más adelante', 'Sin fecha'],
+    about: '¿Qué es tu marca o proyecto y qué te gustaría conseguir?',
+    you: { name: 'Nombre', brand: 'Marca o empresa (opcional)', email: 'Email', phone: 'Teléfono (opcional)' },
+    send: 'Enviar por email', wa: 'Enviar por WhatsApp', or: 'o',
+    note: 'Uso estos datos solo para responderte.',
+    done: { email: 'Se ha abierto tu correo con la ficha escrita: solo falta darle a enviar.', wa: 'Se ha abierto WhatsApp con la ficha escrita: solo falta darle a enviar.' },
+    fallback: '¿No se ha abierto nada? Copia la ficha y envíala a', copy: 'Copiar ficha',
+    close: 'Cerrar y volver',
+    msg: { subject: 'Nuevo proyecto', need: 'Necesito', stage: 'Momento', when: 'Plazo', budget: 'Presupuesto', from: 'Visto en', src: 'Llegué desde', via: 'Enviado desde' }
+  },
+  lg: {
+    title: 'Aviso legal y privacidad · Manel Vila',
+    desc: 'Aviso legal, privacidad y cookies de manelvila.com, el portfolio del diseñador gráfico Manel Vila.',
+    updated: 'Actualizado'
+  }
+});
+
 /* Proyectos con los textos de cada idioma (el bloque `en` de projects.js sobrescribe al español) */
 const PROJ = { es: BASE, en: BASE.map((p) => ({ ...p, ...(p.en || {}) })) };
 
@@ -173,7 +404,11 @@ const PROJ = { es: BASE, en: BASE.map((p) => ({ ...p, ...(p.en || {}) })) };
 const PAGE = {
   home: (lang) => LANG[lang].dir,
   about: (lang) => `${LANG[lang].dir}about/`,
-  project: (lang, p) => `${LANG[lang].dir}${LANG[lang].pj}/${p.slug}/`
+  project: (lang, p) => `${LANG[lang].dir}${LANG[lang].pj}/${p.slug}/`,
+  services: (lang) => `${LANG[lang].dir}${LANG[lang].svc}/`,
+  service: (lang, s) => `${LANG[lang].dir}${LANG[lang].svc}/${s.slug[lang]}/`,
+  brief: (lang) => `${LANG[lang].dir}${LANG[lang].start}/`,
+  legal: (lang) => `${LANG[lang].dir}legal/`
 };
 /** Prefijo hasta la raíz del sitio (para estilos, scripts y medios). */
 const up = (page) => '../'.repeat(page.split('/').filter(Boolean).length);
@@ -246,6 +481,17 @@ function img(R, src, { alt = '', sizes = '100vw', lazy = true, cls = '', extra =
 }
 
 const MARK = '<svg data-mark aria-hidden="true"></svg>';
+
+/* Servicios ↔ proyectos (se decide con los datos en español, que son la base) */
+const svcProjects = (s) => BASE.map((p, i) => ({ p, i })).filter(({ p }) => s.match(p) || s.also.includes(p.slug));
+/** Servicio de cada parte de la disciplina («Branding + Editorial» → [branding, editorial]) */
+const tagServices = (i) => BASE[i].tag.split(/\s*\+\s*/).map((part) => SERVICES.find((s) => s.match({ tag: part, services: [] })) || null);
+const mainService = (i) => tagServices(i).find(Boolean) || SERVICES.find((s) => s.match(BASE[i])) || null;
+/** Enlace a la ficha con el servicio y el proyecto de origen ya marcados */
+const briefHref = (C, { s = null, from = '' } = {}) => {
+  const q = [s ? `s=${s.key}` : '', from ? `from=${from}` : ''].filter(Boolean).join('&');
+  return C.brief + (q ? `?${q}` : '');
+};
 /** Tamaños de las miniaturas del índice (la portada del proyecto los repite para reutilizar el mismo archivo). */
 const TILE_SIZES = '(max-width: 923px) 100vw, 34vw';
 
@@ -261,6 +507,10 @@ function page(lang, here, alt) {
     to: (target) => rel(here, target),
     home: rel(here, PAGE.home(lang)),
     aboutUrl: rel(here, PAGE.about(lang)),
+    brief: rel(here, PAGE.brief(lang)),
+    servicesUrl: rel(here, PAGE.services(lang)),
+    legalUrl: rel(here, PAGE.legal(lang)),
+    svc: (s) => rel(here, PAGE.service(lang, s)),
     pj: (p) => rel(here, PAGE.project(lang, p))
   };
 }
@@ -278,7 +528,7 @@ const SPECULATION = JSON.stringify({
 });
 
 /* ---------- piezas compartidas ---------- */
-function head(C, { title, description, image = 'content/posters/og.jpg', type = 'website', jsonld = [], extra = '' }) {
+function head(C, { title, description, image = 'content/posters/og.jpg', type = 'website', jsonld = [], extra = '', robots = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' }) {
   const { R, L, lang, here, alt } = C;
   const other = LANGS.filter((l) => l !== lang);
   return `<!DOCTYPE html>
@@ -291,7 +541,7 @@ function head(C, { title, description, image = 'content/posters/og.jpg', type = 
   <title>${esc(title)}</title>
   <meta name="description" content="${esc(description)}">
   <meta name="author" content="${PERSON.name}">
-  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">${VERIFY.bing ? `\n  <meta name="msvalidate.01" content="${VERIFY.bing}">` : ''}${VERIFY.google ? `\n  <meta name="google-site-verification" content="${VERIFY.google}">` : ''}
+  <meta name="robots" content="${robots}">${VERIFY.bing ? `\n  <meta name="msvalidate.01" content="${VERIFY.bing}">` : ''}${VERIFY.google ? `\n  <meta name="google-site-verification" content="${VERIFY.google}">` : ''}
   <meta name="theme-color" content="#0600FF">
   <link rel="canonical" href="${SITE}/${here}">
 ${LANGS.map((l) => `  <link rel="alternate" hreflang="${l}" href="${SITE}/${alt[l]}">`).join('\n')}
@@ -368,6 +618,7 @@ function panels(C, kind, current = -1) {
   <section class="panel" data-panel="contact" hidden aria-label="${t.contact}" data-lenis-prevent>
     <div class="panel__inner"><div class="panel__pad">
       <div class="contact-list">
+        <a class="contact-list__go" href="${C.brief}">${t.start} <span aria-hidden="true">→</span></a>
         ${copyable(t)}
         <a href="tel:${PERSON.phoneHref}">${PERSON.phone}</a>
         <a href="${PERSON.instagram}" target="_blank" rel="noopener">${PERSON.instagramLabel}</a>
@@ -441,6 +692,7 @@ const personLD = (lang) => {
     knowsAbout: en
       ? ['Branding', 'Brand identity', 'Graphic design', 'Art direction', 'Lettering', 'Typography', 'Editorial design', 'Packaging', 'Motion graphics']
       : ['Branding', 'Identidad corporativa', 'Diseño gráfico', 'Dirección de arte', 'Lettering', 'Tipografía', 'Diseño editorial', 'Packaging', 'Motion graphics'],
+    makesOffer: SERVICES.map((s) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: s.name[lang], url: `${SITE}/${PAGE.service(lang, s)}` } })),
     ...(PROFILES.length ? { sameAs: PROFILES } : {})
   };
 };
@@ -478,7 +730,7 @@ function footer(C, { cta = true, kind = '' } = {}) {
     ${cta ? `<div class="ft__cta">
       <p class="chips ft__chips"><span class="chip chip--num">✶</span><span class="chip">${t.ftChips[0]}</span><span class="chip chip--round">${t.ftChips[1]}</span></p>
       <h2 class="ft__title" data-reveal>${t.ftTitle.map((x) => `<span class="mask"><span>${x}</span></span>`).join('')}</h2>
-      <a class="ft__mail" href="mailto:${PERSON.email}"><span>${PERSON.email}</span><span aria-hidden="true">↗</span></a>
+      <a class="ft__mail" href="${C.brief}"><span>${t.start}</span><span aria-hidden="true">→</span></a>
     </div>` : ''}
     <div class="ft__cols">
       <section class="ft__col">
@@ -499,7 +751,9 @@ function footer(C, { cta = true, kind = '' } = {}) {
       <section class="ft__col">
         <h2 class="ft__label">${t.ftLabels[3]}</h2>
         <a href="${C.home}?grid"${kind === 'grid' ? ' aria-current="page"' : ''}>${t.projects} <sup>${pad(N)}</sup></a>
+        <a href="${C.servicesUrl}"${kind === 'services' ? ' aria-current="page"' : ''}>${t.services}</a>
         <a href="${C.aboutUrl}"${kind === 'about' ? ' aria-current="page"' : ''}>${t.about}</a>
+        <a href="${C.brief}"${kind === 'brief' ? ' aria-current="page"' : ''}>${t.start}</a>
         <button class="ft__top" data-top>${t.top} <span aria-hidden="true">↑</span></button>
       </section>
     </div>
@@ -508,6 +762,7 @@ function footer(C, { cta = true, kind = '' } = {}) {
       <span>© ${year} ${PERSON.name}</span>
       <span>${t.member}</span>
       <span>Always WIPing [Working In Play]</span>
+      <a class="ft__legal-link" href="${C.legalUrl}"${kind === 'legal' ? ' aria-current="page"' : ''}>${t.legal}</a>
       ${langSwitch(C)}
     </div>
   </footer>`;
@@ -517,7 +772,7 @@ function footer(C, { cta = true, kind = '' } = {}) {
  * Esquinas: la interfaz vive en las cuatro esquinas. Arriba, el monograma y el botón grid;
  * abajo, a la izquierda un dato (email o el proyecto y su pieza) y a la derecha Instagram.
  */
-function corners(C, left = `<a class="corner corner--l" href="mailto:${PERSON.email}">Email</a>`) {
+function corners(C, left = `<a class="corner corner--l" href="${C.brief}">${C.t.talk}</a>`) {
   return `
   <div class="corners">
     ${left}
@@ -578,8 +833,8 @@ ${panels(C, 'home')}
         <h2 class="grid__title"><span>${t.projects}</span><span>(${pad(N)})</span></h2>
         <p>${t.home.intro}</p>
         <p class="grid__by">${PERSON.name} — ${t.job}. Valencia · Barcelona</p>
-      </header>${tiles}
-      ${footer(C, { kind: 'grid' })}
+      </header>${tiles}${ctaTile(C, C.brief, N + 1, N + 1)}
+      ${footer(C, { kind: 'grid', cta: false })}
     </nav>
   </main>
 
@@ -689,7 +944,8 @@ function project(lang, i) {
 
   const meta = [];
   if (p.services.length) meta.push([t.pj.services, p.services.map(esc)]);
-  meta.push([t.pj.discipline, esc(p.tag)]);
+  const parts = p.tag.split(/\s*\+\s*/), ts = tagServices(i);
+  meta.push([t.pj.discipline, parts.map((x, k) => (ts[k] ? `<a href="${C.svc(ts[k])}">${esc(x)}</a>` : esc(x))).join(' + ')]);
   if (p.studio) meta.push([t.pj.studio, esc(p.studio)]);
   if (p.team) meta.push([t.pj.team, esc(p.team)]);
   if (p.year) meta.push([t.pj.year, String(p.year)]);
@@ -769,6 +1025,11 @@ ${panels(C, 'project', i)}
       </section>` : ''}
     </article>
 
+    <aside class="pj__cta sheet" aria-label="${t.start}">
+      <span class="pj__cta-num">(${pad(N + 1)})</span>
+      <p><span>${esc(t.cta.q(p.name))}</span> <a href="${briefHref(C, { s: mainService(i), from: p.slug })}">${t.cta.go} <span aria-hidden="true">→</span></a></p>
+    </aside>
+
     <nav class="pj__nav" aria-label="${t.pj.more}">
       <a class="pj__next" href="${C.pj(nx)}" rel="next">
         ${nxThumb ? `<span class="pj__next-img"${nx.media && nx.media.bg ? ` style="--bg:${nx.media.bg}"` : ''}>${img(R, nxThumb, { alt: `${nx.name} — ${nx.tag}`, sizes: '100vw' })}</span>` : ''}
@@ -805,13 +1066,17 @@ function about(lang) {
   const { R, t } = C;
   const a = t.ab;
   const ig = `<a href="${PERSON.instagram}" target="_blank" rel="noopener">${PERSON.instagramLabel} <span aria-hidden="true">↗</span></a>`;
+  // Cada servicio de la lista enlaza a su página cuando la tiene
+  const svcFor = (name) => SERVICES.find((s) => s.match({ tag: name, services: [] })) ||
+    ({ 'Identidad corporativa': SERVICES[0], 'Brand identity': SERVICES[0], Packaging: SERVICES[0], 'Art direction': SERVICES[1], Posters: SERVICES[3] })[name];
   const rows = [
-    [a.labels.services, a.services.map(esc)],
+    [a.labels.services, a.services.map((x) => { const s = svcFor(x); return s ? `<a href="${C.svc(s)}">${esc(x)}</a>` : esc(x); })],
     [a.labels.studio, [PERSON.studio, 'Valencia · Barcelona']],
     [a.labels.collabs, COLLABS.map(esc)],
     [a.labels.clients, CLIENTS.map(esc)],
     [a.labels.education, [esc(a.education)]],
     [a.labels.contact, [
+      `<a href="${C.brief}">${t.start} <span aria-hidden="true">→</span></a>`,
       `<span class="copyable"><a href="mailto:${PERSON.email}">${PERSON.email.replace('@', '<wbr>@')}</a><button class="copy" data-copy="${PERSON.email}" aria-label="${t.copyEmail}">${t.copy}</button></span>`,
       `<a href="tel:${PERSON.phoneHref}">${PERSON.phone}</a>`,
       ig
@@ -851,7 +1116,7 @@ ${panels(C, 'about')}
       <p class="sheet__tag">${a.tagline}</p>
 
       <div class="sheet__text" data-reveal>
-        ${a.bio.map((x) => `<p>${x}</p>`).join('\n        ')}
+        ${a.bio.map((x) => `<p>${x.replace('{brief}', C.brief)}</p>`).join('\n        ')}
       </div>
 
       ${kv(rows, ' data-reveal')}
@@ -864,6 +1129,259 @@ ${scripts(R, ['vendor/lenis.min', 'ui'])}
 </body>
 </html>
 `;
+}
+
+/* ---------- PÁGINAS DE TEXTO: servicios, ficha y aviso legal (la misma hoja que el About) ---------- */
+function docPage(C, { kind, title, description, jsonld = [], robots, main, back, js = [], corner }) {
+  const { R, t } = C;
+  return `${head(C, { title, description, jsonld, ...(robots ? { robots } : {}) })}
+<body class="doc doc--${kind}">
+${franja(C, 'page')}
+
+  <a class="grid-btn" href="${C.home}" data-back aria-label="${esc(back)}">
+    <span class="grid-btn__icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+    <span class="grid-btn__count">${t.projects}</span>
+  </a>
+${panels(C, 'page')}
+
+  <main id="contenido">
+${main}
+  </main>
+${footer(C, { cta: kind !== 'brief', kind })}
+${corners(C, corner)}
+
+${scripts(R, ['vendor/lenis.min', 'ui', ...js])}
+</body>
+</html>
+`;
+}
+
+const crumbs = (lang, items) => ({
+  '@type': 'BreadcrumbList',
+  itemListElement: [[PERSON.name, PAGE.home(lang)], ...items].map(([name, at], k) => ({ '@type': 'ListItem', position: k + 1, name, item: `${SITE}/${at}` }))
+});
+
+/**
+ * Casilla «[Tu proyecto]»: la portada tipográfica del proyecto que aún no existe.
+ * Al final de una lista de n miniaturas ocupa justo el hueco de la última fila
+ * (3 columnas en ordenador; en móvil, dos pequeñas y una grande en bucle).
+ */
+function ctaTile(C, href, n, num) {
+  const { t } = C;
+  const rd = n % 3, spanD = rd ? 3 - rd : 3, spanM = n % 3 === 1 ? 1 : 2;
+  const ar = (span) => (span === 3 ? '3 / 1' : `${span * 4} / 5`);
+  return `
+      <a class="tcta${spanM === 1 ? ' tcta--half' : ''}" href="${href}" style="--i:${n};--span-d:${spanD};--span-m:${spanM};--ar-d:${ar(spanD)}">
+        <span class="tile__media"><span class="cover"><span class="cover__title">[${t.yours}]</span><span class="cover__lead">${t.youCta} <span aria-hidden="true">→</span></span></span></span>
+        <span class="tile__cap"><span class="tile__num">${pad(num)}</span><span class="tile__name">${t.yours}</span><span class="tile__tag">${t.start} <span aria-hidden="true">→</span></span></span>
+      </a>`;
+}
+
+/** Miniatura de proyecto (las páginas de servicio repiten las del índice, con la misma imagen en caché) */
+function workTile(C, i) {
+  const p = C.P[i], th = thumbOf(p);
+  const vis = th ? img(C.R, th, { alt: `${p.name} — ${p.tag}`, sizes: TILE_SIZES }) : `<span class="cover"><span class="cover__title">[${esc(p.name)}]</span></span>`;
+  return `
+      <a class="tile" href="${C.pj(p)}" aria-label="${esc(`${pad(i + 1)} ${p.name} — ${p.tag}`)}"${exists(`content/media/tiles/${p.slug}.mp4`) ? ` data-video="${C.R}content/media/tiles/${p.slug}.mp4"` : ''}>
+        <span class="tile__media"${p.media && p.media.bg ? ` style="--bg:${p.media.bg}"` : ''}>${vis}</span>
+        <span class="tile__cap"><span class="tile__num">${pad(i + 1)}</span><span class="tile__name">${esc(p.name)}</span><span class="tile__tag">${esc(p.tag)}</span></span>
+      </a>`;
+}
+
+/* Servicios: índice */
+function servicesHub(lang) {
+  const C = page(lang, PAGE.services(lang), { en: PAGE.services('en'), es: PAGE.services('es') });
+  const { t } = C;
+  const rows = SERVICES.map((s) => [`<a href="${C.svc(s)}">${esc(s.label[lang])}</a>`, [esc(s.short[lang]), `<span class="kv__muted">${t.svc.n(svcProjects(s).length)}</span>`]]);
+  rows.push([t.start, [`<a href="${C.brief}">${t.youCta} <span aria-hidden="true">→</span></a>`]]);
+  return docPage(C, {
+    kind: 'services', title: t.svc.title, description: t.svc.desc, back: t.svc.close,
+    jsonld: [{ '@context': 'https://schema.org', '@graph': [
+      { '@type': 'CollectionPage', '@id': `${SITE}/${C.here}#page`, url: `${SITE}/${C.here}`, name: t.svc.title, description: t.svc.desc, inLanguage: lang,
+        about: { '@id': `${SITE}/#manel-vila` }, isPartOf: { '@id': `${SITE}/#web` },
+        mainEntity: { '@type': 'ItemList', itemListElement: SERVICES.map((s, k) => ({ '@type': 'ListItem', position: k + 1, name: s.name[lang], url: `${SITE}/${PAGE.service(lang, s)}` })) } },
+      personLD(lang), studioLD(), crumbs(lang, [[t.services, C.here]])
+    ] }],
+    main: `    <article class="sheet about__sheet svc" aria-labelledby="doc-title">
+      <header class="sheet__head">
+        <h1 id="doc-title">${t.services}</h1>
+        <span>Valencia · Barcelona</span>
+      </header>
+      <p class="sheet__tag">${t.svc.tagline}</p>
+
+      <div class="sheet__text" data-reveal>
+        ${t.svc.text.map((x) => `<p>${x}</p>`).join('\n        ')}
+      </div>
+
+      ${kv(rows, ' data-reveal')}
+    </article>`
+  });
+}
+
+/* Servicios: una página por disciplina, con sus proyectos */
+function servicePage(lang, s, k) {
+  const C = page(lang, PAGE.service(lang, s), { en: PAGE.service('en', s), es: PAGE.service('es', s) });
+  const { t } = C;
+  const works = svcProjects(s);
+  const title = `${s.label[lang]} ${t.in} Valencia ${t.and} Barcelona · ${PERSON.name}`;
+  const description = `${s.name[lang]} ${t.in} Valencia ${t.and} Barcelona. ${s.short[lang]} ${lang === 'en' ? 'Projects by Manel Vila.' : 'Proyectos de Manel Vila.'}`;
+  if (title.length > 60) console.warn(`título largo (${title.length}): ${title}`);
+  if (description.length > 165) console.warn(`descripción larga (${description.length}): ${description}`);
+  const rows = [
+    [t.svc.includes, s.includes[lang].map(esc)],
+    [t.svc.works, works.map(({ i }) => `<a href="${C.pj(C.P[i])}">${esc(C.P[i].name)}</a>`)],
+    [t.svc.all, SERVICES.filter((x) => x !== s).map((x) => `<a href="${C.svc(x)}">${esc(x.label[lang])}</a>`)],
+    [t.start, [`<a href="${briefHref(C, { s })}">${t.youCta} <span aria-hidden="true">→</span></a>`]]
+  ];
+  return docPage(C, {
+    kind: 'service', title, description, back: t.svc.close,
+    jsonld: [{ '@context': 'https://schema.org', '@graph': [
+      { '@type': 'Service', '@id': `${SITE}/${C.here}#service`, name: s.name[lang], serviceType: s.name[lang], url: `${SITE}/${C.here}`,
+        description: plain(s.text[lang].join(' ')),
+        provider: { '@id': `${SITE}/#manel-vila` },
+        areaServed: [{ '@type': 'City', name: 'Valencia' }, { '@type': 'City', name: 'Barcelona' }, { '@type': 'Country', name: lang === 'en' ? 'Spain' : 'España' }],
+        hasOfferCatalog: { '@type': 'OfferCatalog', name: s.name[lang], itemListElement: s.includes[lang].map((x) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: x } })) } },
+      personLD(lang), studioLD(), crumbs(lang, [[t.services, PAGE.services(lang)], [s.name[lang], C.here]])
+    ] }],
+    main: `    <article class="sheet about__sheet svc" aria-labelledby="doc-title">
+      <header class="sheet__head">
+        <h1 id="doc-title">${esc(s.name[lang])}</h1>
+        <a href="${C.servicesUrl}">${t.services} <sup>${pad(k + 1)}/${pad(SERVICES.length)}</sup></a>
+      </header>
+      <p class="sheet__tag">${esc(s.short[lang])}</p>
+
+      <div class="sheet__text" data-reveal>
+        ${s.text[lang].map((x) => `<p>${esc(x)}</p>`).join('\n        ')}
+      </div>
+
+      ${kv(rows, ' data-reveal')}
+    </article>
+
+    <section class="works" aria-labelledby="works-title">
+      <h2 class="works__head" id="works-title"><span>${t.svc.works}</span><span>(${pad(works.length)})</span></h2>${works.map(({ i }) => workTile(C, i)).join('')}${ctaTile(C, briefHref(C, { s }), works.length, N + 1)}
+    </section>`
+  });
+}
+
+/* Ficha «Empezar un proyecto»: se envía ya escrita desde el correo o el WhatsApp de quien la rellena */
+function brief(lang) {
+  const C = page(lang, PAGE.brief(lang), { en: PAGE.brief('en'), es: PAGE.brief('es') });
+  const { t } = C;
+  const b = t.brief;
+  const num = (k) => `(${pad(k)})`;
+  const picks = (name, options, type = 'radio') => `<div class="picks">${options.map((o) =>
+    `<label class="pick"><input type="${type}" name="${name}" value="${esc(o.label || o)}"${o.key ? ` data-key="${o.key}"` : ''}><span>${esc(o.label || o)}</span></label>`).join('')}</div>`;
+  const row = (k, body) => `
+        <div class="kv__row" role="group" aria-labelledby="b${k}"><span class="kv__k" id="b${k}">${num(k)} ${b.labels[k - 1]}</span><div class="kv__v">${body}</div></div>`;
+  const field = (name, label, attrs = '') => `<label class="field"><span class="sr-only">${label}</span><input name="${name}" placeholder="${esc(label)}"${attrs}></label>`;
+  const i18n = { ...b.msg, labels: b.labels, done: b.done, page: `${SITE}/${C.here}`, projects: Object.fromEntries(C.P.map((p) => [p.slug, p.name])) };
+  return docPage(C, {
+    kind: 'brief', title: b.title, description: b.desc, back: b.close, js: ['brief'],
+    corner: `<a class="corner corner--l" href="mailto:${PERSON.email}">Email</a>`,
+    jsonld: [{ '@context': 'https://schema.org', '@graph': [
+      { '@type': 'ContactPage', '@id': `${SITE}/${C.here}#page`, url: `${SITE}/${C.here}`, name: b.title, description: b.desc, inLanguage: lang,
+        about: { '@id': `${SITE}/#manel-vila` }, isPartOf: { '@id': `${SITE}/#web` } },
+      personLD(lang), studioLD(), crumbs(lang, [[t.start, C.here]])
+    ] }],
+    main: `    <article class="sheet about__sheet brief" aria-labelledby="doc-title">
+      <header class="sheet__head">
+        <h1 id="doc-title">${t.start}</h1>
+        <span>(${pad(N + 1)}) ${t.yours}</span>
+      </header>
+      <p class="sheet__tag">${b.tagline}</p>
+
+      <div class="sheet__text" data-reveal>
+        <p>${b.text}</p>
+        <p class="brief__reply">${BRIEF.reply[lang]}</p>
+      </div>
+
+      <form class="kv brief__form" action="mailto:${PERSON.email}?subject=${encodeURIComponent(b.msg.subject)}" method="post" enctype="text/plain" data-email="${PERSON.email}" data-wa="${BRIEF.whatsapp}">${row(1, picks('need', NEEDS.map((n) => ({ key: n.key, label: n.label[lang] })), 'checkbox'))}${row(2, picks('stage', b.stage))}${row(3, picks('when', b.when))}${row(4, picks('budget', BRIEF.budgets[lang]))}${row(5, `<label class="field field--area"><span class="sr-only">${b.about}</span><textarea name="about" rows="3" placeholder="${esc(b.about)}"></textarea></label>`)}${row(6, `<div class="fields">
+          ${field('name', b.you.name, ' autocomplete="name" required')}
+          ${field('brand', b.you.brand, ' autocomplete="organization"')}
+          ${field('email', b.you.email, ' type="email" autocomplete="email" inputmode="email" required')}
+          ${field('phone', b.you.phone, ' type="tel" autocomplete="tel" inputmode="tel"')}
+        </div>`)}
+        <input type="hidden" name="from"><input type="hidden" name="src">
+        <div class="kv__row brief__send"><span class="kv__k" aria-hidden="true"></span><div class="kv__v">
+          <div class="brief__btns">
+            <button type="submit" class="btn btn--fill" data-via="email">${b.send} <span aria-hidden="true">↗</span></button>${BRIEF.whatsapp ? `
+            <button type="button" class="btn" data-via="wa">${b.wa} <span aria-hidden="true">↗</span></button>` : ''}
+          </div>
+          <p class="brief__note">${b.note} <a href="${C.legalUrl}">${t.legal}</a>.</p>
+          <div class="brief__done" role="status" aria-live="polite" hidden>
+            <p class="brief__done-msg"></p>
+            <p class="brief__fallback">${b.fallback} <a href="mailto:${PERSON.email}">${PERSON.email}</a>. <button type="button" class="copy" data-copy="">${b.copy}</button></p>
+          </div>
+        </div></div>
+      </form>
+      <script type="application/json" id="brief-i18n">${JSON.stringify(i18n).replace(/</g, '\\u003c')}</script>
+    </article>`
+  });
+}
+
+/* Aviso legal y privacidad (LSSI-CE y RGPD). No se indexa. */
+const LEGAL_TEXT = {
+  en: (C) => [
+    ['Website owner', [
+      `In accordance with Spanish Law 34/2002 on information society services (LSSI-CE): this website, manelvila.com, belongs to ${LEGAL.holder}${LEGAL.nif ? `, tax ID ${LEGAL.nif}` : ''}${LEGAL.address ? `, ${LEGAL.address}` : ''}.`,
+      `Contact: <a href="mailto:${PERSON.email}">${PERSON.email}</a> · <a href="tel:${PERSON.phoneHref}">${PERSON.phone}</a>.`
+    ]],
+    ['Use of the website', [
+      'manelvila.com is the professional portfolio of Manel Vila. The projects shown belong to their authors and clients: please don’t reproduce them without permission.'
+    ]],
+    ['Privacy', [
+      `Data controller: ${LEGAL.holder} (<a href="mailto:${PERSON.email}">${PERSON.email}</a>).`,
+      'What data: whatever you send me by email, phone or WhatsApp, or with the “Start a project” sheet: your name, email, phone, company and what you tell me about your project. The sheet doesn’t store anything on this website: it is sent from your own email or WhatsApp.',
+      'What for: to reply to you and, if you ask for it, to prepare a proposal.',
+      'Legal basis: your own request (steps prior to entering into a contract, art. 6.1.b GDPR).',
+      'How long: for as long as our conversation or working relationship lasts, and afterwards for the periods required by law (for instance, tax obligations).',
+      'Who else: nobody, unless the law requires it. Email goes through Google (Gmail) and, if you choose WhatsApp, through WhatsApp (Meta). The website is hosted on Cloudflare.',
+      `Your rights: you can access, rectify or erase your data, object to or restrict its use, and ask for portability by writing to <a href="mailto:${PERSON.email}">${PERSON.email}</a>. If you think they haven’t been respected, you can complain to the Spanish Data Protection Agency (<a href="https://www.aepd.es" target="_blank" rel="noopener">aepd.es</a>).`
+    ]],
+    ['Cookies', [
+      'This website uses no tracking, advertising or analytics cookies. Your browser only keeps technical details so the site works well (such as which page you arrived from, or which video format your device plays). They are not sent anywhere, and the page you arrived from only goes in the sheet if you decide to send it.'
+    ]]
+  ],
+  es: (C) => [
+    ['Titular', [
+      `En cumplimiento de la Ley 34/2002 de servicios de la sociedad de la información (LSSI-CE): esta web, manelvila.com, es de ${LEGAL.holder}${LEGAL.nif ? `, NIF ${LEGAL.nif}` : ''}${LEGAL.address ? `, ${LEGAL.address}` : ''}.`,
+      `Contacto: <a href="mailto:${PERSON.email}">${PERSON.email}</a> · <a href="tel:${PERSON.phoneHref}">${PERSON.phone}</a>.`
+    ]],
+    ['Uso de la web', [
+      'manelvila.com es el portfolio profesional de Manel Vila. Los proyectos que se muestran son de sus autores y clientes: no los reproduzcas sin permiso.'
+    ]],
+    ['Privacidad', [
+      `Responsable: ${LEGAL.holder} (<a href="mailto:${PERSON.email}">${PERSON.email}</a>).`,
+      'Qué datos: los que me envíes por email, teléfono o WhatsApp, o con la ficha «Empezar un proyecto»: tu nombre, email, teléfono, empresa y lo que me cuentes de tu proyecto. La ficha no guarda nada en esta web: se envía desde tu propio correo o WhatsApp.',
+      'Para qué: para responderte y, si me lo pides, prepararte una propuesta.',
+      'Base legal: tu propia solicitud (aplicación de medidas precontractuales, art. 6.1.b del RGPD).',
+      'Cuánto tiempo: mientras dure nuestra conversación o relación profesional y, después, los plazos que exija la ley (por ejemplo, obligaciones fiscales).',
+      'Con quién: con nadie, salvo obligación legal. El correo pasa por Google (Gmail) y, si eliges WhatsApp, por WhatsApp (Meta). La web está alojada en Cloudflare.',
+      `Tus derechos: puedes acceder a tus datos, rectificarlos o suprimirlos, oponerte a su uso o limitarlo y pedir su portabilidad escribiendo a <a href="mailto:${PERSON.email}">${PERSON.email}</a>. Si crees que no se han respetado, puedes reclamar ante la Agencia Española de Protección de Datos (<a href="https://www.aepd.es" target="_blank" rel="noopener">aepd.es</a>).`
+    ]],
+    ['Cookies', [
+      'Esta web no usa cookies de seguimiento, publicidad ni analítica. Tu navegador solo guarda datos técnicos para que funcione bien (por ejemplo, desde qué página llegaste o qué formato de vídeo reproduce tu dispositivo). No se envían a ningún sitio, y la página de llegada solo va en la ficha si decides enviarla.'
+    ]]
+  ]
+};
+function legal(lang) {
+  const C = page(lang, PAGE.legal(lang), { en: PAGE.legal('en'), es: PAGE.legal('es') });
+  const { t } = C;
+  const secs = LEGAL_TEXT[lang](C);
+  return docPage(C, {
+    kind: 'legal', title: t.lg.title, description: t.lg.desc, back: t.svc.close, robots: 'noindex, follow',
+    main: `    <article class="sheet about__sheet legal" aria-labelledby="doc-title">
+      <header class="sheet__head">
+        <h1 id="doc-title">${t.legal}</h1>
+        <span>${t.lg.updated} ${LEGAL.updated}</span>
+      </header>
+${secs.map(([h, ps]) => `
+      <section class="legal__sec">
+        <h2>${h}</h2>
+        <div class="sheet__text">${ps.map((x) => `<p>${x}</p>`).join('')}</div>
+      </section>`).join('')}
+    </article>`
+  });
 }
 
 /* ---------- redirecciones de las direcciones antiguas (la web era solo en español) ---------- */
@@ -894,6 +1412,9 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 ${sitemapEntry({ en: PAGE.home('en'), es: PAGE.home('es') }, '1.0')}
 ${sitemapEntry({ en: PAGE.about('en'), es: PAGE.about('es') }, '0.7')}
+${sitemapEntry({ en: PAGE.services('en'), es: PAGE.services('es') }, '0.8')}
+${SERVICES.map((sv) => sitemapEntry({ en: PAGE.service('en', sv), es: PAGE.service('es', sv) }, '0.8')).join('\n')}
+${sitemapEntry({ en: PAGE.brief('en'), es: PAGE.brief('es') }, '0.6')}
 ${BASE.map((p) => sitemapEntry({ en: PAGE.project('en', p), es: PAGE.project('es', p) }, '0.8',
   [thumbOf(p), ...p.gallery.map((e) => e[0])].filter(Boolean).slice(0, 30))).join('\n')}
 </urlset>
@@ -935,6 +1456,16 @@ ${facts('en')}
 
 - [About Manel Vila](${SITE}/${PAGE.about('en')}): profile, services, studio, collaborations, clients and contact
 - [Sobre Manel Vila (español)](${SITE}/${PAGE.about('es')}): perfil, servicios, estudio, colaboraciones, clientes y contacto
+- [Start a project](${SITE}/${PAGE.brief('en')}): short brief to hire Manel Vila (sent by email or WhatsApp)
+- [Empezar un proyecto (español)](${SITE}/${PAGE.brief('es')}): ficha breve para encargar un proyecto a Manel Vila
+
+## Services
+
+${SERVICES.map((sv) => `- [${sv.name.en}](${SITE}/${PAGE.service('en', sv)}): ${sv.short.en} (${svcProjects(sv).map(({ p }) => PROJ.en.find((x) => x.slug === p.slug).name).join(', ')})`).join('\n')}
+
+## Servicios (español)
+
+${SERVICES.map((sv) => `- [${sv.name.es}](${SITE}/${PAGE.service('es', sv)}): ${sv.short.es}`).join('\n')}
 
 ## Projects
 
@@ -971,6 +1502,12 @@ ${a.bio.map(strip).join('\n\n')}
 
 ${facts(lang)}
 
+## ${en ? 'Services' : 'Servicios'}
+
+${SERVICES.map((sv) => `### ${sv.name[lang]}\n\n${SITE}/${PAGE.service(lang, sv)}\n\n${sv.text[lang].join('\n\n')}\n\n- ${T[lang].svc.includes}: ${sv.includes[lang].join(', ')}`).join('\n\n')}
+
+${en ? 'Start a project' : 'Empezar un proyecto'}: ${SITE}/${PAGE.brief(lang)}
+
 ## ${en ? 'Projects' : 'Proyectos'}
 
 ${PROJ[lang].map((p) => fullProject(lang, p)).join('\n\n')}`;
@@ -994,6 +1531,10 @@ for (const lang of LANGS) {
   write(`${PAGE.home(lang)}index.html`, home(lang));
   write(`${PAGE.about(lang)}index.html`, about(lang));
   PROJ[lang].forEach((p, i) => write(`${PAGE.project(lang, p)}index.html`, project(lang, i)));
+  write(`${PAGE.services(lang)}index.html`, servicesHub(lang));
+  SERVICES.forEach((sv, k) => write(`${PAGE.service(lang, sv)}index.html`, servicePage(lang, sv, k)));
+  write(`${PAGE.brief(lang)}index.html`, brief(lang));
+  write(`${PAGE.legal(lang)}index.html`, legal(lang));
 }
 // Direcciones antiguas → su equivalente en español
 write('about.html', redirect('', PAGE.about('es'), `About — ${PERSON.name}`));

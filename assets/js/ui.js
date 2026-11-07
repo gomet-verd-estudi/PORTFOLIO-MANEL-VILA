@@ -13,6 +13,17 @@
   const emit = () => listeners.forEach((fn) => fn(state));
   const state = { navOpen: false, panel: null };
 
+  /* Por dónde llegó a la web (Instagram, Google…, o ?ref=): se apunta una vez por visita y solo
+     viaja en la ficha «Empezar un proyecto» si quien la rellena decide enviarla */
+  try {
+    if (!sessionStorage.getItem('mv-src')) {
+      const q = new URLSearchParams(location.search);
+      let r = q.get('ref') || q.get('utm_source') || '';
+      if (!r && document.referrer) { const h = new URL(document.referrer).hostname; if (h !== location.hostname) r = h; }
+      sessionStorage.setItem('mv-src', JSON.stringify({ r, l: location.pathname }));
+    }
+  } catch (e) { /* sin storage */ }
+
   /* Textos que escribe el JavaScript, en el idioma de la página (inglés por defecto; español en /es/) */
   const LANG = document.documentElement.lang === 'es' ? 'es' : 'en';
   const t = {
@@ -381,6 +392,33 @@
   if (ft && document.querySelector('.corners') && 'IntersectionObserver' in window) {
     new IntersectionObserver(([en]) => document.body.classList.toggle('is-ft', en.isIntersecting), { rootMargin: '0px 0px -48px 0px' })
       .observe(ft);
+  }
+
+  /* Miniaturas de las páginas de servicio: la imagen viaja a la portada del proyecto, como en el índice */
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a.tile'); if (!a || a.closest('#grid')) return;
+    const m = a.querySelector('.tile__media'); if (m) m.style.viewTransitionName = 'hero';
+  });
+  addEventListener('pageshow', () => document.querySelectorAll('.works .tile__media').forEach((m) => (m.style.viewTransitionName = '')));
+  // …y su vídeo ligero (el mismo del índice) solo mientras se ven
+  const works = document.querySelectorAll('.works .tile[data-video]');
+  if (works.length && 'IntersectionObserver' in window && !reduced && !(navigator.connection && navigator.connection.saveData)) {
+    const wio = new IntersectionObserver((entries) => entries.forEach((en) => {
+      const a = en.target;
+      if (!en.isIntersecting) { if (a._v) a._v.pause(); return; }
+      if (!a._v) {
+        const v = document.createElement('video');
+        Object.assign(v, { muted: true, loop: true, playsInline: true, preload: 'auto' });
+        v.setAttribute('muted', ''); v.setAttribute('playsinline', ''); v.setAttribute('aria-hidden', 'true');
+        v.className = 'tile__video';
+        v.addEventListener('playing', () => v.classList.add('is-on'));
+        v.src = a.dataset.video;
+        a.querySelector('.tile__media').appendChild(v);
+        a._v = v;
+      }
+      const pr = a._v.play(); if (pr && pr.catch) pr.catch(() => {});
+    }), { threshold: 0.5 });
+    works.forEach((a) => wio.observe(a));
   }
 
   /* ------------------------------------------------------------------

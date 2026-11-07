@@ -9,7 +9,10 @@ Portfolio de Manel Vila, diseñador gráfico y director de arte. Es una web est�
 | `index.html` | Home en inglés (idioma de inicio): carrusel de portadas, índice en grid y menú |
 | `projects/<slug>/` | Una página por proyecto en inglés: texto, ficha técnica y galería con visor |
 | `about/` | About y contacto en inglés |
-| `es/` | La misma web en español: `es/`, `es/about/`, `es/proyectos/<slug>/` |
+| `services/`, `services/<slug>/` | Servicios: índice y una página por disciplina, con sus proyectos |
+| `start/` | Ficha «Start a project» para pedir un proyecto |
+| `legal/` | Aviso legal, privacidad y cookies (no se indexa) |
+| `es/` | La misma web en español: `es/`, `es/about/`, `es/proyectos/<slug>/`, `es/servicios/`, `es/empezar/`, `es/legal/` |
 | `proyectos/<slug>/`, `about.html` | Redirecciones de las direcciones antiguas a su versión en español |
 | `assets/js/projects.js` | **Contenido**: textos, servicios, equipo, estudio y portada de cada proyecto |
 | `assets/js/gallery.js` | Galería de cada proyecto, extraída del deck de Figma *Portfolio GVE* |
@@ -45,3 +48,13 @@ Ver [PUBLICAR.md](PUBLICAR.md).
 - Cada vez que se publica en `main`, una acción de GitHub (`.github/workflows/indexnow.yml`) avisa por IndexNow a Bing (del que tira la búsqueda de ChatGPT y Copilot), Yandex, Seznam y Naver de todas las páginas. La clave es el archivo `5c9588674bb110511b98c213eae2f6d0.txt` de la raíz: no lo borres.
 - `robots.txt` deja entrar a buscadores y rastreadores de IA. Revisa también en Cloudflare que no los bloquee (AI Crawl Control).
 - Perfiles de Manel en otras webs (LinkedIn, Behance, Instagram personal…): añádelos en `PROFILES` de `tools/build.mjs`; así Google y las IA saben que son la misma persona.
+
+## Captación de clientes
+
+- **Ficha «Empezar un proyecto»** (`/es/empezar/`, `/start/`): qué necesita, momento, plazo, presupuesto, el proyecto y sus datos. Al enviarla se abre el correo o el WhatsApp de quien la rellena con la ficha ya escrita; si no se abre nada, puede copiarla. La web no guarda datos. El mensaje lleva también el proyecto que estaba viendo y por dónde llegó a la web (Instagram, Google…).
+  - Tramos de presupuesto, número de WhatsApp y promesa de respuesta: `BRIEF` en `tools/build.mjs`.
+  - Enlaces con el servicio ya marcado: `/es/empezar/?s=branding` (`branding`, `art-direction`, `editorial`, `lettering`, `motion`, `packaging`).
+  - Para saber de dónde vienen los contactos, añade `?ref=` a los enlaces que compartas: en la bio de Instagram, `https://manelvila.com/es/empezar/?ref=ig`; en LinkedIn, `?ref=linkedin`.
+- **Llamadas a la ficha**: la casilla «[Tu proyecto]» al final del índice y de cada servicio, «¿Un proyecto como…?» al final de cada proyecto, el panel Contacto, el About, el footer y la píldora «Hablemos».
+- **Servicios** (`SERVICES` en `tools/build.mjs`): textos, qué incluye cada uno y qué proyectos le corresponden (salen solos de la disciplina de cada proyecto). Cada página apunta a búsquedas como «branding Valencia» o «dirección de arte Barcelona».
+- **Aviso legal** (`LEGAL` en `tools/build.mjs`): la ley pide NIF y domicilio del titular; aparecen en la página en cuanto se rellenan.
