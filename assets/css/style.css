@@ -971,6 +971,17 @@ body:not(.home) { --panel-bottom: calc(30px + var(--gut) * 2 + env(safe-area-ins
 .sheet .brief__done p + p { margin-top: .5rem; }
 .brief__done-msg { font-size: var(--fs-one); line-height: var(--lh-one); }
 
+/* About: termina en «[Tu proyecto]», la misma portada tipográfica de la casilla 15, ahora con su ficha.
+   Fondo gris como la casilla: la zona en la que se escribe se distingue de la que se lee */
+.yours { background: var(--paper-2); padding-top: clamp(4.5rem, 14vh, 9rem); padding-bottom: clamp(5rem, 16vh, 10rem); }
+.yours__title { margin: 0; font-weight: 400; font-size: clamp(52px, 11vw, 210px); line-height: .9; letter-spacing: -.035em; }
+.yours__head { flex-wrap: wrap; margin-top: 1.4rem; }
+.yours .sheet__text { margin-top: clamp(4rem, 14vh, 8rem); }
+.yours .brief__form { margin-top: clamp(4rem, 14vh, 8rem); }
+/* Panel Contacto del menú: la ficha es lo primero, como botón */
+.panel .contact-list .btn { margin-bottom: .75rem; }
+@media (hover: hover) { .panel .contact-list a.btn:hover { text-decoration: none; } }
+
 /* Aviso legal: título de la sección a la izquierda, texto en la columna de valores */
 .legal__sec { display: grid; grid-template-columns: var(--col-v) minmax(0, 1fr); margin-top: clamp(3rem, 10vh, 6rem); }
 .legal__sec:first-of-type { margin-top: clamp(7rem, 32vh, 18rem); }
@@ -1056,6 +1067,8 @@ body:not(.home) { --panel-bottom: calc(30px + var(--gut) * 2 + env(safe-area-ins
   .fields { grid-template-columns: 1fr; }
   .brief__form .kv__row { grid-template-columns: 1fr; row-gap: .55em; }
   .legal__sec { grid-template-columns: 1fr; row-gap: .5em; }
+  .yours__title { font-size: clamp(48px, 15vw, 120px); }
+  .yours .sheet__text, .yours .brief__form { margin-top: 3rem; }
 }
 @media (max-width: 420px) {
   .franja__name { display: none; }
