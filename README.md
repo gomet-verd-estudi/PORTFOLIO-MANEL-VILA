@@ -25,6 +25,7 @@ Portfolio de Manel Vila, diseñador gráfico y director de arte. Es una web est�
 3. Si has añadido vídeos o fotos, prepara los medios antes de regenerar:
    - `python3 tools/videos.py` codifica cada vídeo en AV1, HEVC y H.264. El navegador elige el más ligero que puede reproducir: AV1 pesa en torno a un tercio de H.264 con la misma calidad.
    - `python3 tools/images.py` genera las versiones AVIF (60–70 % menos que el JPG) y las de 800 px para móvil.
+   - `python3 tools/icons.py` rehace los favicons desde el monograma (cuadrados, azul de marca, en múltiplos de 48 px, que es lo que Google exige para mostrar el icono junto al resultado).
    - `python3 tools/tiles.py` hace los vídeos ligeros de las miniaturas del índice (640×800, ya recortados a 4:5, H.264): con ellos el grid va fluido también en móvil.
    - Necesitan `ffmpeg` (con libsvtav1 y libx265) y Pillow 11 o superior.
 4. Sube los cambios a `main`. Cloudflare Pages publica manelvila.com automáticamente.
