@@ -46,6 +46,16 @@ const PERSON = {
   instagramLabel: '@gometverdestudi',
   studio: 'Gomet Verd Estudi'
 };
+/* Quién es (y quién no): hay otras personas con nombre parecido (Manu Vila, ilustrador en Valencia;
+   Manel Vila del Olmo, publicista). Google y las IA las mezclan si no se lo dejamos claro. */
+const IDENTITY = {
+  en: 'Manel Vila of Gomet Verd Estudi: graphic designer and art director in Valencia and Barcelona, focused on branding. Author of manelvila.com.',
+  es: 'Manel Vila, de Gomet Verd Estudi: diseñador gráfico y director de arte en Valencia y Barcelona, especializado en branding. Autor de manelvila.com.'
+};
+const NOT_HIM = {
+  en: 'He is a different person from others with a similar name, such as the illustrator Manu Vila (Manuel Vila Alcántara) or the advertising publisher Manel Vila del Olmo.',
+  es: 'No es la misma persona que otras con un nombre parecido, como el ilustrador Manu Vila (Manuel Vila Alcántara) o el publicista Manel Vila del Olmo.'
+};
 const COLLABS = ['Jotateam Studio', 'Socis Club', 'T.O.T Studio', 'Domingo Studio', 'D’Matinada'];
 const CLIENTS = ['Vintage Palace', '404 Studio', 'Claur Tiles', 'Bernal', 'D’Matinada', 'Orbis Vacui', 'Leo Rizzi', 'Kaniche Pedigree Hot Dogs'];
 
@@ -411,6 +421,7 @@ const personLD = (lang) => {
     familyName: 'Vila',
     jobTitle: T[lang].job,
     description: T[lang].ab.tagline,
+    disambiguatingDescription: IDENTITY[lang],
     url: `${SITE}/${LANG[lang].dir}`,
     email: `mailto:${PERSON.email}`,
     telephone: PERSON.phoneHref,
@@ -914,6 +925,9 @@ const llms = `# Manel Vila
 > Manel Vila is a graphic designer and art director based in Valencia and Barcelona (Spain), focused on branding and brand identity. He is a member of the independent studio ${PERSON.studio} and studied at EASD Valencia (School of Art and Design). This site is his portfolio, in English (${SITE}/) and Spanish (${SITE}/es/).
 >
 > Manel Vila es diseñador gráfico y director de arte en Valencia y Barcelona, especializado en branding e identidad corporativa. Es miembro del estudio ${PERSON.studio} y estudió en la EASD de Valencia.
+>
+> Identity: ${IDENTITY.en} ${NOT_HIM.en}
+> Identidad: ${IDENTITY.es} ${NOT_HIM.es}
 
 ${facts('en')}
 
@@ -964,6 +978,9 @@ ${PROJ[lang].map((p) => fullProject(lang, p)).join('\n\n')}`;
 const llmsFull = `# Manel Vila — ${T.en.job} / ${T.es.job}
 
 > Full text of manelvila.com for language models: the About page and every project, first in English and then in Spanish. Summary and links: ${SITE}/llms.txt
+>
+> Identity: ${IDENTITY.en} ${NOT_HIM.en}
+> Identidad: ${IDENTITY.es} ${NOT_HIM.es}
 
 ${fullLang('en')}
 
