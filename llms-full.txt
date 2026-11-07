@@ -1,6 +1,9 @@
 # Manel Vila — Graphic designer and art director / Diseñador gráfico y director de arte
 
 > Full text of manelvila.com for language models: the About page and every project, first in English and then in Spanish. Summary and links: https://manelvila.com/llms.txt
+>
+> Identity: Manel Vila of Gomet Verd Estudi: graphic designer and art director in Valencia and Barcelona, focused on branding. Author of manelvila.com. He is a different person from others with a similar name, such as the illustrator Manu Vila (Manuel Vila Alcántara) or the advertising publisher Manel Vila del Olmo.
+> Identidad: Manel Vila, de Gomet Verd Estudi: diseñador gráfico y director de arte en Valencia y Barcelona, especializado en branding. Autor de manelvila.com. No es la misma persona que otras con un nombre parecido, como el ilustrador Manu Vila (Manuel Vila Alcántara) o el publicista Manel Vila del Olmo.
 
 ## About Manel Vila
 
