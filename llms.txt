@@ -1,11 +1,11 @@
 # Manel Vila
 
-> Manel Vila is a graphic designer and art director based in Valencia and Barcelona (Spain), focused on branding and brand identity. He is a member of the independent studio Gomet Verd Estudi and studied at EASD Valencia (School of Art and Design). This site is his portfolio, in English (https://manelvila.com/) and Spanish (https://manelvila.com/es/).
+> Manel Vila is a graphic designer and art director based in Valencia and Barcelona (Spain), specialising in branding and art direction for independent fashion, music and culture. He is a member of the independent studio Gomet Verd Estudi and studied at EASD Valencia (School of Art and Design). This site is his portfolio, in English (https://manelvila.com/) and Spanish (https://manelvila.com/es/).
 >
-> Manel Vila es diseñador gráfico y director de arte en Valencia y Barcelona, especializado en branding e identidad corporativa. Es miembro del estudio Gomet Verd Estudi y estudió en la EASD de Valencia.
+> Manel Vila es diseñador gráfico y director de arte en Valencia y Barcelona, especializado en branding y dirección de arte para moda independiente, música y cultura. Es miembro del estudio Gomet Verd Estudi y estudió en la EASD de Valencia.
 >
-> Identity: Manel Vila of Gomet Verd Estudi: graphic designer and art director in Valencia and Barcelona, focused on branding. Author of manelvila.com. He is a different person from others with a similar name, such as the illustrator Manu Vila (Manuel Vila Alcántara) or the advertising publisher Manel Vila del Olmo.
-> Identidad: Manel Vila, de Gomet Verd Estudi: diseñador gráfico y director de arte en Valencia y Barcelona, especializado en branding. Autor de manelvila.com. No es la misma persona que otras con un nombre parecido, como el ilustrador Manu Vila (Manuel Vila Alcántara) o el publicista Manel Vila del Olmo.
+> Identity: Manel Vila of Gomet Verd Estudi: graphic designer and art director in Valencia and Barcelona, specialising in branding and art direction for independent fashion, music and culture. Author of manelvila.com. He is a different person from others with a similar name, such as the illustrator Manu Vila (Manuel Vila Alcántara) or the advertising publisher Manel Vila del Olmo.
+> Identidad: Manel Vila, de Gomet Verd Estudi: diseñador gráfico y director de arte en Valencia y Barcelona, especializado en branding y dirección de arte para moda independiente, música y cultura. Autor de manelvila.com. No es la misma persona que otras con un nombre parecido, como el ilustrador Manu Vila (Manuel Vila Alcántara) o el publicista Manel Vila del Olmo.
 
 - Role: Graphic designer and art director
 - Based in: Valencia · Barcelona (Spain)
@@ -30,6 +30,18 @@
 - [Editorial design](https://manelvila.com/services/editorial-design/): Books, photobooks and record sleeves designed with the same care as an identity. (Bernal / Vida y Milagros, Bernal / ¿Qué tal todo allí fuera?, Cisma, Zelandia Walk)
 - [Lettering and posters](https://manelvila.com/services/lettering-and-posters/): Letters drawn for one place: a tour poster, a music video, a T-shirt. (404 Studio, Leo Rizzi · 2022 Tour, Bernal / ¿Qué tal todo allí fuera?, Kaniche Pedigree Hot Dogs)
 - [Motion graphics](https://manelvila.com/services/motion-graphics/): An identity set in motion: animated logos, social pieces, graphics for video. (Sun&Snow, Delta, Pontevecchio)
+
+## Sectors (specialisation)
+
+- [Branding for independent fashion](https://manelvila.com/sectors/independent-fashion/): Identities for fashion brands that start small and full of character. (Vintage Palace, 404 Studio)
+- [Music branding and artwork](https://manelvila.com/sectors/music/): Visual worlds for records, tours and artists. (Bernal / Vida y Milagros, Leo Rizzi · 2022 Tour, Bernal / ¿Qué tal todo allí fuera?)
+- [Art direction for cultural brands](https://manelvila.com/sectors/cultural-brands/): Identity and publishing for promoters, cultural projects and publications. (Bernal / Vida y Milagros, Orbis Vacui, Leo Rizzi · 2022 Tour, Cisma)
+
+## Sectores (especialización, español)
+
+- [Branding para moda independiente](https://manelvila.com/es/sectores/moda-independiente/): Identidades para marcas de moda que nacen pequeñas y con mucho carácter.
+- [Branding musical y diseño para artistas](https://manelvila.com/es/sectores/musica/): Universos gráficos para discos, giras y artistas.
+- [Dirección de arte para marcas culturales](https://manelvila.com/es/sectores/marcas-culturales/): Identidad y edición para promotoras, proyectos culturales y publicaciones.
 
 ## Servicios (español)
 

@@ -879,6 +879,10 @@ body:not(.home) { --panel-bottom: calc(30px + var(--gut) * 2 + env(safe-area-ins
 .kv__k { padding-right: 1em; }
 .kv__v { min-width: 0; }
 
+/* Índice de servicios: subtítulo «Sectores» con su lista justo debajo */
+.sheet__sub { margin: clamp(5rem, 18vh, 11rem) 0 0; font: inherit; scroll-margin-top: calc(var(--top) + var(--pill) + 1.5rem); }
+.about__sheet .sheet__sub + .kv { margin-top: 1.4em; }
+
 /* Servicios: sus proyectos, con las mismas miniaturas del índice */
 .works { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); padding-bottom: clamp(4rem, 12vh, 8rem); }
 .works__head {

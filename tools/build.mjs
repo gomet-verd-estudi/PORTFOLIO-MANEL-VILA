@@ -49,8 +49,8 @@ const PERSON = {
 /* Quién es (y quién no): hay otras personas con nombre parecido (Manu Vila, ilustrador en Valencia;
    Manel Vila del Olmo, publicista). Google y las IA las mezclan si no se lo dejamos claro. */
 const IDENTITY = {
-  en: 'Manel Vila of Gomet Verd Estudi: graphic designer and art director in Valencia and Barcelona, focused on branding. Author of manelvila.com.',
-  es: 'Manel Vila, de Gomet Verd Estudi: diseñador gráfico y director de arte en Valencia y Barcelona, especializado en branding. Autor de manelvila.com.'
+  en: 'Manel Vila of Gomet Verd Estudi: graphic designer and art director in Valencia and Barcelona, specialising in branding and art direction for independent fashion, music and culture. Author of manelvila.com.',
+  es: 'Manel Vila, de Gomet Verd Estudi: diseñador gráfico y director de arte en Valencia y Barcelona, especializado en branding y dirección de arte para moda independiente, música y cultura. Autor de manelvila.com.'
 };
 const NOT_HIM = {
   en: 'He is a different person from others with a similar name, such as the illustrator Manu Vila (Manuel Vila Alcántara) or the advertising publisher Manel Vila del Olmo.',
@@ -211,6 +211,101 @@ const SERVICES = [
     }
   }
 ];
+/*
+ * Sectores: el posicionamiento. Un estudio pequeño no compite en notoriedad general; puede ser la
+ * referencia para búsquedas concretas: branding para moda independiente, branding musical,
+ * dirección de arte para marcas culturales. Cada sector tiene su página (/sectors/<slug>/,
+ * /es/sectores/<slug>/) con sus proyectos documentados. `need` es el servicio que marca la ficha.
+ */
+const SECTORS = [
+  {
+    key: 'fashion', sector: true, slug: { en: 'independent-fashion', es: 'moda-independiente' }, need: 'branding',
+    match: () => false, also: ['404-studio', 'vintage-palace'],
+    label: { en: 'Independent fashion', es: 'Moda independiente' },
+    name: { en: 'Branding for independent fashion', es: 'Branding para moda independiente' },
+    audience: { en: 'Independent fashion brands and studios', es: 'Marcas y estudios de moda independiente' },
+    short: {
+      en: 'Identities for fashion brands that start small and full of character.',
+      es: 'Identidades para marcas de moda que nacen pequeñas y con mucho carácter.'
+    },
+    desc: {
+      en: 'Branding for independent fashion brands in Valencia and Barcelona: identity, collection and runway graphics, packaging and drops. Projects by Manel Vila.',
+      es: 'Branding para marcas de moda independiente en Valencia y Barcelona: identidad, gráfica de colección y desfile, packaging y drops. Proyectos de Manel Vila.'
+    },
+    text: {
+      en: [
+        'Independent fashion brands don’t compete on budget: they compete on character. They need an identity you can recognise on a label, a box, a launch post and a runway, and one that keeps up with the pace of collections and drops.',
+        'For 404 Studio we designed the identity and the graphics for its collection “No me quedan lágrimas”, inspired by 1980s Spanish quinqui cinema and presented at 080 Barcelona Fashion Week, as well as the type for a line of T-shirts in collaboration with Adidas. For Vintage Palace, vintage clothing with the urban energy of the ’80s, ’90s and 2000s, we built a whole system starting from heraldry: packaging, social media and the announcement of every drop.'
+      ],
+      es: [
+        'Las marcas de moda independientes no compiten con presupuesto: compiten con carácter. Necesitan una identidad que se reconozca en una etiqueta, en una caja, en un post de lanzamiento y en una pasarela, y que aguante el ritmo de colecciones y drops.',
+        'Para 404 Studio diseñamos la identidad y la gráfica de su colección «No me quedan lágrimas», inspirada en el cine quinqui de los 80 y presentada en la 080 Barcelona Fashion Week, además de la tipografía de unas camisetas en colaboración con Adidas. Para Vintage Palace, ropa vintage con la energía urbana de los 80, 90 y 2000, construimos todo un sistema partiendo de la heráldica: packaging, redes y el anuncio de cada drop.'
+      ]
+    },
+    includes: {
+      en: ['Brand identity', 'Collection and runway graphics', 'Type for garments', 'Packaging', 'Launches and drops on social media', 'Art direction'],
+      es: ['Identidad de marca', 'Gráfica de colección y desfile', 'Tipografía para prenda', 'Packaging', 'Lanzamientos y drops en redes', 'Dirección de arte']
+    }
+  },
+  {
+    key: 'music', sector: true, slug: { en: 'music', es: 'musica' }, need: 'branding',
+    match: () => false, also: ['bernal-vida-y-milagros', 'bernal', 'leo-rizzi'],
+    label: { en: 'Music', es: 'Música' },
+    name: { en: 'Music branding and artwork', es: 'Branding musical y diseño para artistas' },
+    audience: { en: 'Musicians, bands and music projects', es: 'Músicos, grupos y proyectos musicales' },
+    short: {
+      en: 'Visual worlds for records, tours and artists.',
+      es: 'Universos gráficos para discos, giras y artistas.'
+    },
+    desc: {
+      en: 'Music branding and artwork in Valencia and Barcelona: album visual worlds, vinyl sleeves, tour posters and music video titles. Projects by Manel Vila.',
+      es: 'Branding musical y diseño para artistas en Valencia y Barcelona: universo gráfico de disco, vinilos, carteles de gira y títulos de videoclip. Por Manel Vila.'
+    },
+    text: {
+      en: [
+        'A record, a tour or a music video needs more than a cover: a visual world that travels with the music on the vinyl, the poster, social media and merchandise, and that people recognise before they press play.',
+        'For “Vida y Milagros”, Bernal’s second album, we built that whole world: concept, identity, vinyl, stickers and the titles and credits. Also the titles for the music video “Parques” and the handmade sleeve for “¿Qué tal todo allí fuera?”. For Leo Rizzi, the poster for his tour “Bailando alrededor del río” and its Instagram versions.'
+      ],
+      es: [
+        'Un disco, una gira o un videoclip necesitan algo más que una portada: un universo gráfico que acompañe a la música en el vinilo, en el cartel, en las redes y en el merchandising, y que el público reconozca antes de darle al play.',
+        'Para «Vida y Milagros», el segundo álbum de Bernal, creamos ese universo completo: concepto, identidad, vinilo, stickers y los títulos y créditos. También los títulos del videoclip «Parques» y la funda hecha a mano de «¿Qué tal todo allí fuera?». Para Leo Rizzi, el cartel de su gira «Bailando alrededor del río» y sus versiones para Instagram.'
+      ]
+    },
+    includes: {
+      en: ['Album visual world', 'Cover, vinyl and sleeve', 'Tour posters', 'Music video titles and credits', 'Merchandise and stickers', 'Social media versions'],
+      es: ['Universo gráfico de disco', 'Portada, vinilo y funda', 'Carteles de gira', 'Títulos y créditos de videoclip', 'Merchandising y stickers', 'Adaptación a redes']
+    }
+  },
+  {
+    key: 'culture', sector: true, slug: { en: 'cultural-brands', es: 'marcas-culturales' }, need: 'art-direction',
+    match: () => false, also: ['orbis-vacui', 'cisma', 'bernal-vida-y-milagros', 'leo-rizzi'],
+    label: { en: 'Culture', es: 'Cultura' },
+    name: { en: 'Art direction for cultural brands', es: 'Dirección de arte para marcas culturales' },
+    audience: { en: 'Cultural promoters, projects and publications', es: 'Promotoras, proyectos culturales y publicaciones' },
+    short: {
+      en: 'Identity and publishing for promoters, cultural projects and publications.',
+      es: 'Identidad y edición para promotoras, proyectos culturales y publicaciones.'
+    },
+    desc: {
+      en: 'Art direction and identity for cultural brands in Valencia and Barcelona: promoters, cultural projects, photobooks and posters. Projects by Manel Vila.',
+      es: 'Dirección de arte e identidad para marcas culturales en Valencia y Barcelona: promotoras, proyectos culturales, fotolibros y carteles. Por Manel Vila.'
+    },
+    text: {
+      en: [
+        'Cultural projects change every season: new dates, new posters, new voices. They need a flexible identity that can be renewed without getting lost, and art direction that ties together everything they publish.',
+        'For the cultural promoter Orbis Vacui we designed a fresh, coherent and flexible identity. Cisma is a documentary photobook about how the city of Alzira has changed since the 1920s. And in music, the work for Bernal and Leo Rizzi starts from the same idea: giving shape to a cultural proposal.'
+      ],
+      es: [
+        'Los proyectos culturales cambian cada temporada: nuevas fechas, nuevos carteles, nuevas voces. Necesitan una identidad flexible, que pueda renovarse sin perderse, y una dirección de arte que dé coherencia a todo lo que publican.',
+        'Para la promotora sociocultural Orbis Vacui diseñamos una identidad fresca, coherente y flexible. Cisma es un fotolibro documental sobre cómo ha cambiado Alzira desde los años veinte. Y en la música, el trabajo para Bernal y Leo Rizzi parte de la misma idea: dar forma a una propuesta cultural.'
+      ]
+    },
+    includes: {
+      en: ['Flexible identity for programmes and seasons', 'Posters', 'Books and photobooks', 'Social media', 'Art direction'],
+      es: ['Identidad flexible para programaciones', 'Cartelería', 'Libros y fotolibros', 'Comunicación en redes', 'Dirección de arte']
+    }
+  }
+];
 /* Opciones de «Qué necesitas» en la ficha: los servicios y dos más */
 const NEEDS = [
   ...SERVICES.map((s) => ({ key: s.key, label: s.label })),
@@ -220,8 +315,8 @@ const NEEDS = [
 
 /* ---------- idiomas ---------- */
 const LANG = {
-  en: { code: 'en', dir: '', pj: 'projects', svc: 'services', start: 'start', locale: 'en_GB', label: 'EN', name: 'English' },
-  es: { code: 'es', dir: 'es/', pj: 'proyectos', svc: 'servicios', start: 'empezar', locale: 'es_ES', label: 'ES', name: 'Español' }
+  en: { code: 'en', dir: '', pj: 'projects', svc: 'services', sec: 'sectors', start: 'start', locale: 'en_GB', label: 'EN', name: 'English' },
+  es: { code: 'es', dir: 'es/', pj: 'proyectos', svc: 'servicios', sec: 'sectores', start: 'empezar', locale: 'es_ES', label: 'ES', name: 'Español' }
 };
 const LANGS = ['en', 'es'];
 
@@ -232,7 +327,7 @@ const T = {
     projects: 'Projects', about: 'About', contact: 'Contact',
     job: 'Graphic designer and art director',
     panelAbout: [
-      'I’m Manel Vila, a graphic designer and art director. I studied at EASD Valencia, I’m part of Gomet Verd Estudi, and branding is where I’m happiest.',
+      'I’m Manel Vila, a graphic designer and art director. I studied at EASD Valencia, I’m part of Gomet Verd Estudi, and branding is where I’m happiest, above all for independent fashion, music and culture.',
       'I’ve also worked with Jotateam Studio, Socis Club, T.O.T Studio and Domingo Studio.'
     ],
     readMore: 'Read more →', close: 'Close', index: (n) => `Index · ${n} projects`,
@@ -244,10 +339,10 @@ const T = {
     igLabel: `Instagram (${PERSON.instagramLabel})`,
     home: {
       title: 'Manel Vila — Graphic designer in Valencia & Barcelona',
-      desc: 'Manel Vila, graphic designer and art director in Valencia and Barcelona. Branding and brand identity, art direction, lettering and editorial design.',
+      desc: 'Manel Vila, graphic designer and art director in Valencia and Barcelona. Branding and art direction for independent fashion, music and culture.',
       h1: 'Manel Vila — graphic designer and art director. Projects',
       featured: 'Featured projects', carousel: 'carousel', all: 'All projects', seeAll: 'See all projects',
-      intro: 'Branding first; also art direction, lettering, editorial and motion graphics.', view: 'View project', pause: 'Pause slideshow'
+      intro: 'Branding and art direction for independent fashion, music and culture. Also editorial, lettering and motion graphics.', view: 'View project', pause: 'Pause slideshow'
     },
     pj: {
       image: (n, t) => `image ${n} of ${t}`, enlarge: (n, t) => `Enlarge image ${n} of ${t}`,
@@ -260,13 +355,13 @@ const T = {
     },
     ab: {
       title: 'About · Manel Vila, graphic designer and art director',
-      desc: 'Manel Vila is a graphic designer and art director in Valencia and Barcelona, specialising in branding. Member of Gomet Verd Estudi. Services, clients and contact.',
+      desc: 'Manel Vila is a graphic designer and art director in Valencia and Barcelona: branding for independent fashion, music and culture. Member of Gomet Verd Estudi.',
       close: 'Close About and go back',
       tagline: 'Graphic designer and art director. I work between Valencia and Barcelona and I’m part of Gomet Verd Estudi.',
       bio: [
         'I like brands that have something to say. My job is to find that something and give it a shape: an identity, a visual world, a system that works just as well on a poster as on a screen.',
         'I studied at EASD Valencia, and while I’m at ease in every corner of graphic design, what I truly love is branding: understanding what a brand wants to be, finding its own voice and building a system around it that makes it recognisable anywhere. Lettering, editorial and motion come after that, as different ways of telling the same story.',
-        'I’m part of Gomet Verd Estudi, an independent branding and art direction studio between Valencia and Barcelona. Every project there starts with a conversation and becomes a game we play together with the client, mixing strategy, storytelling and visual exploration until we reach something you can see, hold or set in motion. Many of the projects in this portfolio were born there.',
+        'I’m part of Gomet Verd Estudi, an independent branding and art direction studio between Valencia and Barcelona. Every project there starts with a conversation and becomes a game we play together with the client, mixing strategy, storytelling and visual exploration until we reach something you can see, hold or set in motion. Many of the projects in this portfolio were born there, above all for independent fashion, music and culture.',
         'We’re driven by a simple idea, ALWAYS WIPing (Working In Play): stay curious, question the usual and enjoy the process, because in the end it shows in the result.',
         'I enjoy working in a team and seeing each project through, from the first idea to the last application. If you have one in mind, <a href="{brief}">tell me about it</a>.'
       ],
@@ -280,7 +375,7 @@ const T = {
     projects: 'Proyectos', about: 'About', contact: 'Contacto',
     job: 'Diseñador gráfico y director de arte',
     panelAbout: [
-      'Soy Manel Vila, diseñador gráfico y director de arte. Estudié en la EASD de Valencia, formo parte de Gomet Verd Estudi y donde más disfruto es en el branding.',
+      'Soy Manel Vila, diseñador gráfico y director de arte. Estudié en la EASD de Valencia, formo parte de Gomet Verd Estudi y donde más disfruto es en el branding, sobre todo para moda independiente, música y cultura.',
       'También he trabajado con Jotateam Studio, Socis Club, T.O.T Studio y Domingo Studio.'
     ],
     readMore: 'Leer más →', close: 'Cerrar', index: (n) => `Índice · ${n} proyectos`,
@@ -292,10 +387,10 @@ const T = {
     igLabel: `Instagram (${PERSON.instagramLabel})`,
     home: {
       title: 'Manel Vila — Diseñador gráfico en Valencia y Barcelona',
-      desc: 'Manel Vila, diseñador gráfico y director de arte en Valencia y Barcelona. Branding e identidad corporativa, dirección de arte, lettering y diseño editorial.',
+      desc: 'Manel Vila, diseñador gráfico y director de arte en Valencia y Barcelona. Branding y dirección de arte para moda independiente, música y cultura.',
       h1: 'Manel Vila — diseñador gráfico y director de arte. Proyectos',
       featured: 'Proyectos destacados', carousel: 'carrusel', all: 'Todos los proyectos', seeAll: 'Ver todos los proyectos',
-      intro: 'Branding ante todo; también dirección de arte, lettering, editorial y motion graphics.', view: 'Ver proyecto', pause: 'Pausar pase automático'
+      intro: 'Branding y dirección de arte para moda independiente, música y cultura. También editorial, lettering y motion graphics.', view: 'Ver proyecto', pause: 'Pausar pase automático'
     },
     pj: {
       image: (n, t) => `imagen ${n} de ${t}`, enlarge: (n, t) => `Ampliar imagen ${n} de ${t}`,
@@ -308,13 +403,13 @@ const T = {
     },
     ab: {
       title: 'About · Manel Vila, diseñador gráfico y director de arte',
-      desc: 'Manel Vila es diseñador gráfico y director de arte en Valencia y Barcelona, especializado en branding. Miembro de Gomet Verd Estudi. Servicios, clientes y contacto.',
+      desc: 'Manel Vila es diseñador gráfico y director de arte en Valencia y Barcelona: branding para moda independiente, música y cultura. Miembro de Gomet Verd Estudi.',
       close: 'Cerrar About y volver',
       tagline: 'Diseñador gráfico y director de arte. Trabajo entre Valencia y Barcelona y formo parte de Gomet Verd Estudi.',
       bio: [
         'Me gustan las marcas que tienen algo que contar. Mi trabajo consiste en encontrar ese algo y darle forma: una identidad, un universo visual, un sistema que funcione igual de bien en un cartel que en una pantalla.',
         'Estudié en la EASD de Valencia y, aunque me muevo con soltura por cualquier rama del diseño gráfico, lo que de verdad me apasiona es el branding: entender qué quiere ser una marca, encontrarle una voz propia y construir a su alrededor un sistema que la haga reconocible en cualquier sitio. El lettering, la editorial o el motion vienen después, como maneras distintas de contar esa misma historia.',
-        'Formo parte de Gomet Verd Estudi, un estudio independiente de branding y dirección de arte entre Valencia y Barcelona. Allí cada proyecto empieza con una conversación y acaba siendo un juego compartido con quien nos lo encarga: mezclamos estrategia, narrativa y exploración visual hasta llegar a algo que se pueda ver, tocar o poner en movimiento. Muchos de los trabajos de este portfolio nacieron ahí.',
+        'Formo parte de Gomet Verd Estudi, un estudio independiente de branding y dirección de arte entre Valencia y Barcelona. Allí cada proyecto empieza con una conversación y acaba siendo un juego compartido con quien nos lo encarga: mezclamos estrategia, narrativa y exploración visual hasta llegar a algo que se pueda ver, tocar o poner en movimiento. Muchos de los trabajos de este portfolio nacieron ahí, sobre todo para moda independiente, música y cultura.',
         'Nos mueve una idea sencilla, ALWAYS WIPing (Working In Play): seguir siendo curiosos, cuestionar lo de siempre y disfrutar del proceso, porque al final se nota en el resultado.',
         'Me gusta trabajar en equipo y acompañar cada proyecto de principio a fin, de la primera idea a la última aplicación. Si tienes uno entre manos, <a href="{brief}">cuéntamelo</a>.'
       ],
@@ -327,16 +422,16 @@ const T = {
 
 /* Textos de captación: ficha, servicios, legal y llamadas a la acción */
 Object.assign(T.en, {
-  services: 'Services', start: 'Start a project', talk: 'Let’s talk', legal: 'Legal & privacy', and: '&', in: 'in',
+  services: 'Services', sectors: 'Sectors', start: 'Start a project', talk: 'Let’s talk', legal: 'Legal & privacy', and: '&', in: 'in',
   yours: 'Your project', youCta: 'Tell me about it in a minute',
   cta: { q: (n) => `A project like ${n}?`, go: 'Let’s start yours' },
   svc: {
     title: 'Graphic design services · Manel Vila',
     desc: 'Branding and brand identity, art direction, editorial design, lettering and motion graphics in Valencia and Barcelona. Services by Manel Vila, graphic designer.',
-    tagline: 'Branding first; also art direction, editorial, lettering and motion. Valencia · Barcelona.',
+    tagline: 'Branding and art direction for independent fashion, music and culture. Valencia · Barcelona.',
     text: ['I mostly work with brands that are just starting out or need to tell their story again. Every project starts with a conversation and ends in a system you can see, hold or set in motion.'],
     includes: 'Includes', works: 'Projects', start: 'Start a project', n: (k) => `${k} ${k === 1 ? 'project' : 'projects'}`,
-    close: 'Close and go back', all: 'All services'
+    close: 'Close and go back', all: 'All services', otherSectors: 'Other sectors', sector: 'Sector', forWhom: 'Who for'
   },
   brief: {
     title: 'Start a project · Manel Vila, graphic designer',
@@ -362,16 +457,16 @@ Object.assign(T.en, {
   }
 });
 Object.assign(T.es, {
-  services: 'Servicios', start: 'Empezar un proyecto', talk: 'Hablemos', legal: 'Aviso legal y privacidad', and: 'y', in: 'en',
+  services: 'Servicios', sectors: 'Sectores', start: 'Empezar un proyecto', talk: 'Hablemos', legal: 'Aviso legal y privacidad', and: 'y', in: 'en',
   yours: 'Tu proyecto', youCta: 'Cuéntamelo en un minuto',
   cta: { q: (n) => `¿Un proyecto como ${n}?`, go: 'Empecemos el tuyo' },
   svc: {
     title: 'Servicios de diseño gráfico · Manel Vila',
     desc: 'Branding e identidad corporativa, dirección de arte, diseño editorial, lettering y motion graphics en Valencia y Barcelona. Servicios de Manel Vila, diseñador gráfico.',
-    tagline: 'Branding ante todo; también dirección de arte, editorial, lettering y motion. Valencia · Barcelona.',
+    tagline: 'Branding y dirección de arte para moda independiente, música y cultura. Valencia · Barcelona.',
     text: ['Trabajo sobre todo con marcas que empiezan o que necesitan contarse de nuevo. Cada proyecto empieza con una conversación y acaba en un sistema que se puede ver, tocar o poner en movimiento.'],
     includes: 'Incluye', works: 'Proyectos', start: 'Empezar un proyecto', n: (k) => `${k} ${k === 1 ? 'proyecto' : 'proyectos'}`,
-    close: 'Cerrar y volver', all: 'Todos los servicios'
+    close: 'Cerrar y volver', all: 'Todos los servicios', otherSectors: 'Otros sectores', sector: 'Sector', forWhom: 'Para quién'
   },
   brief: {
     title: 'Empezar un proyecto · Manel Vila, diseñador gráfico',
@@ -406,7 +501,7 @@ const PAGE = {
   about: (lang) => `${LANG[lang].dir}about/`,
   project: (lang, p) => `${LANG[lang].dir}${LANG[lang].pj}/${p.slug}/`,
   services: (lang) => `${LANG[lang].dir}${LANG[lang].svc}/`,
-  service: (lang, s) => `${LANG[lang].dir}${LANG[lang].svc}/${s.slug[lang]}/`,
+  service: (lang, s) => `${LANG[lang].dir}${s.sector ? LANG[lang].sec : LANG[lang].svc}/${s.slug[lang]}/`,
   brief: (lang) => `${LANG[lang].dir}${LANG[lang].start}/`,
   legal: (lang) => `${LANG[lang].dir}legal/`
 };
@@ -487,6 +582,10 @@ const svcProjects = (s) => BASE.map((p, i) => ({ p, i })).filter(({ p }) => s.ma
 /** Servicio de cada parte de la disciplina («Branding + Editorial» → [branding, editorial]) */
 const tagServices = (i) => BASE[i].tag.split(/\s*\+\s*/).map((part) => SERVICES.find((s) => s.match({ tag: part, services: [] })) || null);
 const mainService = (i) => tagServices(i).find(Boolean) || SERVICES.find((s) => s.match(BASE[i])) || null;
+/** Servicio o sector → ficha con lo que corresponde ya marcado (y de dónde viene) */
+const offerBrief = (C, s) => (s.sector ? briefHref(C, { s: SERVICES.find((x) => x.key === s.need), from: s.key }) : briefHref(C, { s }));
+/** Sectores de un proyecto */
+const pjSectors = (slug) => SECTORS.filter((x) => x.also.includes(slug));
 /** Enlace a la ficha con el servicio y el proyecto de origen ya marcados */
 const briefHref = (C, { s = null, from = '' } = {}) => {
   const q = [s ? `s=${s.key}` : '', from ? `from=${from}` : ''].filter(Boolean).join('&');
@@ -656,7 +755,9 @@ const studioLD = () => ({
   '@type': 'Organization',
   '@id': STUDIO_ID,
   name: PERSON.studio,
-  description: 'Estudio creativo independiente de branding y dirección de arte en Valencia y Barcelona.',
+  description: 'Estudio creativo independiente de branding y dirección de arte en Valencia y Barcelona, especializado en moda independiente, música y cultura.',
+  slogan: 'Always WIPing (Working In Play)',
+  knowsAbout: ['Branding', 'Dirección de arte', 'Branding de moda', 'Branding musical', 'Diseño de portadas de disco', 'Marcas culturales', 'Diseño editorial', 'Lettering'],
   address: [{ '@type': 'PostalAddress', addressLocality: 'Valencia', addressCountry: 'ES' }, { '@type': 'PostalAddress', addressLocality: 'Barcelona', addressCountry: 'ES' }],
   sameAs: [PERSON.instagram],
   member: { '@id': `${SITE}/#manel-vila` }
@@ -690,9 +791,9 @@ const personLD = (lang) => {
     alumniOf: { '@type': 'CollegeOrUniversity', name: 'Escuela de Arte Superior de Diseño de Valencia (EASD)', address: { '@type': 'PostalAddress', addressLocality: 'Valencia', addressCountry: 'ES' } },
     memberOf: { '@id': STUDIO_ID },
     knowsAbout: en
-      ? ['Branding', 'Brand identity', 'Graphic design', 'Art direction', 'Lettering', 'Typography', 'Editorial design', 'Packaging', 'Motion graphics']
-      : ['Branding', 'Identidad corporativa', 'Diseño gráfico', 'Dirección de arte', 'Lettering', 'Tipografía', 'Diseño editorial', 'Packaging', 'Motion graphics'],
-    makesOffer: SERVICES.map((s) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: s.name[lang], url: `${SITE}/${PAGE.service(lang, s)}` } })),
+      ? ['Branding', 'Brand identity', 'Graphic design', 'Art direction', 'Fashion branding', 'Music branding', 'Album artwork', 'Cultural brands', 'Lettering', 'Typography', 'Editorial design', 'Packaging', 'Motion graphics']
+      : ['Branding', 'Identidad corporativa', 'Diseño gráfico', 'Dirección de arte', 'Branding de moda', 'Branding musical', 'Diseño de portadas de disco', 'Marcas culturales', 'Lettering', 'Tipografía', 'Diseño editorial', 'Packaging', 'Motion graphics'],
+    makesOffer: [...SERVICES, ...SECTORS].map((s) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: s.name[lang], url: `${SITE}/${PAGE.service(lang, s)}` } })),
     ...(PROFILES.length ? { sameAs: PROFILES } : {})
   };
 };
@@ -946,6 +1047,8 @@ function project(lang, i) {
   if (p.services.length) meta.push([t.pj.services, p.services.map(esc)]);
   const parts = p.tag.split(/\s*\+\s*/), ts = tagServices(i);
   meta.push([t.pj.discipline, parts.map((x, k) => (ts[k] ? `<a href="${C.svc(ts[k])}">${esc(x)}</a>` : esc(x))).join(' + ')]);
+  const secs = pjSectors(p.slug);
+  if (secs.length) meta.push([t.svc.sector, secs.map((x) => `<a href="${C.svc(x)}">${esc(x.label[lang])}</a>`)]);
   if (p.studio) meta.push([t.pj.studio, esc(p.studio)]);
   if (p.team) meta.push([t.pj.team, esc(p.team)]);
   if (p.year) meta.push([t.pj.year, String(p.year)]);
@@ -1071,6 +1174,7 @@ function about(lang) {
     ({ 'Identidad corporativa': SERVICES[0], 'Brand identity': SERVICES[0], Packaging: SERVICES[0], 'Art direction': SERVICES[1], Posters: SERVICES[3] })[name];
   const rows = [
     [a.labels.services, a.services.map((x) => { const s = svcFor(x); return s ? `<a href="${C.svc(s)}">${esc(x)}</a>` : esc(x); })],
+    [t.sectors, SECTORS.map((x) => `<a href="${C.svc(x)}">${esc(x.label[lang])}</a>`)],
     [a.labels.studio, [PERSON.studio, 'Valencia · Barcelona']],
     [a.labels.collabs, COLLABS.map(esc)],
     [a.labels.clients, CLIENTS.map(esc)],
@@ -1203,13 +1307,12 @@ function servicesHub(lang) {
   const C = page(lang, PAGE.services(lang), { en: PAGE.services('en'), es: PAGE.services('es') });
   const { t } = C;
   const rows = SERVICES.map((s) => [`<a href="${C.svc(s)}">${esc(s.label[lang])}</a>`, [esc(s.short[lang]), `<span class="kv__muted">${t.svc.n(svcProjects(s).length)}</span>`]]);
-  rows.push([t.start, [`<a href="${C.brief}">${t.youCta} <span aria-hidden="true">→</span></a>`]]);
   return docPage(C, {
     kind: 'services', title: t.svc.title, description: t.svc.desc, back: t.svc.close,
     jsonld: [{ '@context': 'https://schema.org', '@graph': [
       { '@type': 'CollectionPage', '@id': `${SITE}/${C.here}#page`, url: `${SITE}/${C.here}`, name: t.svc.title, description: t.svc.desc, inLanguage: lang,
         about: { '@id': `${SITE}/#manel-vila` }, isPartOf: { '@id': `${SITE}/#web` },
-        mainEntity: { '@type': 'ItemList', itemListElement: SERVICES.map((s, k) => ({ '@type': 'ListItem', position: k + 1, name: s.name[lang], url: `${SITE}/${PAGE.service(lang, s)}` })) } },
+        mainEntity: { '@type': 'ItemList', itemListElement: [...SERVICES, ...SECTORS].map((s, k) => ({ '@type': 'ListItem', position: k + 1, name: s.name[lang], url: `${SITE}/${PAGE.service(lang, s)}` })) } },
       personLD(lang), studioLD(), crumbs(lang, [[t.services, C.here]])
     ] }],
     main: `    <article class="sheet about__sheet svc" aria-labelledby="doc-title">
@@ -1224,6 +1327,11 @@ function servicesHub(lang) {
       </div>
 
       ${kv(rows, ' data-reveal')}
+
+      <h2 class="sheet__sub" id="sectores">${t.sectors}</h2>
+      ${kv(SECTORS.map((x) => [`<a href="${C.svc(x)}">${esc(x.label[lang])}</a>`, [esc(x.name[lang]), `<span class="kv__muted">${t.svc.n(svcProjects(x).length)}</span>`]]), ' data-reveal')}
+
+      ${kv([[t.start, [`<a href="${C.brief}">${t.youCta} <span aria-hidden="true">→</span></a>`]]], ' data-reveal')}
     </article>`
   });
 }
@@ -1233,15 +1341,17 @@ function servicePage(lang, s, k) {
   const C = page(lang, PAGE.service(lang, s), { en: PAGE.service('en', s), es: PAGE.service('es', s) });
   const { t } = C;
   const works = svcProjects(s);
-  const title = `${s.label[lang]} ${t.in} Valencia ${t.and} Barcelona · ${PERSON.name}`;
-  const description = `${s.name[lang]} ${t.in} Valencia ${t.and} Barcelona. ${s.short[lang]} ${lang === 'en' ? 'Projects by Manel Vila.' : 'Proyectos de Manel Vila.'}`;
+  const title = s.sector ? `${s.name[lang]} · ${PERSON.name}` : `${s.label[lang]} ${t.in} Valencia ${t.and} Barcelona · ${PERSON.name}`;
+  const description = s.desc ? s.desc[lang] : `${s.name[lang]} ${t.in} Valencia ${t.and} Barcelona. ${s.short[lang]} ${lang === 'en' ? 'Projects by Manel Vila.' : 'Proyectos de Manel Vila.'}`;
+  const group = s.sector ? SECTORS : SERVICES;
   if (title.length > 60) console.warn(`título largo (${title.length}): ${title}`);
   if (description.length > 165) console.warn(`descripción larga (${description.length}): ${description}`);
   const rows = [
     [t.svc.includes, s.includes[lang].map(esc)],
     [t.svc.works, works.map(({ i }) => `<a href="${C.pj(C.P[i])}">${esc(C.P[i].name)}</a>`)],
-    [t.svc.all, SERVICES.filter((x) => x !== s).map((x) => `<a href="${C.svc(x)}">${esc(x.label[lang])}</a>`)],
-    [t.start, [`<a href="${briefHref(C, { s })}">${t.youCta} <span aria-hidden="true">→</span></a>`]]
+    ...(s.audience ? [[t.svc.forWhom, [esc(s.audience[lang])]]] : []),
+    [s.sector ? t.svc.otherSectors : t.svc.all, group.filter((x) => x !== s).map((x) => `<a href="${C.svc(x)}">${esc(x.label[lang])}</a>`)],
+    [t.start, [`<a href="${offerBrief(C, s)}">${t.youCta} <span aria-hidden="true">→</span></a>`]]
   ];
   return docPage(C, {
     kind: 'service', title, description, back: t.svc.close,
@@ -1250,13 +1360,14 @@ function servicePage(lang, s, k) {
         description: plain(s.text[lang].join(' ')),
         provider: { '@id': `${SITE}/#manel-vila` },
         areaServed: [{ '@type': 'City', name: 'Valencia' }, { '@type': 'City', name: 'Barcelona' }, { '@type': 'Country', name: lang === 'en' ? 'Spain' : 'España' }],
+        ...(s.audience ? { audience: { '@type': 'Audience', audienceType: s.audience[lang] } } : {}),
         hasOfferCatalog: { '@type': 'OfferCatalog', name: s.name[lang], itemListElement: s.includes[lang].map((x) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: x } })) } },
-      personLD(lang), studioLD(), crumbs(lang, [[t.services, PAGE.services(lang)], [s.name[lang], C.here]])
+      personLD(lang), studioLD(), crumbs(lang, [[s.sector ? t.sectors : t.services, PAGE.services(lang)], [s.name[lang], C.here]])
     ] }],
     main: `    <article class="sheet about__sheet svc" aria-labelledby="doc-title">
       <header class="sheet__head">
         <h1 id="doc-title">${esc(s.name[lang])}</h1>
-        <a href="${C.servicesUrl}">${t.services} <sup>${pad(k + 1)}/${pad(SERVICES.length)}</sup></a>
+        <a href="${C.servicesUrl}${s.sector ? '#sectores' : ''}">${s.sector ? t.sectors : t.services} <sup>${pad(k + 1)}/${pad(group.length)}</sup></a>
       </header>
       <p class="sheet__tag">${esc(s.short[lang])}</p>
 
@@ -1268,7 +1379,7 @@ function servicePage(lang, s, k) {
     </article>
 
     <section class="works" aria-labelledby="works-title">
-      <h2 class="works__head" id="works-title"><span>${t.svc.works}</span><span>(${pad(works.length)})</span></h2>${works.map(({ i }) => workTile(C, i)).join('')}${ctaTile(C, briefHref(C, { s }), works.length, N + 1)}
+      <h2 class="works__head" id="works-title"><span>${t.svc.works}</span><span>(${pad(works.length)})</span></h2>${works.map(({ i }) => workTile(C, i)).join('')}${ctaTile(C, offerBrief(C, s), works.length, N + 1)}
     </section>`
   });
 }
@@ -1284,7 +1395,7 @@ function briefForm(C) {
   const row = (k, body) => `
         <div class="kv__row" role="group" aria-labelledby="b${k}"><span class="kv__k" id="b${k}">${num(k)} ${b.labels[k - 1]}</span><div class="kv__v">${body}</div></div>`;
   const field = (name, label, attrs = '') => `<label class="field"><span class="sr-only">${label}</span><input name="${name}" placeholder="${esc(label)}"${attrs}></label>`;
-  const i18n = { ...b.msg, labels: b.labels, done: b.done, page: `${SITE}/${C.here}`, projects: Object.fromEntries(C.P.map((p) => [p.slug, p.name])) };
+  const i18n = { ...b.msg, labels: b.labels, done: b.done, page: `${SITE}/${C.here}`, projects: Object.fromEntries([...C.P.map((p) => [p.slug, p.name]), ...SECTORS.map((x) => [x.key, x.name[lang]])]) };
   return `<form class="kv brief__form" action="mailto:${PERSON.email}?subject=${encodeURIComponent(b.msg.subject)}" method="post" enctype="text/plain" data-email="${PERSON.email}" data-wa="${BRIEF.whatsapp}">${row(1, picks('need', NEEDS.map((n) => ({ key: n.key, label: n.label[lang] })), 'checkbox'))}${row(2, picks('stage', b.stage))}${row(3, picks('when', b.when))}${row(4, picks('budget', BRIEF.budgets[lang]))}${row(5, `<label class="field field--area"><span class="sr-only">${b.about}</span><textarea name="about" rows="3" placeholder="${esc(b.about)}"></textarea></label>`)}${row(6, `<div class="fields">
           ${field('name', b.you.name, ' autocomplete="name" required')}
           ${field('brand', b.you.brand, ' autocomplete="organization"')}
@@ -1430,7 +1541,7 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 ${sitemapEntry({ en: PAGE.home('en'), es: PAGE.home('es') }, '1.0')}
 ${sitemapEntry({ en: PAGE.about('en'), es: PAGE.about('es') }, '0.7')}
 ${sitemapEntry({ en: PAGE.services('en'), es: PAGE.services('es') }, '0.8')}
-${SERVICES.map((sv) => sitemapEntry({ en: PAGE.service('en', sv), es: PAGE.service('es', sv) }, '0.8')).join('\n')}
+${[...SERVICES, ...SECTORS].map((sv) => sitemapEntry({ en: PAGE.service('en', sv), es: PAGE.service('es', sv) }, '0.8')).join('\n')}
 ${sitemapEntry({ en: PAGE.brief('en'), es: PAGE.brief('es') }, '0.6')}
 ${BASE.map((p) => sitemapEntry({ en: PAGE.project('en', p), es: PAGE.project('es', p) }, '0.8',
   [thumbOf(p), ...p.gallery.map((e) => e[0])].filter(Boolean).slice(0, 30))).join('\n')}
@@ -1460,9 +1571,9 @@ const facts = (lang) => {
 };
 const llms = `# Manel Vila
 
-> Manel Vila is a graphic designer and art director based in Valencia and Barcelona (Spain), focused on branding and brand identity. He is a member of the independent studio ${PERSON.studio} and studied at EASD Valencia (School of Art and Design). This site is his portfolio, in English (${SITE}/) and Spanish (${SITE}/es/).
+> Manel Vila is a graphic designer and art director based in Valencia and Barcelona (Spain), specialising in branding and art direction for independent fashion, music and culture. He is a member of the independent studio ${PERSON.studio} and studied at EASD Valencia (School of Art and Design). This site is his portfolio, in English (${SITE}/) and Spanish (${SITE}/es/).
 >
-> Manel Vila es diseñador gráfico y director de arte en Valencia y Barcelona, especializado en branding e identidad corporativa. Es miembro del estudio ${PERSON.studio} y estudió en la EASD de Valencia.
+> Manel Vila es diseñador gráfico y director de arte en Valencia y Barcelona, especializado en branding y dirección de arte para moda independiente, música y cultura. Es miembro del estudio ${PERSON.studio} y estudió en la EASD de Valencia.
 >
 > Identity: ${IDENTITY.en} ${NOT_HIM.en}
 > Identidad: ${IDENTITY.es} ${NOT_HIM.es}
@@ -1479,6 +1590,14 @@ ${facts('en')}
 ## Services
 
 ${SERVICES.map((sv) => `- [${sv.name.en}](${SITE}/${PAGE.service('en', sv)}): ${sv.short.en} (${svcProjects(sv).map(({ p }) => PROJ.en.find((x) => x.slug === p.slug).name).join(', ')})`).join('\n')}
+
+## Sectors (specialisation)
+
+${SECTORS.map((sv) => `- [${sv.name.en}](${SITE}/${PAGE.service('en', sv)}): ${sv.short.en} (${svcProjects(sv).map(({ p }) => PROJ.en.find((x) => x.slug === p.slug).name).join(', ')})`).join('\n')}
+
+## Sectores (especialización, español)
+
+${SECTORS.map((sv) => `- [${sv.name.es}](${SITE}/${PAGE.service('es', sv)}): ${sv.short.es}`).join('\n')}
 
 ## Servicios (español)
 
@@ -1521,7 +1640,7 @@ ${facts(lang)}
 
 ## ${en ? 'Services' : 'Servicios'}
 
-${SERVICES.map((sv) => `### ${sv.name[lang]}\n\n${SITE}/${PAGE.service(lang, sv)}\n\n${sv.text[lang].join('\n\n')}\n\n- ${T[lang].svc.includes}: ${sv.includes[lang].join(', ')}`).join('\n\n')}
+${[...SECTORS, ...SERVICES].map((sv) => `### ${sv.name[lang]}\n\n${SITE}/${PAGE.service(lang, sv)}\n\n${sv.text[lang].join('\n\n')}\n\n- ${T[lang].svc.includes}: ${sv.includes[lang].join(', ')}`).join('\n\n')}
 
 ${en ? 'Start a project' : 'Empezar un proyecto'}: ${SITE}/${PAGE.brief(lang)}
 
@@ -1550,6 +1669,7 @@ for (const lang of LANGS) {
   PROJ[lang].forEach((p, i) => write(`${PAGE.project(lang, p)}index.html`, project(lang, i)));
   write(`${PAGE.services(lang)}index.html`, servicesHub(lang));
   SERVICES.forEach((sv, k) => write(`${PAGE.service(lang, sv)}index.html`, servicePage(lang, sv, k)));
+  SECTORS.forEach((sv, k) => write(`${PAGE.service(lang, sv)}index.html`, servicePage(lang, sv, k)));
   write(`${PAGE.brief(lang)}index.html`, brief(lang));
   write(`${PAGE.legal(lang)}index.html`, legal(lang));
 }
