@@ -869,6 +869,117 @@ body:not(.home) { --panel-bottom: calc(30px + var(--gut) * 2 + env(safe-area-ins
 .is-in .mask > span, .mask.is-in > span { transform: none; }
 
 /* --------------------------------------------------------------------------
+   CAPTACIÓN — servicios, ficha «Empezar un proyecto», aviso legal y llamadas
+   (la misma hoja que el About: un cuerpo, etiqueta / valor, nada que grite)
+   -------------------------------------------------------------------------- */
+.sheet__head a { text-underline-offset: .14em; }
+@media (hover: hover) { .sheet__head a:hover { text-decoration: underline; text-decoration-thickness: 1px; } }
+.sheet__head sup { font-size: .55em; letter-spacing: .02em; }
+.kv__muted { opacity: .55; }
+.kv__k { padding-right: 1em; }
+.kv__v { min-width: 0; }
+
+/* Servicios: sus proyectos, con las mismas miniaturas del índice */
+.works { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); padding-bottom: clamp(4rem, 12vh, 8rem); }
+.works__head {
+  grid-column: 1 / -1; display: flex; justify-content: space-between; gap: 1em;
+  margin: 0 0 .7rem; padding: 0 var(--pad);
+  font: inherit; font-size: var(--fs-one); line-height: var(--lh-one);
+}
+.works .tile, .works .tcta { opacity: 1; transform: none; }
+
+/* Índice: la casilla siguiente es la de quien llega — «[Tu proyecto]», portada tipográfica que se enciende */
+.tcta {
+  grid-column: span var(--span-d, 3);
+  position: relative; display: flex; flex-direction: column; min-width: 0;
+  opacity: 0; transform: translateY(24px);
+  transition: opacity .7s var(--ease-out), transform .9s var(--ease-out);
+}
+.is-grid .tcta { opacity: 1; transform: none; transition-delay: calc(var(--i) * 40ms + 100ms); }
+.tcta .tile__media { aspect-ratio: var(--ar-d, 3 / 1); background: var(--paper-2); transition: background .6s var(--ease); }
+.tcta .cover { background: transparent; color: var(--blue); padding: 1rem var(--pad); transition: color .6s var(--ease); }
+.tcta .cover__title { display: block; margin-top: auto; font-size: clamp(40px, 7.4vw, 140px); }
+.tcta .cover__lead { margin-top: 1.1rem; padding-bottom: 0; border-bottom: 0; }
+.tcta .tile__name { transition: transform .5s var(--ease); }
+@media (hover: hover) {
+  .tcta:hover .tile__media { background: var(--blue); }
+  .tcta:hover .cover { color: var(--white); }
+  .tcta:hover .tile__name { transform: translateX(.35rem); }
+}
+
+/* Proyecto: una línea antes del siguiente — «¿Un proyecto como este? Empecemos el tuyo →» */
+.pj__cta { display: grid; grid-template-columns: var(--col-v) minmax(0, 1fr); align-items: baseline; padding-top: clamp(4rem, 12vh, 8rem); }
+.pj__cta-num { opacity: .55; }
+.pj__cta p { margin: 0; text-wrap: balance; }
+.pj__cta a { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .14em; white-space: nowrap; }
+@media (hover: hover) { .pj__cta a:hover { text-decoration-thickness: 2px; } }
+
+.ft__legal-link {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px; background-position: 0 100%; background-repeat: no-repeat;
+  transition: background-size .45s var(--ease);
+}
+.ft__legal-link[aria-current] { background-size: 100% 1px; }
+@media (hover: hover) { .ft__legal-link:hover { background-size: 100% 1px; } }
+
+/* Ficha «Empezar un proyecto»: opciones como píldoras, campos subrayados en el cuerpo de lectura */
+.brief .sheet__text .brief__reply { margin-top: 1.16em; opacity: .55; }
+.brief__form .kv__row + .kv__row { margin-top: 2.1em; }
+.picks { display: flex; flex-wrap: wrap; gap: .45rem; }
+.pick { position: relative; display: inline-flex; }
+.pick input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+.pick span {
+  display: inline-flex; align-items: center;
+  min-height: 34px; padding: .3em .85em .28em;
+  border: 1.2px solid currentColor; border-radius: 999px;
+  font-size: clamp(13px, 9px + .55vw, 17px); line-height: 1.1;
+  transition: background .2s ease, color .2s ease;
+}
+.pick input:checked + span { background: var(--blue); color: var(--white); }
+.pick input:focus-visible + span { outline: 1.5px solid var(--blue); outline-offset: 3px; }
+@media (hover: hover) { .pick:hover input:not(:checked) + span { background: rgba(6, 0, 255, .07); } }
+.fields { display: grid; grid-template-columns: 1fr 1fr; gap: .5em 1.4em; }
+.field { display: block; min-width: 0; }
+.field input, .field textarea {
+  -webkit-appearance: none; appearance: none;
+  display: block; width: 100%; margin: 0;
+  font: inherit; color: inherit; letter-spacing: inherit;
+  background: transparent; border: 0; border-bottom: 1px solid currentColor; border-radius: 0;
+  padding: .2em 0 .3em; outline: 0;
+}
+.field textarea { resize: vertical; min-height: 4.2em; line-height: var(--lh-one); }
+.field ::placeholder { color: var(--blue); opacity: .36; }
+.field input:focus, .field textarea:focus { box-shadow: 0 1px 0 currentColor; }
+.field input:user-invalid { border-bottom-style: dashed; }
+.brief__send { margin-top: 2.6em; }
+.brief__btns { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; }
+.btn {
+  display: inline-flex; align-items: center; gap: .55em;
+  height: 46px; padding: 0 1.25rem;
+  border: 1.2px solid currentColor; border-radius: 999px;
+  font-size: 10.5pt; line-height: 1; letter-spacing: .03em; text-transform: uppercase; white-space: nowrap;
+  transition: background .25s ease, color .25s ease, border-color .25s ease;
+}
+.btn--fill { background: var(--blue); border-color: var(--blue); color: var(--white); }
+@media (hover: hover) {
+  .btn:hover { background: var(--blue); color: var(--white); }
+  .btn--fill:hover { background: transparent; color: var(--blue); }
+}
+.sheet .brief__note { margin-top: 1.1rem; font-size: var(--fs-s); line-height: 1.3; opacity: .7; }
+.brief__note a, .brief__fallback a { text-decoration: underline; text-underline-offset: 3px; }
+.brief__done { margin-top: 1.4rem; padding-top: .9rem; border-top: 1px solid currentColor; font-size: var(--fs-s); line-height: 1.35; }
+.sheet .brief__done p + p { margin-top: .5rem; }
+.brief__done-msg { font-size: var(--fs-one); line-height: var(--lh-one); }
+
+/* Aviso legal: título de la sección a la izquierda, texto en la columna de valores */
+.legal__sec { display: grid; grid-template-columns: var(--col-v) minmax(0, 1fr); margin-top: clamp(3rem, 10vh, 6rem); }
+.legal__sec:first-of-type { margin-top: clamp(7rem, 32vh, 18rem); }
+.legal__sec h2 { margin: 0; padding-right: 1em; font: inherit; }
+.about__sheet .legal__sec .sheet__text { margin: 0; }
+.legal .sheet__text p + p { margin-top: .8em; }
+.legal .sheet__text a { overflow-wrap: anywhere; }
+
+/* --------------------------------------------------------------------------
    Responsive (punto de corte de la web original: 923px)
    -------------------------------------------------------------------------- */
 @media (max-width: 923px) {
@@ -930,6 +1041,21 @@ body:not(.home) { --panel-bottom: calc(30px + var(--gut) * 2 + env(safe-area-ins
 
   .sheet__text { margin-left: 0; }
   .sheet__tag { max-width: none; }
+}
+@media (max-width: 923px) {
+  .works { grid-template-columns: 1fr 1fr; }
+  .tcta { grid-column: span var(--span-m, 2); }
+  .tcta .tile__media { aspect-ratio: 4 / 5; }
+  .tcta .cover__title { font-size: clamp(48px, 15vw, 120px); }
+  .tcta--half .cover__title { font-size: clamp(28px, 8vw, 60px); }
+  .tcta--half .tile__tag { display: none; }
+  .tcta--half .tile__cap { grid-template-columns: auto minmax(0, 1fr); font-size: 9.5pt; }
+  .tcta .tile__cap { grid-template-columns: auto minmax(0, 1fr) auto; font-size: var(--fs-s); }
+  .tcta .tile__tag { display: block; }
+  .pj__cta { grid-template-columns: 1fr; row-gap: .5em; }
+  .fields { grid-template-columns: 1fr; }
+  .brief__form .kv__row { grid-template-columns: 1fr; row-gap: .55em; }
+  .legal__sec { grid-template-columns: 1fr; row-gap: .5em; }
 }
 @media (max-width: 420px) {
   .franja__name { display: none; }

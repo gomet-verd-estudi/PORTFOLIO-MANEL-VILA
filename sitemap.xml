@@ -20,6 +20,76 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/about/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/about/"/>
   </url>
+  <url><loc>https://manelvila.com/services/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/services/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/servicios/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/services/"/>
+  </url>
+  <url><loc>https://manelvila.com/es/servicios/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/services/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/servicios/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/services/"/>
+  </url>
+  <url><loc>https://manelvila.com/services/branding/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/services/branding/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/servicios/branding/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/services/branding/"/>
+  </url>
+  <url><loc>https://manelvila.com/es/servicios/branding/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/services/branding/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/servicios/branding/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/services/branding/"/>
+  </url>
+  <url><loc>https://manelvila.com/services/art-direction/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/services/art-direction/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/servicios/direccion-de-arte/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/services/art-direction/"/>
+  </url>
+  <url><loc>https://manelvila.com/es/servicios/direccion-de-arte/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/services/art-direction/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/servicios/direccion-de-arte/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/services/art-direction/"/>
+  </url>
+  <url><loc>https://manelvila.com/services/editorial-design/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/services/editorial-design/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/servicios/diseno-editorial/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/services/editorial-design/"/>
+  </url>
+  <url><loc>https://manelvila.com/es/servicios/diseno-editorial/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/services/editorial-design/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/servicios/diseno-editorial/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/services/editorial-design/"/>
+  </url>
+  <url><loc>https://manelvila.com/services/lettering-and-posters/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/services/lettering-and-posters/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/servicios/lettering-y-carteleria/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/services/lettering-and-posters/"/>
+  </url>
+  <url><loc>https://manelvila.com/es/servicios/lettering-y-carteleria/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/services/lettering-and-posters/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/servicios/lettering-y-carteleria/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/services/lettering-and-posters/"/>
+  </url>
+  <url><loc>https://manelvila.com/services/motion-graphics/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/services/motion-graphics/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/servicios/motion-graphics/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/services/motion-graphics/"/>
+  </url>
+  <url><loc>https://manelvila.com/es/servicios/motion-graphics/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/services/motion-graphics/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/servicios/motion-graphics/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/services/motion-graphics/"/>
+  </url>
+  <url><loc>https://manelvila.com/start/</loc><lastmod>2026-11-07</lastmod><priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/start/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/empezar/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/start/"/>
+  </url>
+  <url><loc>https://manelvila.com/es/empezar/</loc><lastmod>2026-11-07</lastmod><priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/start/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/empezar/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/start/"/>
+  </url>
   <url><loc>https://manelvila.com/projects/vintage-palace/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/projects/vintage-palace/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/proyectos/vintage-palace/"/>

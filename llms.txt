@@ -20,6 +20,24 @@
 
 - [About Manel Vila](https://manelvila.com/about/): profile, services, studio, collaborations, clients and contact
 - [Sobre Manel Vila (español)](https://manelvila.com/es/about/): perfil, servicios, estudio, colaboraciones, clientes y contacto
+- [Start a project](https://manelvila.com/start/): short brief to hire Manel Vila (sent by email or WhatsApp)
+- [Empezar un proyecto (español)](https://manelvila.com/es/empezar/): ficha breve para encargar un proyecto a Manel Vila
+
+## Services
+
+- [Branding and brand identity](https://manelvila.com/services/branding/): Identities with something to say, from the first idea to the complete system. (Vintage Palace, 404 Studio, Claur Tiles, Bernal / Vida y Milagros, D’Matinada, Orbis Vacui, Zelandia Walk)
+- [Art direction](https://manelvila.com/services/art-direction/): One concept and one visual world, so every piece tells the same story. (Vintage Palace, Claur Tiles, Kaniche Pedigree Hot Dogs)
+- [Editorial design](https://manelvila.com/services/editorial-design/): Books, photobooks and record sleeves designed with the same care as an identity. (Bernal / Vida y Milagros, Bernal / ¿Qué tal todo allí fuera?, Cisma, Zelandia Walk)
+- [Lettering and posters](https://manelvila.com/services/lettering-and-posters/): Letters drawn for one place: a tour poster, a music video, a T-shirt. (404 Studio, Leo Rizzi · 2022 Tour, Bernal / ¿Qué tal todo allí fuera?, Kaniche Pedigree Hot Dogs)
+- [Motion graphics](https://manelvila.com/services/motion-graphics/): An identity set in motion: animated logos, social pieces, graphics for video. (Sun&Snow, Delta, Pontevecchio)
+
+## Servicios (español)
+
+- [Branding e identidad corporativa](https://manelvila.com/es/servicios/branding/): Identidades con algo que contar, de la primera idea al sistema completo.
+- [Dirección de arte](https://manelvila.com/es/servicios/direccion-de-arte/): Un concepto y un universo visual para que cada pieza cuente la misma historia.
+- [Diseño editorial](https://manelvila.com/es/servicios/diseno-editorial/): Libros, fotolibros y fundas de disco diseñados con el mismo cuidado que una identidad.
+- [Lettering y cartelería](https://manelvila.com/es/servicios/lettering-y-carteleria/): Letras dibujadas para un sitio concreto: un cartel de gira, un videoclip, una camiseta.
+- [Motion graphics](https://manelvila.com/es/servicios/motion-graphics/): La identidad en movimiento: logotipos animados, piezas para redes, gráficos para vídeo.
 
 ## Projects
 
