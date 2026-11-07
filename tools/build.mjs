@@ -618,7 +618,7 @@ function panels(C, kind, current = -1) {
   <section class="panel" data-panel="contact" hidden aria-label="${t.contact}" data-lenis-prevent>
     <div class="panel__inner"><div class="panel__pad">
       <div class="contact-list">
-        <a class="contact-list__go" href="${C.brief}">${t.start} <span aria-hidden="true">→</span></a>
+        <a class="btn btn--fill contact-list__go" href="${C.brief}">${t.start} <span aria-hidden="true">→</span></a>
         ${copyable(t)}
         <a href="tel:${PERSON.phoneHref}">${PERSON.phone}</a>
         <a href="${PERSON.instagram}" target="_blank" rel="noopener">${PERSON.instagramLabel}</a>
@@ -1076,7 +1076,7 @@ function about(lang) {
     [a.labels.clients, CLIENTS.map(esc)],
     [a.labels.education, [esc(a.education)]],
     [a.labels.contact, [
-      `<a href="${C.brief}">${t.start} <span aria-hidden="true">→</span></a>`,
+      `<a href="#empezar">${t.start} <span aria-hidden="true">↓</span></a>`,
       `<span class="copyable"><a href="mailto:${PERSON.email}">${PERSON.email.replace('@', '<wbr>@')}</a><button class="copy" data-copy="${PERSON.email}" aria-label="${t.copyEmail}">${t.copy}</button></span>`,
       `<a href="tel:${PERSON.phoneHref}">${PERSON.phone}</a>`,
       ig
@@ -1116,16 +1116,26 @@ ${panels(C, 'about')}
       <p class="sheet__tag">${a.tagline}</p>
 
       <div class="sheet__text" data-reveal>
-        ${a.bio.map((x) => `<p>${x.replace('{brief}', C.brief)}</p>`).join('\n        ')}
+        ${a.bio.map((x) => `<p>${x.replace('{brief}', '#empezar')}</p>`).join('\n        ')}
       </div>
 
       ${kv(rows, ' data-reveal')}
     </article>
+
+    <section class="sheet brief yours" id="empezar" aria-labelledby="empezar-title">
+      <h2 class="yours__title" id="empezar-title" data-reveal>[${t.yours}]</h2>
+      <div class="sheet__head yours__head"><span>(${pad(N + 1)}) ${t.start}</span><span>${t.brief.tagline}</span></div>
+      <div class="sheet__text" data-reveal>
+        <p>${t.brief.text}</p>
+        <p class="brief__reply">${BRIEF.reply[lang]}</p>
+      </div>
+      ${briefForm(C)}
+    </section>
   </main>
 ${footer(C, { cta: false, kind: 'about' })}
-${corners(C)}
+${corners(C, `<a class="corner corner--l" href="#empezar">${t.talk}</a>`)}
 
-${scripts(R, ['vendor/lenis.min', 'ui'])}
+${scripts(R, ['vendor/lenis.min', 'ui', 'brief'])}
 </body>
 </html>
 `;
@@ -1263,10 +1273,10 @@ function servicePage(lang, s, k) {
   });
 }
 
-/* Ficha «Empezar un proyecto»: se envía ya escrita desde el correo o el WhatsApp de quien la rellena */
-function brief(lang) {
-  const C = page(lang, PAGE.brief(lang), { en: PAGE.brief('en'), es: PAGE.brief('es') });
-  const { t } = C;
+/* Ficha «Empezar un proyecto»: se envía ya escrita desde el correo o el WhatsApp de quien la rellena.
+   Vive en su propia página y al final del About, donde se decide escribir. */
+function briefForm(C) {
+  const { t, lang } = C;
   const b = t.brief;
   const num = (k) => `(${pad(k)})`;
   const picks = (name, options, type = 'radio') => `<div class="picks">${options.map((o) =>
@@ -1275,6 +1285,32 @@ function brief(lang) {
         <div class="kv__row" role="group" aria-labelledby="b${k}"><span class="kv__k" id="b${k}">${num(k)} ${b.labels[k - 1]}</span><div class="kv__v">${body}</div></div>`;
   const field = (name, label, attrs = '') => `<label class="field"><span class="sr-only">${label}</span><input name="${name}" placeholder="${esc(label)}"${attrs}></label>`;
   const i18n = { ...b.msg, labels: b.labels, done: b.done, page: `${SITE}/${C.here}`, projects: Object.fromEntries(C.P.map((p) => [p.slug, p.name])) };
+  return `<form class="kv brief__form" action="mailto:${PERSON.email}?subject=${encodeURIComponent(b.msg.subject)}" method="post" enctype="text/plain" data-email="${PERSON.email}" data-wa="${BRIEF.whatsapp}">${row(1, picks('need', NEEDS.map((n) => ({ key: n.key, label: n.label[lang] })), 'checkbox'))}${row(2, picks('stage', b.stage))}${row(3, picks('when', b.when))}${row(4, picks('budget', BRIEF.budgets[lang]))}${row(5, `<label class="field field--area"><span class="sr-only">${b.about}</span><textarea name="about" rows="3" placeholder="${esc(b.about)}"></textarea></label>`)}${row(6, `<div class="fields">
+          ${field('name', b.you.name, ' autocomplete="name" required')}
+          ${field('brand', b.you.brand, ' autocomplete="organization"')}
+          ${field('email', b.you.email, ' type="email" autocomplete="email" inputmode="email" required')}
+          ${field('phone', b.you.phone, ' type="tel" autocomplete="tel" inputmode="tel"')}
+        </div>`)}
+        <input type="hidden" name="from"><input type="hidden" name="src">
+        <div class="kv__row brief__send"><span class="kv__k" aria-hidden="true"></span><div class="kv__v">
+          <div class="brief__btns">
+            <button type="submit" class="btn btn--fill" data-via="email">${b.send} <span aria-hidden="true">↗</span></button>${BRIEF.whatsapp ? `
+            <button type="button" class="btn" data-via="wa">${b.wa} <span aria-hidden="true">↗</span></button>` : ''}
+          </div>
+          <p class="brief__note">${b.note} <a href="${C.legalUrl}">${t.legal}</a>.</p>
+          <div class="brief__done" role="status" aria-live="polite" hidden>
+            <p class="brief__done-msg"></p>
+            <p class="brief__fallback">${b.fallback} <a href="mailto:${PERSON.email}">${PERSON.email}</a>. <button type="button" class="copy" data-copy="">${b.copy}</button></p>
+          </div>
+        </div></div>
+      </form>
+      <script type="application/json" id="brief-i18n">${JSON.stringify(i18n).replace(/</g, '\\u003c')}</script>`;
+}
+
+function brief(lang) {
+  const C = page(lang, PAGE.brief(lang), { en: PAGE.brief('en'), es: PAGE.brief('es') });
+  const { t } = C;
+  const b = t.brief;
   return docPage(C, {
     kind: 'brief', title: b.title, description: b.desc, back: b.close, js: ['brief'],
     corner: `<a class="corner corner--l" href="mailto:${PERSON.email}">Email</a>`,
@@ -1295,26 +1331,7 @@ function brief(lang) {
         <p class="brief__reply">${BRIEF.reply[lang]}</p>
       </div>
 
-      <form class="kv brief__form" action="mailto:${PERSON.email}?subject=${encodeURIComponent(b.msg.subject)}" method="post" enctype="text/plain" data-email="${PERSON.email}" data-wa="${BRIEF.whatsapp}">${row(1, picks('need', NEEDS.map((n) => ({ key: n.key, label: n.label[lang] })), 'checkbox'))}${row(2, picks('stage', b.stage))}${row(3, picks('when', b.when))}${row(4, picks('budget', BRIEF.budgets[lang]))}${row(5, `<label class="field field--area"><span class="sr-only">${b.about}</span><textarea name="about" rows="3" placeholder="${esc(b.about)}"></textarea></label>`)}${row(6, `<div class="fields">
-          ${field('name', b.you.name, ' autocomplete="name" required')}
-          ${field('brand', b.you.brand, ' autocomplete="organization"')}
-          ${field('email', b.you.email, ' type="email" autocomplete="email" inputmode="email" required')}
-          ${field('phone', b.you.phone, ' type="tel" autocomplete="tel" inputmode="tel"')}
-        </div>`)}
-        <input type="hidden" name="from"><input type="hidden" name="src">
-        <div class="kv__row brief__send"><span class="kv__k" aria-hidden="true"></span><div class="kv__v">
-          <div class="brief__btns">
-            <button type="submit" class="btn btn--fill" data-via="email">${b.send} <span aria-hidden="true">↗</span></button>${BRIEF.whatsapp ? `
-            <button type="button" class="btn" data-via="wa">${b.wa} <span aria-hidden="true">↗</span></button>` : ''}
-          </div>
-          <p class="brief__note">${b.note} <a href="${C.legalUrl}">${t.legal}</a>.</p>
-          <div class="brief__done" role="status" aria-live="polite" hidden>
-            <p class="brief__done-msg"></p>
-            <p class="brief__fallback">${b.fallback} <a href="mailto:${PERSON.email}">${PERSON.email}</a>. <button type="button" class="copy" data-copy="">${b.copy}</button></p>
-          </div>
-        </div></div>
-      </form>
-      <script type="application/json" id="brief-i18n">${JSON.stringify(i18n).replace(/</g, '\\u003c')}</script>
+      ${briefForm(C)}
     </article>`
   });
 }
