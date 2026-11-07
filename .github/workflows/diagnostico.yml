@@ -41,3 +41,28 @@ jobs:
           echo "== Directivas de robots en el HTML que recibe bingbot:"; curl -sS -A 'Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)' "$SITE" | grep -ioE '<meta[^>]+(robots|bingbot)[^>]*>' || echo "(ninguna)"
           echo "== robots.txt tal como se sirve:"; curl -sS "${SITE}robots.txt"
           echo; echo "http:// y www:"; curl -sSI http://manelvila.com/ | grep -iE '^(HTTP|location)' || true; curl -sSI https://www.manelvila.com/ 2>&1 | grep -iE '^(HTTP|location)|curl' || true
+
+      - name: Favicon tal como lo ve Google
+        run: |
+          SITE=https://manelvila.com
+          GB='Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'
+          GBI='Googlebot-Image/1.0'
+          GF='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.75 Safari/537.36 Google Favicon'
+          echo "== Iconos declarados en la home que recibe Googlebot:"
+          curl -sS -A "$GB" "$SITE/" | grep -oE '<link rel="(icon|apple-touch-icon)"[^>]*>' || echo "(ninguno)"
+          echo; echo "== Cada icono pedido como Googlebot-Image y como Google Favicon:"
+          for f in favicon.ico favicon.svg favicon-48.png favicon-96.png favicon-192.png apple-touch-icon.png; do
+            for ua in "$GBI" "$GF"; do
+              r=$(curl -sS -o icon.bin -w '%{http_code} %{content_type} %{size_download}B' -A "$ua" "$SITE/$f" || echo fallo)
+              printf '%-22s %-14s %s  %s\n' "$f" "${ua:0:14}" "$r" "$(file -b icon.bin | cut -c1-60)"
+            done
+          done
+          echo; echo "== Lo que Google tiene guardado ahora mismo como icono de manelvila.com"
+          echo "   (404 o el globo genérico = todavía no lo ha recogido; 200 con nuestro icono = ya está)."
+          echo "   La última línea es un dominio inventado: su md5 es el del globo genérico, para comparar."
+          for u in "https://www.google.com/s2/favicons?domain=manelvila.com&sz=64" \
+                   "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://manelvila.com/&size=64" \
+                   "https://www.google.com/s2/favicons?domain=dominio-que-no-existe-mv.com&sz=64"; do
+            r=$(curl -sS -L -o g.png -w '%{http_code} %{content_type} %{size_download}B' "$u" || echo fallo)
+            echo "$r  $(file -b g.png | cut -c1-60)  md5 $(md5sum g.png | cut -c1-8)  ← $u"
+          done
