@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-  <url><loc>https://manelvila.com/</loc><lastmod>2026-11-06</lastmod><priority>1.0</priority>
+  <url><loc>https://manelvila.com/</loc><lastmod>2026-11-07</lastmod><priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/"/>
   </url>
-  <url><loc>https://manelvila.com/es/</loc><lastmod>2026-11-06</lastmod><priority>1.0</priority>
+  <url><loc>https://manelvila.com/es/</loc><lastmod>2026-11-07</lastmod><priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/"/>
   </url>
-  <url><loc>https://manelvila.com/about/</loc><lastmod>2026-11-06</lastmod><priority>0.7</priority>
+  <url><loc>https://manelvila.com/about/</loc><lastmod>2026-11-07</lastmod><priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/about/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/about/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/about/"/>
   </url>
-  <url><loc>https://manelvila.com/es/about/</loc><lastmod>2026-11-06</lastmod><priority>0.7</priority>
+  <url><loc>https://manelvila.com/es/about/</loc><lastmod>2026-11-07</lastmod><priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/about/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/about/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/about/"/>
   </url>
-  <url><loc>https://manelvila.com/projects/vintage-palace/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/projects/vintage-palace/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/projects/vintage-palace/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/proyectos/vintage-palace/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/projects/vintage-palace/"/>
@@ -49,7 +49,7 @@
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/vintage-palace/22.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/vintage-palace/23.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/es/proyectos/vintage-palace/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/es/proyectos/vintage-palace/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/projects/vintage-palace/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/proyectos/vintage-palace/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/projects/vintage-palace/"/>
@@ -78,7 +78,7 @@
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/vintage-palace/22.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/vintage-palace/23.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/projects/404-studio/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/projects/404-studio/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/projects/404-studio/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/proyectos/404-studio/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/projects/404-studio/"/>
@@ -99,7 +99,7 @@
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/404-studio/14.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/404-studio/15.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/es/proyectos/404-studio/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/es/proyectos/404-studio/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/projects/404-studio/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/proyectos/404-studio/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/projects/404-studio/"/>
@@ -120,7 +120,7 @@
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/404-studio/14.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/404-studio/15.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/projects/claur-tiles/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/projects/claur-tiles/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/projects/claur-tiles/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/proyectos/claur-tiles/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/projects/claur-tiles/"/>
@@ -141,7 +141,7 @@
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/claur-tiles/14.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/claur-tiles/15.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/es/proyectos/claur-tiles/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/es/proyectos/claur-tiles/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/projects/claur-tiles/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/proyectos/claur-tiles/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/projects/claur-tiles/"/>
@@ -162,7 +162,7 @@
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/claur-tiles/14.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/claur-tiles/15.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/projects/bernal-vida-y-milagros/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/projects/bernal-vida-y-milagros/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/projects/bernal-vida-y-milagros/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/proyectos/bernal-vida-y-milagros/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/projects/bernal-vida-y-milagros/"/>
@@ -178,7 +178,7 @@
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/bernal-vida-y-milagros/09.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/bernal-vida-y-milagros/10.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/es/proyectos/bernal-vida-y-milagros/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/es/proyectos/bernal-vida-y-milagros/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/projects/bernal-vida-y-milagros/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/proyectos/bernal-vida-y-milagros/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/projects/bernal-vida-y-milagros/"/>
@@ -194,7 +194,7 @@
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/bernal-vida-y-milagros/09.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/bernal-vida-y-milagros/10.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/projects/dmatinada/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/projects/dmatinada/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/projects/dmatinada/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/proyectos/dmatinada/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/projects/dmatinada/"/>
@@ -209,7 +209,7 @@
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/dmatinada/08.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/dmatinada/09.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/es/proyectos/dmatinada/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/es/proyectos/dmatinada/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/projects/dmatinada/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/proyectos/dmatinada/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/projects/dmatinada/"/>
@@ -224,7 +224,7 @@
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/dmatinada/08.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/dmatinada/09.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/projects/orbis-vacui/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/projects/orbis-vacui/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/projects/orbis-vacui/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/proyectos/orbis-vacui/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/projects/orbis-vacui/"/>
@@ -241,7 +241,7 @@
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/orbis-vacui/10.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/orbis-vacui/11.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/es/proyectos/orbis-vacui/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/es/proyectos/orbis-vacui/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/projects/orbis-vacui/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/proyectos/orbis-vacui/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/projects/orbis-vacui/"/>
@@ -258,7 +258,7 @@
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/orbis-vacui/10.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/orbis-vacui/11.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/projects/leo-rizzi/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/projects/leo-rizzi/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/projects/leo-rizzi/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/proyectos/leo-rizzi/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/projects/leo-rizzi/"/>
@@ -278,7 +278,7 @@
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/leo-rizzi/13.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/leo-rizzi/14.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/es/proyectos/leo-rizzi/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/es/proyectos/leo-rizzi/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/projects/leo-rizzi/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/proyectos/leo-rizzi/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/projects/leo-rizzi/"/>
@@ -298,7 +298,7 @@
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/leo-rizzi/13.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/leo-rizzi/14.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/projects/bernal/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/projects/bernal/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/projects/bernal/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/proyectos/bernal/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/projects/bernal/"/>
@@ -310,7 +310,7 @@
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/bernal/05.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/bernal/06.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/es/proyectos/bernal/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/es/proyectos/bernal/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/projects/bernal/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/proyectos/bernal/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/projects/bernal/"/>
@@ -322,7 +322,7 @@
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/bernal/05.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/bernal/06.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/projects/kaniche/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/projects/kaniche/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/projects/kaniche/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/proyectos/kaniche/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/projects/kaniche/"/>
@@ -335,7 +335,7 @@
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/kaniche/06.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/kaniche/07.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/es/proyectos/kaniche/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/es/proyectos/kaniche/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/projects/kaniche/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/proyectos/kaniche/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/projects/kaniche/"/>
@@ -348,7 +348,7 @@
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/kaniche/06.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/kaniche/07.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/projects/cisma/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/projects/cisma/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/projects/cisma/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/proyectos/cisma/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/projects/cisma/"/>
@@ -363,7 +363,7 @@
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/cisma/08.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/cisma/09.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/es/proyectos/cisma/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/es/proyectos/cisma/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/projects/cisma/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/proyectos/cisma/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/projects/cisma/"/>
@@ -378,49 +378,49 @@
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/cisma/08.jpg</image:loc></image:image>
     <image:image><image:loc>https://manelvila.com/content/uploads/figma/cisma/09.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/projects/zelandia-walk/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/projects/zelandia-walk/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/projects/zelandia-walk/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/proyectos/zelandia-walk/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/projects/zelandia-walk/"/>
     <image:image><image:loc>https://manelvila.com/content/posters/zelandia.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/es/proyectos/zelandia-walk/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/es/proyectos/zelandia-walk/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/projects/zelandia-walk/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/proyectos/zelandia-walk/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/projects/zelandia-walk/"/>
     <image:image><image:loc>https://manelvila.com/content/posters/zelandia.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/projects/sun-and-snow/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/projects/sun-and-snow/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/projects/sun-and-snow/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/proyectos/sun-and-snow/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/projects/sun-and-snow/"/>
     <image:image><image:loc>https://manelvila.com/content/posters/sunsnow.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/es/proyectos/sun-and-snow/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/es/proyectos/sun-and-snow/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/projects/sun-and-snow/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/proyectos/sun-and-snow/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/projects/sun-and-snow/"/>
     <image:image><image:loc>https://manelvila.com/content/posters/sunsnow.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/projects/delta/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/projects/delta/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/projects/delta/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/proyectos/delta/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/projects/delta/"/>
     <image:image><image:loc>https://manelvila.com/content/posters/delta.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/es/proyectos/delta/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/es/proyectos/delta/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/projects/delta/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/proyectos/delta/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/projects/delta/"/>
     <image:image><image:loc>https://manelvila.com/content/posters/delta.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/projects/pontevecchio/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/projects/pontevecchio/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/projects/pontevecchio/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/proyectos/pontevecchio/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/projects/pontevecchio/"/>
     <image:image><image:loc>https://manelvila.com/content/posters/pontevecchio.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://manelvila.com/es/proyectos/pontevecchio/</loc><lastmod>2026-11-06</lastmod><priority>0.8</priority>
+  <url><loc>https://manelvila.com/es/proyectos/pontevecchio/</loc><lastmod>2026-11-07</lastmod><priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://manelvila.com/projects/pontevecchio/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://manelvila.com/es/proyectos/pontevecchio/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://manelvila.com/projects/pontevecchio/"/>
