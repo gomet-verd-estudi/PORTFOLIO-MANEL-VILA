@@ -295,8 +295,10 @@ ${other.map((l) => `  <meta property="og:locale:alternate" content="${LANG[l].lo
   <meta property="og:url" content="${SITE}/${here}">
   <meta property="og:image" content="${abs(image)}">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="icon" href="${R}favicon.ico" sizes="32x32">
-  <link rel="icon" href="${R}content/uploads/monograma/mv_monograma.svg" type="image/svg+xml">
+  <link rel="icon" href="${R}favicon.ico" sizes="16x16 32x32 48x48">
+  <link rel="icon" href="${R}favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="${R}favicon-96.png" type="image/png" sizes="96x96">
+  <link rel="icon" href="${R}favicon-192.png" type="image/png" sizes="192x192">
   <link rel="apple-touch-icon" href="${R}apple-touch-icon.png">
   <link rel="manifest" href="${R}site.webmanifest">
   <link rel="preload" href="${R}content/src/font/KMR-Waldenburg-Buch.woff2" as="font" type="font/woff2" crossorigin>
