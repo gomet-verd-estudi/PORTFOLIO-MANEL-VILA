@@ -68,3 +68,16 @@ jobs:
             echo "$r  $(file -b g.png | cut -c1-60)  md5 $(md5sum g.png | cut -c1-8)  ← $u"
             echo "   imagen (base64): $(base64 -w0 g.png)"
           done
+
+      - name: Correo del dominio (MX, SPF, DMARC)
+        run: |
+          sudo apt-get install -y -qq dnsutils >/dev/null 2>&1 || true
+          for d in manelvila.com gometverdestudi.com; do
+            echo "== $d"
+            echo "  web (A):   $(dig +short A $d | tr '\n' ' ')"
+            echo "  correo (MX): $(dig +short MX $d | tr '\n' ' ')"
+            echo "  SPF/TXT:   $(dig +short TXT $d | tr '\n' ' ')"
+            echo "  DMARC:     $(dig +short TXT _dmarc.$d | tr '\n' ' ')"
+            echo "  NS:        $(dig +short NS $d | tr '\n' ' ')"
+          done
+          echo "(MX vacío = el dominio no recibe correo: no hay buzones @dominio)"
